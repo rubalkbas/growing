@@ -1,0 +1,30 @@
+<!-- Flippable card -->
+<ng-container *ngIf="flippable">
+
+    <!-- Front -->
+    <div class="ittiva-card-front">
+        <ng-content select="[ittivaCardFront]"></ng-content>
+    </div>
+
+    <!-- Back -->
+    <div class="ittiva-card-back">
+        <ng-content select="[ittivaCardBack]"></ng-content>
+    </div>
+
+</ng-container>
+
+<!-- Normal card -->
+<ng-container *ngIf="!flippable">
+
+    <!-- Content -->
+    <ng-content></ng-content>
+
+    <!-- Expansion -->
+    <div
+        class="ittiva-card-expansion"
+        *ngIf="expanded"
+        [@expandCollapse]>
+        <ng-content select="[ittivaCardExpansion]"></ng-content>
+    </div>
+
+</ng-container>

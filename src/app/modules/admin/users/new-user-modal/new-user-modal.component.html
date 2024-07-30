@@ -1,0 +1,36 @@
+<p class="text-2xl font-bold pb-4">Crear Nuevo Usuario</p>
+<form [formGroup]="userForm" >
+    <div mat-dialog-content class="space-y-4">
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" required />
+            <mat-error *ngIf="userForm.get('nombre')?.invalid && userForm.get('nombre')?.touched">
+                El nombre es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Correo</mat-label>
+            <input matInput formControlName="correo" required />
+            <mat-error *ngIf="userForm.get('correo')?.invalid && userForm.get('correo')?.touched">
+                El correo es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Puesto</mat-label>
+            <input matInput formControlName="puesto" required />
+            <mat-error *ngIf="userForm.get('puesto')?.invalid && userForm.get('puesto')?.touched">
+                El puesto es requerido.
+            </mat-error>
+        </mat-form-field>
+
+    </div>
+
+    <div mat-dialog-actions class="flex justify-between mt-4">
+        <button type="button" (click)="onClose()" class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Cancelar</button>
+        <button type="button" (click)="onSubmit()" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Crear</button>
+    </div>
+
+</form>

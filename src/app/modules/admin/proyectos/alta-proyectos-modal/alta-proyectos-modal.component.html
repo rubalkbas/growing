@@ -1,0 +1,72 @@
+<p class="text-2xl font-bold pb-4">Agregar Nuevo Proyecto</p>
+<form [formGroup]="proyectosForm" (ngSubmit)="onSubmit()">
+    <div mat-dialog-content class="space-y-4">
+
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Nombre del proyecto</mat-label>
+            <input matInput formControlName="nombre" required />
+            <mat-error *ngIf="proyectosForm.get('nombre')?.invalid && proyectosForm.get('nombre')?.touched">
+                El nombre del proyecto es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput cdkTextareaAutosize formControlName="descripcion" required></textarea>
+            <mat-error *ngIf="proyectosForm.get('descripcion')?.invalid && proyectosForm.get('descripcion')?.touched">
+                La descripción es requerida.
+            </mat-error>
+        </mat-form-field>
+
+        <div class="flex space-x-4">
+            <mat-form-field appearance="fill" class="flex-1">
+                <mat-label>Fecha de inicio</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="fechaInicio" required />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="proyectosForm.get('fechaInicio')?.invalid && proyectosForm.get('fechaInicio')?.touched">
+                    La fecha de inicio es requerida.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="flex-1">
+                <mat-label>Fecha de fin estimada</mat-label>
+                <input matInput [matDatepicker]="picker2" formControlName="fechaFinEstimada" required />
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+                <mat-error *ngIf="proyectosForm.get('fechaFinEstimada')?.invalid && proyectosForm.get('fechaFinEstimada')?.touched">
+                    La fecha de fin es requerida.
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Responsable de proyecto</mat-label>
+            <mat-select formControlName="idResponsableProyecto" required>
+                <mat-option *ngFor="let persona of personas" [value]="persona.value">{{ persona.viewValue }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="proyectosForm.get('idResponsableProyecto')?.invalid && proyectosForm.get('idResponsableProyecto')?.touched">
+                El responsable de proyecto es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Plantilla</mat-label>
+            <mat-select formControlName="plantilla" required>
+                <mat-option *ngFor="let plantilla of plantillas" [value]="plantilla.idPlantilla">{{ plantilla.nombre }}</mat-option>
+                <mat-option (click)="openCrearPlantilla()"><mat-icon svgIcon="add"></mat-icon><span>&nbsp;Más opciones</span> </mat-option> 
+            </mat-select>
+            <mat-error *ngIf="proyectosForm.get('plantilla')?.invalid && proyectosForm.get('plantilla')?.touched">
+                La plantilla es requerida.
+            </mat-error>
+        </mat-form-field>
+
+    </div>
+
+    <div mat-dialog-actions class="flex justify-between mt-4">
+        <button type="button" (click)="onClose()" class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Cancelar</button>
+        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Crear</button>
+    </div>
+
+</form>

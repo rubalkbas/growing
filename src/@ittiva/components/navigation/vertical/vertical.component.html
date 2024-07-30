@@ -1,0 +1,122 @@
+<div class="ittiva-vertical-navigation-wrapper">
+
+    <!-- Header -->
+    <div class="ittiva-vertical-navigation-header">
+        <ng-content select="[ittivaVerticalNavigationHeader]"></ng-content>
+    </div>
+
+    <!-- Content -->
+    <div
+        class="ittiva-vertical-navigation-content"
+        ittivaScrollbar
+        [ittivaScrollbarOptions]="{wheelPropagation: inner, suppressScrollX: true}"
+        #navigationContent>
+
+        <!-- Content header -->
+        <div class="ittiva-vertical-navigation-content-header">
+            <ng-content select="[ittivaVerticalNavigationContentHeader]"></ng-content>
+        </div>
+
+        <!-- Items -->
+        <ng-container *ngFor="let item of navigation; trackBy: trackByFn">
+
+            <!-- Skip the hidden items -->
+            <ng-container *ngIf="(item.hidden && !item.hidden(item)) || !item.hidden">
+
+                <!-- Aside -->
+                <ng-container *ngIf="item.type === 'aside'">
+                    <ittiva-vertical-navigation-aside-item
+                        [item]="item"
+                        [name]="name"
+                        [activeItemId]="activeAsideItemId"
+                        [autoCollapse]="autoCollapse"
+                        [skipChildren]="true"
+                        (click)="toggleAside(item)"></ittiva-vertical-navigation-aside-item>
+                </ng-container>
+
+                <!-- Basic -->
+                <ng-container *ngIf="item.type === 'basic'">
+                    <ittiva-vertical-navigation-basic-item
+                        [item]="item"
+                        [name]="name"></ittiva-vertical-navigation-basic-item>
+                </ng-container>
+
+                <!-- Collapsable -->
+                <ng-container *ngIf="item.type === 'collapsable'">
+                    <ittiva-vertical-navigation-collapsable-item
+                        [item]="item"
+                        [name]="name"
+                        [autoCollapse]="autoCollapse"></ittiva-vertical-navigation-collapsable-item>
+                </ng-container>
+
+                <!-- Divider -->
+                <ng-container *ngIf="item.type === 'divider'">
+                    <ittiva-vertical-navigation-divider-item
+                        [item]="item"
+                        [name]="name"></ittiva-vertical-navigation-divider-item>
+                </ng-container>
+
+                <!-- Group -->
+                <ng-container *ngIf="item.type === 'group'">
+                    <ittiva-vertical-navigation-group-item
+                        [item]="item"
+                        [name]="name"
+                        [autoCollapse]="autoCollapse"></ittiva-vertical-navigation-group-item>
+                </ng-container>
+
+                <!-- Spacer -->
+                <ng-container *ngIf="item.type === 'spacer'">
+                    <ittiva-vertical-navigation-spacer-item
+                        [item]="item"
+                        [name]="name"></ittiva-vertical-navigation-spacer-item>
+                </ng-container>
+
+            </ng-container>
+
+        </ng-container>
+
+        <!-- Content footer -->
+        <div class="ittiva-vertical-navigation-content-footer">
+            <ng-content select="[ittivaVerticalNavigationContentFooter]"></ng-content>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="ittiva-vertical-navigation-footer">
+        <ng-content select="[ittivaVerticalNavigationFooter]"></ng-content>
+    </div>
+
+</div>
+
+<!-- Aside -->
+<ng-container *ngIf="activeAsideItemId">
+    <div
+        class="ittiva-vertical-navigation-aside-wrapper"
+        ittivaScrollbar
+        [ittivaScrollbarOptions]="{wheelPropagation: false, suppressScrollX: true}"
+        [@fadeInLeft]="position === 'left'"
+        [@fadeInRight]="position === 'right'"
+        [@fadeOutLeft]="position === 'left'"
+        [@fadeOutRight]="position === 'right'">
+
+        <!-- Items -->
+        <ng-container *ngFor="let item of navigation; trackBy: trackByFn">
+
+            <!-- Skip the hidden items -->
+            <ng-container *ngIf="(item.hidden && !item.hidden(item)) || !item.hidden">
+
+                <!-- Aside -->
+                <ng-container *ngIf="item.type === 'aside' && item.id === activeAsideItemId">
+                    <ittiva-vertical-navigation-aside-item
+                        [item]="item"
+                        [name]="name"
+                        [autoCollapse]="autoCollapse"></ittiva-vertical-navigation-aside-item>
+                </ng-container>
+
+            </ng-container>
+
+        </ng-container>
+
+    </div>
+</ng-container>

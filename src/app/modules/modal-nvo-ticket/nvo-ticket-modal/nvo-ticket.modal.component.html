@@ -1,0 +1,239 @@
+<p class="text-2xl font-bold pb-4">Crear Nuevo Ticket</p>
+<form [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
+    <div mat-dialog-content class="space-y-4">
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Proyecto</mat-label>
+            <mat-select formControlName="proyecto" required>
+                <mat-option
+                    *ngFor="let proyecto of proyectos"
+                    [value]="proyecto.value"
+                    >{{ proyecto.viewValue }}</mat-option
+                >
+            </mat-select>
+            <mat-error
+                *ngIf="
+                    ticketForm.get('proyecto')?.invalid &&
+                    ticketForm.get('proyecto')?.touched
+                "
+            >
+                El proyecto es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Título</mat-label>
+            <input matInput formControlName="titulo" required />
+            <mat-error
+                *ngIf="
+                    ticketForm.get('titulo')?.invalid &&
+                    ticketForm.get('titulo')?.touched
+                "
+            >
+                El título es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Categoría</mat-label>
+            <mat-select formControlName="tipoIncidencia" required>
+                <mat-option
+                    *ngFor="let tipo of tiposIncidencia"
+                    [value]="tipo"
+                    >{{ tipo }}</mat-option
+                >
+            </mat-select>
+            <mat-error
+                *ngIf="
+                    ticketForm.get('tipoIncidencia')?.invalid &&
+                    ticketForm.get('tipoIncidencia')?.touched
+                "
+            >
+                La categoría es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Prioridad</mat-label>
+            <mat-select formControlName="prioridad" required>
+                <mat-option *ngFor="let prioridad of prioridades" [value]="prioridad">{{ prioridad }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="ticketForm.get('prioridad')?.invalid && ticketForm.get('prioridad')?.touched">
+                La prioridad es requerido.
+            </mat-error>
+        </mat-form-field> -->
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Área de atención</mat-label>
+            <mat-select
+                formControlName="areaAtencion"
+                (selectionChange)="onAreaAtencionChange($event)"
+                required
+            >
+                <mat-option
+                    *ngFor="let area of data.areasAtencion"
+                    [value]="area.idAreaAtencion"
+                >
+                    {{ area.nombreAreaAtencion }}
+                </mat-option>
+            </mat-select>
+            <mat-error
+                *ngIf="
+                    ticketForm.get('areaAtencion')?.invalid &&
+                    ticketForm.get('areaAtencion')?.touched
+                "
+            >
+                El área de atención es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Asignar a: </mat-label>
+            <mat-select formControlName="asignado" required>
+                <mat-option
+                    *ngFor="let persona of personas"
+                    [value]="persona.value"
+                >
+                    {{ persona.viewValue }}
+                </mat-option>
+            </mat-select>
+            <mat-error
+                *ngIf="
+                    ticketForm.get('asignado')?.invalid &&
+                    ticketForm.get('asignado')?.touched
+                "
+            >
+                El campo de asignación es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Tiempo de atención: </mat-label>
+            <mat-select formControlName="tiemposAtencion" required>
+                <mat-option *ngFor="let time of times" [value]="time.value">{{
+                    time.viewValue
+                }}</mat-option>
+            </mat-select>
+            <mat-error
+                *ngIf="
+                    ticketForm.get('tiemposAtencion')?.invalid &&
+                    ticketForm.get('tiemposAtencion')?.touched
+                "
+            >
+                El campo de asignación es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <div class="w-full">
+            <label
+                class="block mb-2 font-semibold text-gray-700"
+                style="font-size: 14px"
+                >Descripción *</label
+            >
+            <quill-editor
+                formControlName="descripcion"
+                class="w-full bg-white"
+                [ngClass]="{
+                    invalid: descripcion?.invalid && descripcion?.touched
+                }"
+                placeholder="Ingresa la descripción"
+                [modules]="quillConfig"
+            >
+            </quill-editor>
+            <div
+                *ngIf="descripcion?.invalid && descripcion?.touched"
+                class="text-red-600 text-sm"
+            >
+                La descripción es requerida.
+            </div>
+        </div>
+
+        <div class="flex w-full flex-col">
+            <label
+                class="block mb-2 font-semibold text-gray-700"
+                style="font-size: 14px"
+                >Adjuntar archivos o evidencias</label
+            >
+            <label
+                for="file-upload"
+                class="flex flex-col items-start w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 overflow-y-auto"
+                (dragover)="onDragOver($event)"
+                (dragleave)="onDragLeave($event)"
+                (drop)="onDrop($event)"
+            >
+                <div
+                    *ngIf="archivos.length === 0"
+                    class="flex flex-col items-center justify-center w-full h-full"
+                >
+                    <svg
+                        class="w-8 h-8 mb-4 text-gray-500"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 20 16"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                        />
+                    </svg>
+                    <p class="mb-2 text-sm text-gray-500">
+                        <span class="font-semibold"
+                            >Clic para adjuntar archivos</span
+                        >
+                        o arrastralos y sueltalos aquí
+                    </p>
+                </div>
+                <div
+                    *ngIf="archivos.length > 0"
+                    class="mt-4 w-full flex flex-wrap justify-start"
+                >
+                    <div
+                        *ngFor="let archivo of archivos; let i = index"
+                        class="p-2 w-1/3 relative"
+                    >
+                        <div
+                            class="h-24 flex items-center justify-center border border-gray-300 rounded-lg bg-white relative"
+                        >
+                            <p class="text-sm text-gray-700 truncate">
+                                {{ archivo.name }}
+                            </p>
+                            <button
+                                type="button"
+                                class="absolute top-1 right-1 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded-full"
+                                (click)="eliminarArchivo(i, $event)"
+                            >
+                                &times;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <input
+                    id="file-upload"
+                    type="file"
+                    class="hidden"
+                    (change)="onFileChange($event)"
+                    multiple
+                />
+            </label>
+        </div>
+
+        <div mat-dialog-actions class="flex justify-between mt-4">
+            <button
+                type="button"
+                (click)="onClose()"
+                class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-700"
+            >
+                Cancelar
+            </button>
+            <button
+                type="submit"
+                class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+            >
+                Crear
+            </button>
+        </div>
+    </div>
+</form>

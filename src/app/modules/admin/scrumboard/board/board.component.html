@@ -1,0 +1,75 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+    <!-- Header -->
+    <div
+        class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <!-- Title -->
+        <div class="flex-1 min-w-0">
+            <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                Tablero de Tareas
+            </h2>
+        </div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <button (click)="addCard()" class="ml-3" mat-stroked-button>
+                <mat-icon  class="icon-size-5" [svgIcon]="'mat_solid:add_task'"></mat-icon>
+                <span class="ml-2">Agregar tarea</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-8 sm:pt-4 overflow-y-auto" cdkScrollable>
+        <!-- Lists -->
+        <div class="flex">
+            <!-- Group all cdkDropList's after this point together so that the cards can be transferred between lists -->
+            <div class="flex items-start" cdkDropListGroup>
+                <!-- List -->
+                <ng-container *ngFor="let list of plantilla; trackBy: trackByFn">
+                    <div class="flex-0 w-72 p-2 rounded-2xl bg-default">
+                        <div class="flex items-center justify-between">
+                            <div
+                                class="flex items-center w-full py-2 px-3 rounded-md cursor-text border border-transparent focus-within:bg-white focus-within:shadow-sm focus-within:border-primary dark:focus-within:bg-gray-900">
+                                <p>{{list.nombre}}</p>
+                            </div>
+                            <div
+                                class="flex items-center justify-center min-w-6 ml-4 text-sm font-semibold leading-6 rounded-full bg-gray-300 text-secondary dark:bg-gray-700">
+                                {{getTaskCount(list.idEstatusPlantilla)}}
+                            </div>
+                        </div>
+        
+                        <!-- Cards -->
+                        <div class="mt-2 rounded-xl bg-gray-400 bg-opacity-12 dark:bg-transparent dark:border">
+                            <div [id]="list.idEstatusPlantilla" class="p-3 pb-0" cdkDropList
+                                [cdkDropListData]="getTasks(list.idEstatusPlantilla)"
+                                (cdkDropListDropped)="cardDropped($event)">
+                                <!-- Card -->
+                                <ng-container *ngFor="let card of getTasks(list.idEstatusPlantilla); trackBy: trackByFn">
+                                    <a class="flex flex-col items-start mb-3 p-5 space-y-3 shadow rounded-lg overflow-hidden bg-card"
+                                    (click)="openDetalleTarea(card)" cdkDrag>
+                                        <!-- Title -->
+                                        <div class="text-lg font-medium leading-5">{{card.titulo}}</div>
+                                        <!-- Due date -->
+                                        <ng-container *ngIf="card.fechaEstimada">
+                                            <div class="flex items-center rounded text-sm font-medium leading-5 text-secondary"
+                                                [ngClass]="{'text-red-600': isOverdue(card.fechaEstimada)}">
+                                                <mat-icon class="icon-size-4 text-current"
+                                                    [svgIcon]="'heroicons_outline:clock'"></mat-icon>
+                                                <div class="ml-1">{{card.fechaEstimada | date: 'longDate'}}</div>
+                                            </div>
+                                        </ng-container>
+                                    </a>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<!-- Invisible router-outlet for ScrumboardCard component -->
+<div class="absolute invisible w-0 h-0 opacity-0 pointer-events-none">
+    <router-outlet></router-outlet>
+</div>

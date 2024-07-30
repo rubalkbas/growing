@@ -1,0 +1,262 @@
+<div class="flex flex-col flex-auto min-w-0 h-screen">
+    <!-- Ajusta la altura del contenedor principal -->
+    <div class="flex-auto p-6 sm:p-10 h-full">
+        <!-- Ajusta la altura del contenedor principal de la tabla -->
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 w-full h-full mt-8">
+            <!-- Asegúrate de que el grid ocupe toda la altura -->
+            <!-- Recent transactions table -->
+            <div
+                class="xl:col-span-3 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden h-full"
+            >
+                <!-- Ajusta la columna de la tabla para que ocupe todo el ancho disponible -->
+                <div class="p-6">
+                    <div
+                        class="mr-4 text-lg font-medium tracking-tight leading-6 truncate"
+                    >
+                        Usuarios
+                    </div>
+                    <div class="text-secondary font-medium">
+                        Todos los usuarios
+                    </div>
+                </div>
+                <div class="overflow-x-auto mx-6">
+                    <!-- Ajusta el contenedor de la tabla para que ocupe toda la altura disponible -->
+                    <table
+                        class="w-full bg-transparent h-full border border-gray-300 border-collapse"
+                        mat-table
+                        matSort
+                        [dataSource]="recentTransactionsDataSource"
+                        [trackBy]="trackByFn"
+                        #recentTransactionsTable
+                    >
+                        <!-- Asegúrate de que la tabla ocupe toda la altura disponible -->
+
+                        <ng-container matColumnDef="idUsuario">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                                class="border border-gray-300"
+                            >
+                                <mat-icon
+                                    svgIcon="heroicons_solid:identification"
+                                    class="ml-2"
+                                >
+                                </mat-icon>
+                                <span class="ml-2">ID de usuario</span>
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let transaction"
+                                class="border border-gray-300 py-2 pl-2"
+                            >
+                                <span
+                                    class="font-medium text-sm text-secondary"
+                                >
+                                    {{ formatUserId(transaction.idUsuario) }}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Nombre del rol -->
+                        <ng-container matColumnDef="nombre">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                                class="border border-gray-300"
+                            >
+                                <mat-icon
+                                    svgIcon="heroicons_mini:user-plus"
+                                    class="ml-2"
+                                >
+                                </mat-icon>
+                                <span class="ml-2">Nombre</span>
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let transaction"
+                                class="border border-gray-300 py-2 pl-2"
+                            >
+                                <span
+                                    class="font-medium text-sm text-secondary"
+                                >
+                                    {{ transaction.nombre }}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Puesto del usuario -->
+                        <ng-container matColumnDef="puesto">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                                class="border border-gray-300"
+                            >
+                                <mat-icon
+                                    svgIcon="heroicons_mini:briefcase"
+                                    class="ml-2"
+                                >
+                                </mat-icon>
+                                <span class="ml-2">Puesto</span>
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let transaction"
+                                class="border border-gray-300 py-2 pl-2"
+                            >
+                                <span
+                                    class="font-medium text-sm text-secondary"
+                                >
+                                    {{ transaction.puesto }}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Status -->
+                        <ng-container matColumnDef="estatus">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                                class="border border-gray-300"
+                            >
+                                <mat-icon
+                                    svgIcon="heroicons_outline:question-mark-circle"
+                                    class="ml-2"
+                                >
+                                </mat-icon>
+                                <span class="ml-2">Estatus</span>
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let transaction"
+                                class="border border-gray-300 py-2 pl-2"
+                            >
+                                <span
+                                    class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
+                                    [ngClass]="{
+                                        'bg-red-200 text-red-800 dark:bg-red-600 dark:text-red-50':
+                                            transaction.estatus === 0,
+                                        'bg-green-200 text-green-800 dark:bg-green-600 dark:text-green-50':
+                                            transaction.estatus === 1
+                                    }"
+                                >
+                                    <span class="leading-relaxed">{{
+                                        transaction.estatus === 0
+                                            ? "Inactivo"
+                                            : "Activo"
+                                    }}</span>
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Fecha de creacion -->
+                        <ng-container matColumnDef="fechaCreacion">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                                class="border border-gray-300"
+                            >
+                                <mat-icon
+                                    svgIcon="heroicons_solid:calendar-days"
+                                    class="ml-2"
+                                >
+                                </mat-icon>
+                                <span class="ml-2">Fecha de creación</span>
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let transaction"
+                                class="border border-gray-300 py-2 pl-2"
+                            >
+                                <span>{{
+                                    transaction.fecha === null
+                                        ? "-"
+                                        : (transaction.fecha
+                                          | date : "MMM dd, y")
+                                }}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Acciones -->
+                        <ng-container matColumnDef="acciones">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                                class="border border-gray-300"
+                            >
+                                <span class="ml-2">Ver detalle</span>
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let transaction"
+                                class="border border-gray-300 py-2 pl-2"
+                            >
+                                <button
+                                    mat-flat-button
+                                    type="button"
+                                    class="border-none shadow-lg ml-4 flex items-center bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+                                    (click)="consultaDetalleRol(transaction)"
+                                >
+                                    <mat-icon
+                                        svgIcon="mat_outline:remove_red_eye"
+                                        class="ml-2 text-white"
+                                    ></mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <!-- Footer -->
+                        <ng-container matColumnDef="recentOrdersTableFooter">
+                            <td
+                                class="py-6 px-0 border border-gray-300"
+                                mat-footer-cell
+                                *matFooterCellDef
+                                colspan="6"
+                            >
+                                <button
+                                    mat-stroked-button
+                                    class="border-none shadow-lg ml-4 flex items-center bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+                                    (click)="openDialog()"
+                                >
+                                    <mat-icon
+                                        svgIcon="mat_outline:add_to_photos"
+                                        class="ml-2 text-white"
+                                    ></mat-icon>
+                                    <span class="ml-2">Nuevo usuario</span>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="recentTransactionsTableColumns"
+                        ></tr>
+                        <tr
+                            class="order-row h-16"
+                            mat-row
+                            *matRowDef="
+                                let row;
+                                columns: recentTransactionsTableColumns
+                            "
+                        ></tr>
+                        <tr
+                            class="h-16 border border-gray-300"
+                            mat-footer-row
+                            *matFooterRowDef="['recentOrdersTableFooter']"
+                        ></tr>
+                    </table>
+                </div>
+                <div class="flex justify-end p-4">
+                    <mat-paginator
+                        [pageSizeOptions]="[5, 10, 15]"
+                        showFirstLastButtons
+                    ></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

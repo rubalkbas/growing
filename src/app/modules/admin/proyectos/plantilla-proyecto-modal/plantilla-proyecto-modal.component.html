@@ -1,0 +1,170 @@
+<div class="flex justify-between items-center mb-8">
+    <h2 class="text-2xl font-bold">Plantillas</h2>
+    <button (click)="onClose()" class="text-red-500 hover:text-red-700 text-2xl">&times;</button>
+</div>
+<div class="flex space-x-4 max-h-140 overflow-y-auto">
+    <!-- Columna izquierda: Lista de plantillas -->
+    <div class="w-1/2 pr-4 border-r border-gray-300 flex flex-col justify-between">
+        <div>
+            <h3 class="text-lg font-semibold pb-4">Plantillas</h3>
+            <ul>
+                <li *ngFor="let plantilla of plantillas" (click)="selectPlantilla(plantilla)" class="cursor-pointer py-2 px-4 mb-2 bg-gray-100 hover:bg-gray-200 rounded">
+                    <input class="border-b-2 border-transparent focus:outline-none focus:border-blue-500 bg-gray-100"
+                                [(ngModel)]="plantilla.viewValue"
+                                (keyup.enter)="guardarNombrePlantilla(plantilla)">
+                </li>
+            </ul>
+        </div>
+        <button class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 self-start flex items-center" (click)="crearNuevaPlantilla()">
+            <mat-icon class="mr-2 text-white">add</mat-icon>
+            Crear Nueva Plantilla
+        </button>
+    </div>
+    
+    <!-- Columna derecha: Estados de la plantilla seleccionada -->
+    <div class="w-1/2 pl-4 max-h-140 overflow-y-auto flex flex-col justify-between">
+        <div>
+            <h3 class="text-lg font-semibold pb-4">Estados Asociados</h3>
+            <div *ngIf="selectedPlantilla; else noPlantilla">
+
+                <!-- En proceso -->
+                <h4 class="text-md font-semibold pb-2">En proceso</h4>
+                <ul cdkDropList id="enProceso" [cdkDropListConnectedTo]="['completadas', 'finalizado']" (cdkDropListDropped)="drop($event)" [cdkDropListData]="estadosEnProceso" class="pb-2">
+                    <li *ngFor="let estado of estadosEnProceso; let i = index" cdkDrag class="flex items-center py-2 px-4 bg-gray-100 rounded mb-2">
+                        <mat-icon class="cursor-move">drag_indicator</mat-icon>
+                        <div class="w-4 h-4 rounded-full ml-2 mr-4" [ngStyle]="{'background-color': estado.color, 'box-shadow': '0 0 5px ' + estado.color + '77'}" (click)="mostrarSelectorColor(estado)"></div>
+                        <input class="border-b-2 border-transparent focus:outline-none focus:border-blue-500 bg-gray-100"
+                                [(ngModel)]="estado.nombre"
+                                (keyup.enter)="guardarNombre(estado)">
+
+                        <button mat-button [matMenuTriggerFor]="belowMenu" class="ml-auto cursor-pointer"><mat-icon>more_horiz</mat-icon></button>
+                        <mat-menu #belowMenu="matMenu" yPosition="below">
+                            <!-- <button mat-menu-item (click)="cambiarEditarNombre(i)">
+                                <mat-icon class="mr-2">edit</mat-icon>
+                                <span>Cambiar nombre</span>
+                            </button> -->
+                            <button mat-menu-item class="text-red-500" (click)="deleteEstado(estado)">
+                                <mat-icon class="mr-2 text-red-500">delete</mat-icon>
+                                <span>Eliminar</span>
+                            </button>
+                        </mat-menu>
+                        
+                    </li>
+                    <!-- Selector de color -->
+                    <div *ngIf="mostrarSelector" class="absolute z-10 top-0 left-0 w-full h-full flex items-center justify-center selector-color">
+                        <div class="bg-white p-4 rounded shadow-lg">
+                            <h3 class="text-lg font-semibold mb-4">Seleccionar color</h3>
+                            <div class="grid grid-cols-4 gap-2">
+                                <div *ngFor="let color of colores" class="w-10 h-10 rounded-full cursor-pointer" [style.background-color]="color" (click)="seleccionarColor(color)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+                <div class="flex justify-end mb-2">
+                    <button (click)="addEstado('En proceso')" class="text-blue-500 hover:text-blue-700 flex items-center">
+                        <mat-icon class="mr-1 text-blue-500 hover:text-blue-700">add</mat-icon>
+                        Agregar Estado
+                    </button>
+                </div>
+                <div *ngIf="isAddingEstadoEnProceso" class="mb-2">
+                    <input [(ngModel)]="newEstadoEnProceso" (keyup.enter)="saveEstado('En proceso')" class="mt-2 py-2 px-4 border rounded w-full" placeholder="Nombre del estado">
+                </div>
+                
+                <!-- Completadas -->
+                <h4 class="text-md font-semibold pb-2 mt-4">Completadas</h4>
+                <ul cdkDropList id="completadas" [cdkDropListConnectedTo]="['enProceso', 'finalizado']" (cdkDropListDropped)="drop($event)" [cdkDropListData]="estadosCompletadas" class="pb-2">
+                    <li *ngFor="let estado of estadosCompletadas; let i = index" cdkDrag class="flex items-center py-2 px-4 bg-gray-100 rounded mb-2">
+                        <mat-icon class="cursor-move">drag_indicator</mat-icon>
+                        <div class="w-4 h-4 rounded-full ml-2 mr-4" [ngStyle]="{'background-color': estado.color, 'box-shadow': '0 0 5px ' + estado.color + '77'}" (click)="mostrarSelectorColor(estado)"></div>
+                        
+                        <input class="border-b-2 border-transparent focus:outline-none focus:border-blue-500 bg-gray-100"
+                                [(ngModel)]="estado.nombre"
+                                (keyup.enter)="guardarNombre(estado)">
+
+                        <button mat-button [matMenuTriggerFor]="belowMenu2" class="ml-auto cursor-pointer"><mat-icon>more_horiz</mat-icon></button>
+                        <mat-menu #belowMenu2="matMenu" yPosition="below">
+                            <!-- <button mat-menu-item (click)="cambiarEditarNombre(i)">
+                                <mat-icon class="mr-2">edit</mat-icon>
+                                <span>Cambiar nombre</span>
+                            </button> -->
+                            <button mat-menu-item class="text-red-500" (click)="deleteEstado(estado)">
+                                <mat-icon class="mr-2 text-red-500">delete</mat-icon>
+                                <span>Eliminar</span>
+                            </button>
+                        </mat-menu>
+                    </li>
+
+                    <!-- Selector de color -->
+                    <div *ngIf="mostrarSelector" class="absolute z-10 top-0 left-0 w-full h-full flex items-center justify-center selector-color">
+                        <div class="bg-white p-4 rounded shadow-lg">
+                            <div class="flex justify-between items-center mb-8">
+                                <h2 class="text-lg font-semibold">Seleccionar color</h2>
+                                <button (click)="closeColorSelector()" class="text-red-500 hover:text-red-700 text-2xl">&times;</button>
+                            </div>
+                            <div class="grid grid-cols-4 gap-2">
+                                <div *ngFor="let color of colores" 
+                                    class="w-10 h-10 rounded-full cursor-pointer border border-gray-200" 
+                                    [style.background-color]="color" 
+                                    (click)="changeTempColor(color)">
+                                </div>
+                                <!-- Input de color personalizado -->
+                                <div class="relative w-10 h-10" title="Seleccionar color personalizado">
+                                    <input type="color" 
+                                        class="opacity-0 absolute inset-0 w-full h-full cursor-pointer" 
+                                        id="hs-color-input" 
+                                        [(ngModel)]="tempColor" 
+                                        title="Selecciona tu color">
+                                    <div class="w-10 h-10 rounded-full border border-gray-200 cursor-pointer flex items-center justify-center" 
+                                        [style.background-color]="tempColor"
+                                        (click)="abrirSelectorColor()">
+                                        <span class="absolute inset-0 flex items-center justify-center text-white">
+                                            <mat-icon>color_lens</mat-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex justify-end">
+                                <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="confirmarColor()">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </ul>
+                <div class="flex justify-end mb-2">
+                    <button (click)="addEstado('Completadas')" class="text-blue-500 hover:text-blue-700 flex items-center">
+                        <mat-icon class="mr-1 text-blue-500 hover:text-blue-700">add</mat-icon>
+                        Agregar Estado
+                    </button>
+                </div>
+                <div *ngIf="isAddingEstadoCompletadas" class="mb-2">
+                    <input [(ngModel)]="newEstadoCompletadas" (keyup.enter)="saveEstado('Completadas')" class="mt-2 py-2 px-4 border rounded w-full" placeholder="Nombre del estado">
+                </div>
+                
+                <!-- Finalizado -->
+                <h4 class="text-md font-semibold pb-2 mt-4">Finalizado</h4>
+                <ul cdkDropList id="finalizado" [cdkDropListConnectedTo]="['enProceso', 'completadas']" (cdkDropListDropped)="drop($event)" [cdkDropListData]="estadosFinalizado" class="pb-2">
+                    <li *ngFor="let estado of estadosFinalizado; let i = index" class="flex items-center py-2 px-4 bg-gray-100 rounded mb-2">
+                        <mat-icon class="cursor-not-allowed">drag_indicator</mat-icon>
+                        <div class="w-4 h-4 rounded-full ml-2 mr-4 flex items-center justify-center" [ngStyle]="{'background-color': estado.color, 'box-shadow': '0 0 5px ' + estado.color + '77'}">
+                            <mat-icon class="text-white text-xs">check</mat-icon>
+                        </div>                        
+                        <input class="w-full border-b-2 border-transparent focus:outline-none focus:border-blue-500 bg-gray-100"
+                                [(ngModel)]="estado.nombre"
+                                (keyup.enter)="guardarNombre(estado)">
+
+                        <!-- <button mat-button [matMenuTriggerFor]="belowMenu3" class="ml-auto cursor-pointer"><mat-icon>more_horiz</mat-icon></button>
+                        <mat-menu #belowMenu3="matMenu" yPosition="below">
+                            <button mat-menu-item (click)="cambiarEditarNombre(i)">
+                                <mat-icon class="mr-2">edit</mat-icon>
+                                <span>Cambiar nombre</span>
+                            </button>
+                        </mat-menu> -->
+                    </li>
+                </ul>
+            </div>
+            <ng-template #noPlantilla>
+                <p>Seleccione una plantilla para ver los estados asociados.</p>
+            </ng-template>
+        </div>
+    </div>
+</div>

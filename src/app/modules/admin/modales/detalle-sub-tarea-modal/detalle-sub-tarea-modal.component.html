@@ -1,0 +1,435 @@
+<div mat-dialog-content class="space-y-4">
+    <div class="modal-container">
+        <!-- este es el div de detalle -->
+        <div>
+            <div
+                class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate"
+            >
+                <b>{{ tarea.titulo }}</b>
+            </div>
+
+            <div class="flex-auto border-t -mt-px pt-4 sm:pt-6"></div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 w-full mt-8">
+                <ng-container>
+                    <div class="flex sm:items-center">
+                        <mat-icon [svgIcon]="'mat_solid:date_range'"></mat-icon>
+                        <div class="ml-6 leading-6">
+                            Fecha creación:
+                            <b class="ml-2">{{
+                                tarea.fechaCreacion | date : "MMM dd, y"
+                            }}</b>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container>
+                    <div class="flex sm:items-center">
+                        <mat-icon svgIcon="mat_solid:adjust"></mat-icon>
+                        <div class="ml-6 leading-6">
+                            Estatus:
+                            <span
+                                [ngStyle]="{
+                                    'background-color':
+                                        tarea.idEstatusPlantilla?.color
+                                }"
+                                class="status-box ml-2"
+                            >
+                                {{ tarea.idEstatusPlantilla?.nombre }}
+                            </span>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container>
+                    <div class="flex sm:items-center">
+                        <mat-icon [svgIcon]="'mat_solid:date_range'"></mat-icon>
+                        <div class="ml-6 leading-6">
+                            Fecha estimada de cierre:
+                            <b class="ml-2">{{
+                                tarea.fechaEstimada | date : "MMM dd, y"
+                            }}</b>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container>
+                    <div class="flex sm:items-center">
+                        <mat-icon
+                            [svgIcon]="'mat_solid:flag'"
+                            [ngClass]="{
+                                'flag-blue':
+                                    tarea.idPrioridad?.nombre === 'Baja',
+                                'flag-yellow':
+                                    tarea.idPrioridad?.nombre === 'Media',
+                                'flag-red': tarea.idPrioridad?.nombre === 'Alta'
+                            }"
+                        ></mat-icon>
+                        <div class="ml-6 leading-6">
+                            Prioridad:
+                            <b class="ml-2">{{ tarea.idPrioridad?.nombre }}</b>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container>
+                    <div class="flex sm:items-center">
+                        <mat-icon [svgIcon]="'mat_solid:date_range'"></mat-icon>
+                        <div class="ml-6 leading-6">
+                            Fecha inicio:
+                            <b class="ml-2">{{
+                                tarea.fechaInicio | date : "MMM dd, y"
+                            }}</b>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container>
+                    <div class="flex sm:items-center">
+                        <mat-icon [svgIcon]="'mat_solid:date_range'"></mat-icon>
+                        <div class="ml-6 leading-6">
+                            Fecha fin:
+                            <b class="ml-2">{{
+                                tarea.fechaFin | date : "MMM dd, y"
+                            }}</b>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container>
+                    <div class="flex sm:items-center">
+                        <mat-icon svgIcon="mat_solid:people_alt"></mat-icon>
+                        <div class="ml-6 leading-6">Asignados:</div>
+                        <div class="ml-2 flex">
+                            <div
+                                *ngFor="let user of assignedUsers"
+                                class="user-circle"
+                                [style.background-color]="getColor(user)"
+                            >
+                                {{ getInitials(user.name) }}
+                                <button
+                                    mat-icon-button
+                                    color="warn"
+                                    class="remove-button"
+                                    (click)="removeUser(user)"
+                                >
+                                    <mat-icon>remove_circle</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container>
+                    <div class="flex sm:items-center">
+                        <mat-icon svgIcon="mat_solid:people_alt"></mat-icon>
+                        <div class="ml-6 leading-6">Asignar:</div>
+                        <mat-form-field
+                            class="ml-2 selectUser2"
+                            appearance="fill"
+                        >
+                            <mat-select
+                                (selectionChange)="addUser($event.value)"
+                            >
+                                <mat-option
+                                    *ngFor="let persona of personas"
+                                    [value]="persona.id"
+                                    >{{ persona.name }}</mat-option
+                                >
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="flex-auto border-t -mt-px pt-4 sm:pt-6"></div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-1 gap-8 w-full mt-8">
+                <div class="text-lg font-semibold tracking-tight truncate">
+                    Progreso de la tarea
+                </div>
+                <mat-slider
+                    [disabled]="disabled"
+                    [max]="max"
+                    [min]="min"
+                    [step]="step"
+                    [discrete]="thumbLabel"
+                    [showTickMarks]="showTicks"
+                    (change)="onSliderChange(progreso)"
+                >
+                    <input matSliderThumb [(ngModel)]="progreso" #slider />
+                </mat-slider>
+                <div>{{ progreso }}%</div>
+            </div>
+        </div>
+
+        <div class="flex-auto border-t -mt-px pt-4 sm:pt-6">
+            <div class="w-full max-w-screen-xl mx-auto">
+                <mat-tab-group
+                    class="sm:px-2"
+                    mat-stretch-tabs="false"
+                    [animationDuration]="'0'"
+                >
+                    <mat-tab label="Detalle">
+                        <mat-form-field class="lista-width">
+                            <input
+                                matInput
+                                placeholder="Agregar nuevo elemento"
+                                [(ngModel)]="nuevaTarea"
+                                (keyup.enter)="addItem()"
+                            />
+                        </mat-form-field>
+                        <button mat-icon-button (click)="addItem()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                        <mat-list>
+                            <mat-list-item
+                                *ngFor="
+                                    let tarea of detallesTareas;
+                                    let i = index
+                                "
+                            >
+                                {{ tarea.descripcion }}
+                                <button
+                                    mat-icon-button
+                                    (click)="removeItem(i)"
+                                    aria-label="Eliminar elemento"
+                                >
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-tab>
+
+                    <mat-tab label="Archivos">
+                        <ng-template matTabContent>
+                            <div *ngIf="archivosGuardar.length > 0">
+                                <div
+                                    class="text-lg font-semibold tracking-tight truncate"
+                                >
+                                    Archivos de la tarea
+                                </div>
+                                <div
+                                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4"
+                                >
+                                    <div
+                                        *ngFor="let archivo of archivosGuardar"
+                                        class="bg-white p-4 rounded-lg shadow-md flex flex-col items-center"
+                                    >
+                                        <div
+                                            class="w-full flex justify-center items-center"
+                                        >
+                                            <img
+                                                *ngIf="
+                                                    isImage(
+                                                        archivo.extencionArchivo
+                                                    )
+                                                "
+                                                [src]="
+                                                    getBlobUrl(
+                                                        archivo.blobArchivo,
+                                                        archivo.tipoArchivo
+                                                    )
+                                                "
+                                                alt="{{
+                                                    archivo.nombreArchivo
+                                                }}"
+                                                class="h-12 w-auto"
+                                            />
+                                            <img
+                                                *ngIf="
+                                                    !isImage(
+                                                        archivo.extencionArchivo
+                                                    )
+                                                "
+                                                src="assets/icons/file.png"
+                                                alt="File Icon"
+                                                class="h-12 w-auto"
+                                            />
+                                        </div>
+                                        <div class="mt-1 text-center">
+                                            <a
+                                                [href]="
+                                                    getBlobUrl(
+                                                        archivo.blobArchivo,
+                                                        archivo.tipoArchivo
+                                                    )
+                                                "
+                                                download="{{
+                                                    archivo.nombreArchivo
+                                                }}"
+                                                class="text-xs text-blue-600 hover:text-blue-800"
+                                            >
+                                                {{ archivo.nombreArchivo }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="mt-4">
+                                <div class="flex w-full flex-col">
+                                    <label
+                                        class="block mb-2 font-semibold text-gray-700"
+                                        style="font-size: 14px"
+                                        >Adjuntar archivos o evidencias</label
+                                    >
+                                    <label
+                                        for="file-upload"
+                                        class="flex flex-col items-start w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 overflow-y-auto"
+                                        (dragover)="onDragOver($event)"
+                                        (dragleave)="onDragLeave($event)"
+                                        (drop)="onDrop($event)"
+                                    >
+                                        <div
+                                            *ngIf="archivos.length === 0"
+                                            class="flex flex-col items-center justify-center w-full h-full"
+                                        >
+                                            <svg
+                                                class="w-8 h-8 mb-4 text-gray-500"
+                                                aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 20 16"
+                                            >
+                                                <path
+                                                    stroke="currentColor"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                                                />
+                                            </svg>
+                                            <p
+                                                class="mb-2 text-sm text-gray-500"
+                                            >
+                                                <span class="font-semibold"
+                                                    >Clic para adjuntar
+                                                    archivos</span
+                                                >
+                                                o arrastralos y sueltalos aquí
+                                            </p>
+                                        </div>
+                                        <div
+                                            *ngIf="archivos.length > 0"
+                                            class="mt-4 w-full flex flex-wrap justify-start"
+                                        >
+                                            <div
+                                                *ngFor="
+                                                    let archivo of archivos;
+                                                    let i = index
+                                                "
+                                                class="p-2 w-1/3 relative"
+                                            >
+                                                <div
+                                                    class="h-24 flex items-center justify-center border border-gray-300 rounded-lg bg-white relative"
+                                                >
+                                                    <p
+                                                        class="text-sm text-gray-700 truncate"
+                                                    >
+                                                        {{ archivo.name }}
+                                                    </p>
+                                                    <button
+                                                        type="button"
+                                                        class="absolute top-1 right-1 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded-full"
+                                                        (click)="
+                                                            eliminarArchivo(
+                                                                i,
+                                                                $event
+                                                            )
+                                                        "
+                                                    >
+                                                        &times;
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input
+                                            id="file-upload"
+                                            type="file"
+                                            class="hidden"
+                                            (change)="onFileChange($event)"
+                                            multiple
+                                        />
+                                    </label>
+                                </div>
+                            </div>
+                            <br />
+                            <button
+                                mat-flat-button
+                                type="button"
+                                class="border-none shadow-lg ml-4 flex items-center bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+                                (click)="uploadFiles(tarea.idTarea)"
+                            >
+                                <mat-icon
+                                    svgIcon="mat_outline:add_to_photos"
+                                    class="ml-2 text-white"
+                                ></mat-icon>
+                                <span class="ml-2">Subir archivo</span>
+                            </button>
+                        </ng-template>
+                    </mat-tab>
+
+                    <mat-tab label="Subtareas">
+                        <ng-template matTabContent>
+                            <div class="flex justify-end">
+                                <button
+                                    mat-flat-button
+                                    type="button"
+                                    (click)="openSubtarea()"
+                                    class="border-none shadow-lg bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-700 flex items-center"
+                                >
+                                    <mat-icon
+                                        svgIcon="mat_outline:add_to_photos"
+                                        class="text-white"
+                                    ></mat-icon>
+                                    <span class="ml-2">Nueva subtarea</span>
+                                </button>
+                            </div>
+
+                            <br />
+                            <div>
+                                <div
+                                    class="text-lg font-semibold tracking-tight truncate"
+                                >
+                                    Subtareas existentes
+                                </div>
+                                <div
+                                    class="grid grid-cols-1 xl:grid-cols-1 gap-8 w-full mt-8"
+                                >
+                                    <div
+                                        *ngFor="let subtarea of subtarea"
+                                        class="p-4 border border-gray-300 rounded"
+                                    >
+                                        <div class="w-full flex items-center">
+                                            <mat-icon
+                                                [svgIcon]="
+                                                    'mat_outline:arrow_forward_ios'
+                                                "
+                                            ></mat-icon>
+                                            <div
+                                                class="ml-2 flex-grow leading-6"
+                                            >
+                                                <b>{{ subtarea.titulo }}</b>
+                                            </div>
+                                            <button
+                                                mat-flat-button
+                                                type="button"
+                                                class="border-none shadow-lg bg-blue-500 text-white p-2 rounded-full hover:bg-blue-700"
+                                            >
+                                                <mat-icon
+                                                    svgIcon="mat_outline:edit_note"
+                                                    class="text-white"
+                                                ></mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</div>

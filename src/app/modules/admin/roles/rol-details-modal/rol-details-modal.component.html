@@ -1,0 +1,134 @@
+<div class="bg-white w-full overflow-y-auto" style="max-height: 600px">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl font-bold">Detalles del Rol</h2>
+        <button
+            (click)="onClose()"
+            class="text-red-500 hover:text-red-700 text-2xl"
+        >
+            &times;
+        </button>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+        <!-- Existing Ticket Details -->
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">ID del Rol</h3>
+            <p>{{ formatRolId(data.rol.idRol) }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Nombre</h3>
+            <p>{{ data.rol.nombreRol }}</p>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Estatus</h3>
+            <p>{{ data.rol.estatus == 1 ? "Activo" : "Inactivo" }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Fecha de creación</h3>
+            <p>{{ data.rol.fechaCreacion | date : "dd/MM/yyyy" }}</p>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Fecha de activación</h3>
+            <p>{{ data.rol.fechaAct | date : "dd/MM/yyyy" }}</p>
+        </div>
+    </div>
+
+    <div
+        *ngIf="usuariosAsignados && usuariosAsignados.length > 0"
+        class="border-t border-gray-300 my-4"
+    ></div>
+
+    <div
+        *ngIf="usuariosAsignados && usuariosAsignados.length > 0"
+        class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full"
+    >
+        <h3 class="text-lg font-semibold pb-2">
+            Personas con este rol asignado
+        </h3>
+        <div class="grid grid-cols-2 gap-4">
+            <div
+                *ngFor="let personal of usuariosAsignados"
+                class="bg-white p-4 rounded-lg shadow-md mb-4 flex justify-between items-center"
+            >
+                <p class="text-sm text-gray-500">
+                    {{ personal.nombreCompleto }} - {{ personal.puesto }}
+                </p>
+                <button
+                    mat-icon-button
+                    (click)="borrarPersonal(personal.idUsuario)"
+                >
+                    <mat-icon class="text-red-600">delete</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="border-t border-gray-300 my-4"></div>
+    <!-- Permisos -->
+    <div class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full">
+        <h3 class="text-lg font-semibold pb-2">Permisos</h3>
+        <div class="grid grid-cols-2 gap-4">
+            <div *ngFor="let permiso of permisos" class="flex items-center">
+                <mat-checkbox
+                    [checked]="isPermisoSeleccionado(permiso.idPermiso)"
+                    (change)="togglePermiso($event, permiso)"
+                >
+                    {{ permiso.nombre }}
+                </mat-checkbox>
+            </div>
+        </div>
+        <button
+            (click)="guardarCambiosPermisos()"
+            class="mt-4 p-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800"
+        >
+            Guardar Cambios
+        </button>
+    </div>
+
+    <div class="border-t border-gray-300 my-4"></div>
+
+    <div class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full">
+        <mat-form-field appearance="fill" class="w-full mt-2">
+            <mat-label>Seleccionar usuario para asignar al rol</mat-label>
+            <mat-select [(ngModel)]="asignado" name="asignado">
+                <mat-option
+                    *ngFor="let persona of personas"
+                    [value]="persona.value"
+                    >{{ persona.viewValue }}</mat-option
+                >
+            </mat-select>
+        </mat-form-field>
+
+        <div class="mt-4">
+            <button
+                (click)="agregarPersonal()"
+                class="mt-2 p-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800"
+            >
+                Agregar
+            </button>
+        </div>
+    </div>
+
+    <div class="border-t border-gray-300 my-4"></div>
+
+    <div class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full">
+        <mat-form-field appearance="fill" class="w-full mt-2">
+            <mat-label>Cambiar estado del rol </mat-label>
+            <mat-select [(ngModel)]="estatus" name="estatus">
+                <mat-option value="1">Activo</mat-option>
+                <mat-option value="0">Inactivo</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="mt-4">
+            <button
+                (click)="cambiarEstatus()"
+                class="mt-2 p-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800"
+            >
+                Cambiar estado
+            </button>
+        </div>
+    </div>
+</div>

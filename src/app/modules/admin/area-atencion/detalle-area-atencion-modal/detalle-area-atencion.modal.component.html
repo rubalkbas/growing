@@ -1,0 +1,101 @@
+<div class="bg-white w-full overflow-y-auto" style="max-height: 900px">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl font-bold">Detalles del Area
+        </h2>
+        <button (click)="onClose()" class="text-red-500 hover:text-red-700 text-2xl">
+            &times;
+        </button>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">ID del area</h3>
+            <p>{{ formatTicketId(data.area.idAreaAtencion) }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Nombre del area</h3>
+            <p>{{ data.area.nombreAreaAtencion }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Correo de contacto</h3>
+            <p>{{ data.area.correoAreaAtencion }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Encargado de area</h3>
+            <p>{{ data.area.idUsuarioResponsable.nombre }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Estatus del area</h3>
+            <span class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
+                [ngClass]="{'bg-red-200 text-red-800 dark:bg-red-600 dark:text-red-50': data.area.estatus === 0,
+            'bg-green-200 text-green-800 dark:bg-green-600 dark:text-green-50': data.area.estatus === 1 
+                    }">
+                <span class="leading-relaxed">{{ data.area.estatus === 0 ? 'Inactivo' : 'Activo'}}</span>
+            </span>
+        </div>
+
+
+
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Fecha de creación</h3>
+            <p>{{ data.area.fechaCreacion }}</p>
+        </div>
+
+        <div class="p-4 rounded-lg flex ">
+            <button (click)="cambiarEstatus(data.area.idAreaAtencion)"
+                class="mt-2 p-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800">
+                Cambiar estatus
+            </button>
+        </div>
+
+    </div>
+
+    <div class="border-t border-gray-300 my-4"></div>
+
+
+    <div class="bg-slate-50 p-4 rounded-lg shadow-md ">
+        <h3 class="text-lg font-semibold">Descripción</h3>
+        <div class="bg-white rounded-md shadow-inner">
+            <quill-view [content]="data.area.descripcionAreaAtencion" class="bg-transparent border-none"></quill-view>
+        </div>
+    </div>
+
+    <div class="border-t border-gray-300 my-4"></div>
+
+    <div class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full">
+        <mat-form-field appearance="fill" class="w-full mt-2">
+            <mat-label>Seleccionar usuario para asignar al area</mat-label>
+            <mat-select [(ngModel)]="asignado" name="asignado">
+                <mat-option *ngFor="let persona of personas" [value]="persona.value">{{ persona.viewValue
+                    }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="mt-4">
+            <button (click)="agregarPersonal()"
+                class="mt-2 p-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800">
+                Agregar
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="usuariosAsignados && usuariosAsignados.length > 0" class="border-t border-gray-300 my-4"></div>
+
+    <div *ngIf="usuariosAsignados && usuariosAsignados.length > 0"
+        class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full">
+        <h3 class="text-lg font-semibold pb-2">
+            Personas con este area asignado
+        </h3>
+        <div class="grid grid-cols-2 gap-4">
+            <div *ngFor="let personal of usuariosAsignados"
+                class="bg-white p-4 rounded-lg shadow-md mb-4 flex justify-between items-center">
+                <p class="text-sm text-gray-500">
+                    {{ personal.idUsuario.nombre }}
+                </p>
+                <button mat-icon-button (click)="borrarPersonal(personal.idAreaAtencionUsuarios)">
+                    <mat-icon svgIcon="mat_solid:delete"></mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

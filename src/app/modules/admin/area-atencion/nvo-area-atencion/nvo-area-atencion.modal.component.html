@@ -1,0 +1,49 @@
+<p class="text-2xl font-bold pb-4">Crear nueva area de atención</p>
+<form [formGroup]="areaAtencionForm" (ngSubmit)="onSubmit()">
+    <div mat-dialog-content class="space-y-4">
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Área de atención</mat-label>
+            <input matInput formControlName="nombreAreaAtencion" required />
+            <mat-error *ngIf="areaAtencionForm.get('nombreAreaAtencion')?.invalid && areaAtencionForm.get('nombreAreaAtencion')?.touched">
+                El Área de atención es requerida.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Descripción</mat-label>
+            <input matInput formControlName="descripcionAreaAtencion" required />
+            <mat-error *ngIf="areaAtencionForm.get('descripcionAreaAtencion')?.invalid && areaAtencionForm.get('descripcionAreaAtencion')?.touched">
+                La Descripcion es requerida.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Usuario responsable</mat-label>
+            <mat-select formControlName="idUsuarioResponsable" required>
+                <mat-option *ngFor="let usuario of usuarios" [value]="usuario.value">{{ usuario.viewValue }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="areaAtencionForm.get('idUsuarioResponsable')?.invalid && areaAtencionForm.get('idUsuarioResponsable')?.touched">
+                El Usuario responsable es requerido.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Correo electrónico</mat-label>
+            <input matInput formControlName="correoAreaAtencion" required />
+            <mat-error *ngIf="areaAtencionForm.get('correoAreaAtencion')?.invalid && areaAtencionForm.get('correoAreaAtencion')?.touched">
+                El Correo electrónico es requerido.
+            </mat-error>
+            <mat-error *ngIf="areaAtencionForm.get('correoAreaAtencion').hasError('email')">
+                Correo electrónico no es válido
+            </mat-error>
+        </mat-form-field>
+
+    </div>
+
+    <div mat-dialog-actions class="flex justify-between mt-4">
+        <button type="button" (click)="onClose()" class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Cancelar</button>
+        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Crear</button>
+    </div>
+
+</form>

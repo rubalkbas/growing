@@ -1,0 +1,219 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+
+.modal-container {
+
+  width: 100%; /* Ajusta este valor según sea necesario */
+  height: 100%;
+}
+
+
+.quill-editor.invalid .ql-container {
+  border: 1px solid red;
+}
+
+.card {
+  height: 6rem;
+  /* Ajusta la altura según sea necesario */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  padding: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+}
+
+.card p {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.card button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  color: red;
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow-y: auto;
+  height: 100%;
+  /* Para asegurar que el scroll funcione correctamente */
+}
+
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  /* Espacio entre los inputs */
+}
+
+.flex-item {
+  flex: 1 1 100%;
+  /* Este tomará todo el ancho disponible */
+}
+
+.flex-item-half {
+  flex: 0 0 48%;
+  /* Toma aproximadamente la mitad del contenedor (ajustado para incluir el gap) */
+}
+
+.flex-item-third {
+  flex: 0 0 32%;
+  /* Toma aproximadamente un tercio del contenedor (ajustado para incluir el gap) */
+}
+
+.flex-item-quarter {
+  flex: 0 0 23%;
+  /* Toma aproximadamente un cuarto del contenedor (ajustado para incluir el gap) */
+}
+
+.break {
+  flex-basis: 100%;
+  /* Esto hace que el siguiente elemento comience en una nueva fila */
+  height: 0;
+  /* Opcional, puede ajustarse para evitar añadir espacio extra */
+}
+
+.slider-container {
+  width: 100%;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  border: 1px solid red;
+  /* Borde temporal para depuración */
+}
+
+::ng-deep .mat-slider {
+  width: 100% !important;
+  border: 1px solid blue;
+  /* Borde temporal para depuración */
+}
+
+::ng-deep .mat-slider .mat-slider-track-wrapper {
+  width: 100% !important;
+  border: 1px solid green;
+  /* Borde temporal para depuración */
+}
+
+::ng-deep .mat-slider .mat-slider-track-background,
+::ng-deep .mat-slider .mat-slider-track-fill {
+  left: 0;
+  right: 0;
+  width: 100% !important;
+  border: 1px solid yellow;
+  /* Borde temporal para depuración */
+}
+
+.flag-blue {
+  color: blue;
+}
+
+.flag-yellow {
+  color: yellow;
+}
+
+.flag-red {
+  color: red;
+}
+
+.status-box {
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
+  color: white; /* Ajusta el color del texto si es necesario */
+  display: inline-block; /* Asegura que el span tenga un tamaño adecuado */
+}
+
+
+.ml-2 {
+  margin-left: 0.5em; /* Ajusta el tamaño del margen según sea necesario */
+}
+
+
+/* user-assignment.component.css */
+.container {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.title {
+  text-align: center;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+
+.selectUser{
+  align-items: center !important
+}
+
+.selectUser2{
+  
+  width: 200px;
+  height: 50px;
+}
+
+
+.mat-select-placeholder {
+  font-size: 14px; /* Ajusta el tamaño de la fuente según lo necesites */
+}
+
+.mat-select-value {
+  font-size: 14px; /* Ajusta el tamaño de la fuente según lo necesites */
+}
+
+.user-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  margin-right: 10px;
+  position: relative;
+}
+
+.remove-button {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+}
+
+.lista-width{
+  width: 50%;
+}

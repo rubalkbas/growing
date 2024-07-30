@@ -1,0 +1,151 @@
+<div class="bg-white w-full overflow-y-auto" style="max-height: 600px">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl font-bold">Detalles del Proyecto</h2>
+        <button
+            (click)="onClose()"
+            class="text-red-500 hover:text-red-700 text-2xl"
+        >
+            &times;
+        </button>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+        <!-- Existing Ticket Details -->
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">ID del Proyecto</h3>
+            <p>{{ formatIdProyecto(data.proyecto.dto.idProyecto) }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Título</h3>
+            <p>{{ data.proyecto.dto.nombre }}</p>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Responsable</h3>
+            <p>{{ data.proyecto.dto.idResponsableProyecto.nombre }}</p>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Estatus</h3>
+            <p>{{ data.proyecto.dto.estatus == 1 ? "Activo" : "Inactivo" }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Fecha de creación</h3>
+            <p>{{ data.proyecto.dto.fecha }}</p>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Fecha de inicio</h3>
+            <p>{{ data.proyecto.dto.fechaInicio }}</p>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">
+                Fecha de finalización estimada
+            </h3>
+            <p>{{ data.proyecto.dto.fechaEstimada }}</p>
+        </div>
+
+        <div
+            class="bg-slate-50 p-4 rounded-lg shadow-md"
+            *ngIf="data.proyecto.dto.fechaFin"
+        >
+            <h3 class="text-lg font-semibold">Fecha de finalización</h3>
+            <p>{{ data.proyecto.dto.fechaFin }}</p>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Progreso</h3>
+            <p>{{ data.proyecto.dto.progreso }}%</p>
+        </div>
+    </div>
+
+    <div class="border-t border-gray-300 my-4"></div>
+
+    <div class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full">
+        <h3 class="text-lg font-semibold pb-2">Descripción</h3>
+        <p>{{ data.proyecto.dto.descripcion }}</p>
+    </div>
+
+    <div
+        class="border-t border-gray-300 my-4"
+        *ngIf="
+            data.personalProyectoDetails &&
+            data.personalProyectoDetails.length > 0
+        "
+    ></div>
+
+    <div
+        class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full"
+        *ngIf="
+            data.personalProyectoDetails &&
+            data.personalProyectoDetails.length > 0
+        "
+    >
+        <h3 class="text-lg font-semibold pb-2">Personal asignado</h3>
+        <div class="grid grid-cols-2 gap-4">
+            <div
+                *ngFor="let personal of data.personalProyectoDetails"
+                class="bg-white p-4 rounded-lg shadow-md mb-4 flex justify-between items-center"
+            >
+                <p class="text-sm text-gray-500">
+                    {{ personal.idUsuario.nombre }} -
+                    {{ personal.idUsuario.puesto }}
+                </p>
+                <button
+                    mat-icon-button
+                    (click)="borrarPersonal(personal.idProyectoPersonalTicket)"
+                >
+                    <mat-icon class="text-red-600">delete</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="border-t border-gray-300 my-4"></div>
+
+    <div class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full">
+        <!-- <div class="grid grid-cols-2 gap-4"> -->
+        <mat-form-field appearance="fill" class="w-full mt-2">
+            <mat-label>Agregar nuevo personal </mat-label>
+            <mat-select [(ngModel)]="asignado" name="asignado">
+                <mat-option
+                    *ngFor="let persona of personas"
+                    [value]="persona.value"
+                    >{{ persona.viewValue }}</mat-option
+                >
+            </mat-select>
+        </mat-form-field>
+
+        <!-- </div> -->
+
+        <div class="mt-4">
+            <button
+                (click)="agregarPersonal()"
+                class="mt-2 p-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800"
+            >
+                Agregar personal
+            </button>
+        </div>
+    </div>
+
+    <div class="border-t border-gray-300 my-4"></div>
+
+    <div class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full">
+        <mat-form-field appearance="fill" class="w-full mt-2">
+            <mat-label>Cambiar estado </mat-label>
+            <mat-select [(ngModel)]="estatus" name="estatus">
+                <mat-option value="1">Activo</mat-option>
+                <mat-option value="0">Inactivo</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div class="mt-4">
+            <button
+                (click)="cambiarEstatus()"
+                class="mt-2 p-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800"
+            >
+                Cambiar estatus
+            </button>
+        </div>
+    </div>
+</div>

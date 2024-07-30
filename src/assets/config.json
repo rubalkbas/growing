@@ -1,0 +1,24 @@
+{
+  "app": {
+    "applicationName": "INTRAMX-APPEB-SSO_HERRAMIENTA_FOLIADOR",
+    "cookieName": "cookie_INTRAMX-APPEB-SSO_HERRAMIENTA_FOLIADOR",
+    "environment": "LOCAL",
+    "headerTokenName": "cookie-aplicativa",
+    "production": false,
+    "version": "1.0.0",
+
+    "urlArchivoNASS3Service": "http://localhost:8082/archivo",
+    "urlControlService": "http://localhost:8081/autenticacion",
+    "urlProtecService": "http://localhost:8080/protec",
+    "urlConsultasService": "http://localhost:8080/consultas",
+    "urlArchivosService": "http://localhost:8080/archivos",
+    "urlFoliadorService": "http://localhost:8080/folios",
+    "urlBitacorasService": "http://localhost:8084/bitacora",
+    "urlCatalogoService": "http://localhost:8083/catalogos",
+    "urlPerfilService": "http://localhost:8087/perfilamiento",
+    "urlMdpService": "http://localhost:8085/solicitudes",
+
+    "urlIntranetLogin": "https://mejico.isban.dev.corp/LOGMEX_ENS/BtoChannelDriver.bto?dse_operationName=loginMEX",
+    "portalRefreshCookie": "https://mejico.isban.dev.corp/SEMMEX_ENS/EarEstatico/SEMMEX_ENS/BtoChannelDriver.ssobto?dse_operationName=sesionManager&appID=INTRAMX-APPEB-SSO_HERRAMIENTA_FOLIADOR&ts="
+  }
+}

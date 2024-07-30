@@ -1,0 +1,78 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.quill-editor.invalid .ql-container {
+    border: 1px solid red;
+}
+
+.card {
+    height: 6rem; /* Ajusta la altura según sea necesario */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    padding: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+}
+
+.card p {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.card button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    color: red;
+}
+
+.dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow-y: auto;
+    height: 100%; /* Para asegurar que el scroll funcione correctamente */
+}
+
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* Espacio entre los inputs */
+  }
+  
+  .flex-item {
+    flex: 1 1 100%; /* Este tomará todo el ancho disponible */
+  }
+  
+  .flex-item-half {
+    flex: 0 0 48%; /* Toma aproximadamente la mitad del contenedor (ajustado para incluir el gap) */
+  }
+  
+  .flex-item-third {
+    flex: 0 0 32%; /* Toma aproximadamente un tercio del contenedor (ajustado para incluir el gap) */
+  }
+  
+  .flex-item-quarter {
+    flex: 0 0 23%; /* Toma aproximadamente un cuarto del contenedor (ajustado para incluir el gap) */
+  }
+  
+  .break {
+    flex-basis: 100%; /* Esto hace que el siguiente elemento comience en una nueva fila */
+    height: 0; /* Opcional, puede ajustarse para evitar añadir espacio extra */
+  }
+
+

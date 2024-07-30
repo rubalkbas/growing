@@ -1,0 +1,200 @@
+<div class="bg-white w-full overflow-y-auto" style="max-height: 600px">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl font-bold">Detalles Del Ticket</h2>
+        <button (click)="onClose()" class="text-red-500 hover:text-red-700 text-2xl">
+            &times;
+        </button>
+    </div>
+
+    <div class="grid grid-cols-3 gap-4">
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">ID del Ticket</h3>
+            <p>{{ formatTicketId(data.ticket.idTicket) }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Título</h3>
+            <p>{{ data.ticket.titulo }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Proyecto</h3>
+            <p>{{ data.ticket.idProyecto.nombre }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Categoría</h3>
+            <p>{{ data.ticket.categoria }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Tiempo de atención</h3>
+            <p>{{ data.ticket.idTiempoAtencion.diasTiempoAtencion }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Estatus del Ticket</h3>
+            <p>{{ data.ticket.idEstatusTicket.estatus }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Usuario Solicitante</h3>
+            <p>
+                {{ data.ticket.idUsuarioSolicitante.nombre }} -
+                {{ data.ticket.idUsuarioSolicitante.puesto }}
+            </p>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Área de atención</h3>
+            <p>
+                {{ data.ticket.idAreaAtencion.nombreAreaAtencion }}
+            </p>
+        </div>   
+
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Usuario Asignado</h3>
+            <p>
+                {{ data.ticket.idUsuarioAsignado.nombre }} -
+                {{ data.ticket.idUsuarioAsignado.puesto }}
+            </p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Fecha de Creación</h3>
+            <p>{{ data.ticket.fechaCreacion }}</p>
+        </div>
+    </div>
+
+    <div class="border-t border-gray-300 my-4"></div>
+
+    <div class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full">
+        <h3 class="text-lg font-semibold pb-2">Descripción</h3>
+        <div class="bg-white w-full rounded-md shadow-inner">
+            <quill-view [content]="data.ticket.descripcion" class="bg-transparent w-full border-none"></quill-view>
+        </div>
+    </div>
+
+    <div *ngIf="archivosNoFiltrados && archivosNoFiltrados.length > 0" class="border-t border-gray-300 my-4"></div>
+
+    <div class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full"
+        *ngIf="archivosNoFiltrados && archivosNoFiltrados.length > 0">
+        <h3 class="text-lg font-semibold pb-2">Archivos del solicitante</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div *ngFor="let archivo of archivosNoFiltrados"
+                class="bg-white p-4 rounded-lg shadow-md flex flex-col items-center">
+                <div class="w-full flex justify-center items-center">
+                    <img *ngIf="isImage(archivo.extencionArchivo)"
+                        [src]="getBlobUrl(archivo.blobArchivo, archivo.tipoArchivo)" alt="{{ archivo.nombreArchivo }}"
+                        class="h-32 w-auto" />
+                    <img *ngIf="!isImage(archivo.extencionArchivo)" src="assets/icons/file.png" alt="File Icon"
+                        class="h-32 w-auto" />
+                </div>
+                <div class="mt-2 text-center">
+                    <a [href]="getBlobUrl(archivo.blobArchivo, archivo.tipoArchivo)"
+                        download="{{ archivo.nombreArchivo }}" class="text-blue-600 hover:text-blue-800">
+                        {{ archivo.nombreArchivo }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="archivosFiltrados && archivosFiltrados.length > 0" class="border-t border-gray-300 my-4"></div>
+
+    <div class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full"
+        *ngIf="archivosFiltrados && archivosFiltrados.length > 0">
+        <h3 class="text-lg font-semibold pb-2">Archivos del resolutor</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div *ngFor="let archivo of archivosFiltrados"
+                class="bg-white p-4 rounded-lg shadow-md flex flex-col items-center">
+                <div class="w-full flex justify-center items-center">
+                    <img *ngIf="isImage(archivo.extencionArchivo)"
+                        [src]="getBlobUrl(archivo.blobArchivo, archivo.tipoArchivo)" alt="{{ archivo.nombreArchivo }}"
+                        class="h-32 w-auto" />
+                    <img *ngIf="!isImage(archivo.extencionArchivo)" src="assets/icons/file.png" alt="File Icon"
+                        class="h-32 w-auto" />
+                </div>
+                <div class="mt-2 text-center">
+                    <a [href]="getBlobUrl(archivo.blobArchivo, archivo.tipoArchivo)"
+                        download="{{ archivo.nombreArchivo }}" class="text-blue-600 hover:text-blue-800">
+                        {{ archivo.nombreArchivo }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="data.ticket.idUsuarioAsignado.idUsuario === data.id" class="border-t border-gray-300 my-4"></div>
+
+    <div *ngIf="data.ticket.idUsuarioAsignado.idUsuario === data.id" class="my-4 bg-slate-50 p-6 rounded-lg shadow-md">
+        <h3 class="text-lg font-semibold">Cambiar Estatus</h3>
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-select (selectionChange)="cambiarEstatus($event)" [value]="selectedEstatus">
+                <mat-option *ngFor="let estatus of estatusDisponibles" [value]="estatus.value">
+                    {{ estatus.viewValue }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="border-t border-gray-300 my-4"></div>
+
+    <div class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full">
+        <h3 class="text-lg font-semibold pb-2">Comentarios</h3>
+        <div *ngIf="comments && comments.length > 0">
+            <div *ngFor="let comentario of comments" class="bg-white p-4 rounded-lg shadow-md mb-4">
+                <p class="text-sm text-gray-500">
+                    {{ comentario.idUsuario.nombre }} -
+                    {{ comentario.fechaCreacion | date : "dd/MM/yyyy" }}
+                </p>
+                <p>{{ comentario.descripcion }}</p>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <textarea [(ngModel)]="nuevoComentario.descripcion"
+                class="w-full p-2 border rounded-md shadow-inner bg-white" rows="3"
+                placeholder="Agregar un comentario..."></textarea>
+            <button (click)="agregarComentario()"
+                class="mt-2 p-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800">
+                Agregar Comentario
+            </button>
+        </div>
+
+
+    </div>
+
+    <div class="border-t border-gray-300 my-4"></div>
+
+    <div class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full">
+        <div class="mt-4">
+            <div class="flex w-full flex-col">
+                <label class="block mb-2 font-semibold text-gray-700" style="font-size: 14px;">Adjuntar archivos o evidencias</label>
+                <label
+                    for="file-upload"
+                    class="flex flex-col items-start w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 overflow-y-auto"
+                    (dragover)="onDragOver($event)"
+                    (dragleave)="onDragLeave($event)"
+                    (drop)="onDrop($event)"
+                >
+                    <div *ngIf="archivos.length === 0" class="flex flex-col items-center justify-center w-full h-full">
+                        <svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                        </svg>
+                        <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Clic para adjuntar archivos</span> o arrastralos y sueltalos aquí</p>
+                    </div>
+                    <div *ngIf="archivos.length > 0" class="mt-4 w-full flex flex-wrap justify-start">
+                        <div *ngFor="let archivo of archivos; let i = index" class="p-2 w-1/3 relative">
+                            <div class="h-24 flex items-center justify-center border border-gray-300 rounded-lg bg-white relative">
+                                <p class="text-sm text-gray-700 truncate">{{ archivo.name }}</p>
+                                <button type="button" class="absolute top-1 right-1 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded-full" (click)="eliminarArchivo(i, $event)">
+                                    &times;
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <input id="file-upload" type="file" class="hidden" (change)="onFileChange($event)" multiple/>
+                </label>
+            </div>
+            <button (click)="uploadFiles(data.ticket.idTicket)"
+                class="mt-2 p-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-800">
+                Agregar Archivo
+            </button>
+        </div>
+    </div>
+
+</div>

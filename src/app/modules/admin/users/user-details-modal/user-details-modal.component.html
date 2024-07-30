@@ -1,0 +1,61 @@
+<div class="bg-white w-full overflow-y-auto" style="max-height: 600px">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl font-bold">Detalles del Usuario</h2>
+        <button
+            (click)="onClose()"
+            class="text-red-500 hover:text-red-700 text-2xl"
+        >
+            &times;
+        </button>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+        <!-- Existing Ticket Details -->
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">ID del usuario</h3>
+            <p>{{ formatUserId(data.usuario.idUsuario) }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Nombre</h3>
+            <p>{{ data.usuario.nombre }}</p>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Correo</h3>
+            <p>{{ data.usuario.correo }}</p>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Estatus</h3>
+            <p>{{ data.usuario.estatus == 1 ? "Activo" : "Inactivo" }}</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Fecha de creación</h3>
+            <p>{{ data.usuario.fecha | date : "dd/MM/yyyy" }}</p>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Puesto</h3>
+            <p>{{ data.usuario.puesto }}</p>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">Rol</h3>
+            <p>{{ data.usuario.idRol.nombreRol }}</p>
+        </div>
+
+    </div>
+
+    <div class="border-t border-gray-300 my-4"></div>
+
+    <div class="bg-slate-50 p-6 rounded-lg shadow-md mt-4 w-full">
+        
+        <mat-form-field appearance="fill" class="w-full mt-2">
+            <mat-label>Cambiar estado </mat-label>
+            <mat-select (selectionChange)="cambiarEstatus()" [(ngModel)]="estatus" name="estatus">
+                <mat-option value="1">Activo</mat-option>
+                <mat-option value="0">Inactivo</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>

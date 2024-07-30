@@ -1,0 +1,16 @@
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; /* Agrega margen entre la tabla y el contenedor del card */
+    border: 1px solid #dddddd; /* Bordes de la tabla */
+}
+
+.styled-table th, .styled-table td {
+    border: 1px solid #dddddd; /* Bordes de las celdas */
+    padding: 8px;
+    text-align: left;
+}
+
+.styled-table th {
+    background-color: #f2f2f2; /* Color de fondo de los encabezados */
+}

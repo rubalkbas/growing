@@ -1,0 +1,78 @@
+<p class="text-2xl font-bold pb-4">Crear una tarea</p>
+<form [formGroup]="tareaForm" (ngSubmit)="onSubmit()">
+    <div mat-dialog-content class="space-y-4">
+
+        <div class="flex-container">
+
+            <div class="flex-item-half">
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Titulo de la tarea</mat-label>
+                    <input matInput formControlName="titulo" required />
+                    <mat-error *ngIf="tareaForm.get('titulo')?.invalid && tareaForm.get('titulo')?.touched">
+                        El titulo es requerido.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="flex-item-half ">
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Prioridad de la tarea</mat-label>
+                    <mat-select formControlName="idPrioridad" required>
+                        <mat-option *ngFor="let prioridad of prioridades" [value]="prioridad.value">
+                            {{ prioridad.viewValue}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="tareaForm.get('idPrioridad')?.invalid && tareaForm.get('idPrioridad')?.touched">
+                        La prioridad es requerida.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="flex-item">
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Descripción</mat-label>
+                    <textarea matInput cdkTextareaAutosize formControlName="descripcion" required></textarea>
+                    <mat-error *ngIf="tareaForm.get('descripcion')?.invalid && tareaForm.get('descripcion')?.touched">
+                        La descripción es requerida.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-item-half">
+                <mat-form-field class="w-full">
+                    <mat-label>Fecha de estimada</mat-label>
+                    <input matInput [matDatepicker]="picker" [formControlName]="'fechaEstimada'"
+                        [placeholder]="'Selecciona una fecha'">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error
+                        *ngIf="tareaForm.get('fechaEstimada')?.invalid && tareaForm.get('fechaEstimada')?.touched">
+                        La fecha de estimada es requerida.
+                    </mat-error>
+                </mat-form-field>
+
+            </div>
+            <div class="flex-item-half">
+                <mat-form-field class="w-full">
+                    <mat-label>Fecha de inicio</mat-label>
+                    <input matInput [matDatepicker]="picker2" [formControlName]="'fechaInicio'"
+                        [placeholder]="'Selecciona una fecha'">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                    <mat-error *ngIf="tareaForm.get('fechaInicio')?.invalid && tareaForm.get('fechaInicio')?.touched">
+                        La fecha de inicio es requerida.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            
+
+
+        </div>
+
+    </div>
+
+    <div mat-dialog-actions class="flex justify-between mt-4">
+        <button type="button" (click)="onClose()"
+            class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Cancelar</button>
+        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Crear</button>
+    </div>
+
+</form>
