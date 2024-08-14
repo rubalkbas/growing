@@ -1,0 +1,91 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { RequestModel } from 'app/modules/models/request';
+import { environment } from 'environments/environment.desa';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+
+@Injectable({providedIn: 'root'})
+export class ClienteService
+{
+    private _data: BehaviorSubject<any> = new BehaviorSubject(null);
+    baseUrl = environment.basePathUrl;
+    /**
+     * Constructor
+     */
+    constructor(private _httpClient: HttpClient)
+    {
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Accessors
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Getter for data
+     */
+    get data$(): Observable<any>
+    {
+        return this._data.asObservable();
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Get data
+     */
+    getData(): Observable<any>
+    {
+        return this._httpClient.get('/app/mock-api/dashboards/finance').pipe(
+            tap((response: any) =>
+            {
+                this._data.next(response);
+            }),
+        );
+    }
+
+    getUsuarios(): Observable<any> {
+        return this._httpClient.get<any>(`${this.baseUrl}/usuarios/consultaUsuariosClientes`);
+    }
+
+    getDinero(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/dinero/consultaIngreso`,request);
+    }
+    postDinero(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/dinero/cargarIngreso`,request);
+    }
+    getCredito(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/dinero/consultaCredito`,request);
+    }
+    postCredito(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/dinero/cargarCredito`,request);
+    }
+
+    getRetirosSolicitados(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/dinero/consultaRetiroSolicitado`,request);
+    }
+    
+    getRetirosEfectuados(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/dinero/consultaRetiroEfectuado`,request);
+    }
+
+    aprobarRetiro(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/dinero/apruebaRetiro`,request);
+    }
+
+
+    consultaCliente(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/usuarios/consultaUsuarioClienteID`,request);
+    }
+
+    consultaAbiertas(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/apuestaCliente/consultaApuestasAbiertasClienteID`,request);
+    }
+
+    consultaCerradas(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/apuestaCliente/consultaApuestasCerradasClienteID`,request);
+    }
+
+    
+}

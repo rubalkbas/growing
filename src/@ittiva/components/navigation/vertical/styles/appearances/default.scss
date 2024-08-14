@@ -133,8 +133,8 @@ ittiva-vertical-navigation {
         overflow: hidden;
         z-index: 10;
         background: #ffffff;
-        color: #25325F;
-        box-shadow: inset -1px 0 0  (#25325F);
+        color: #0c0b55;
+        box-shadow: inset -1px 0 0  (#059e12);
 
         /* Header */
         .ittiva-vertical-navigation-header {
@@ -232,6 +232,7 @@ ittiva-vertical-navigation {
                 line-height: 20px;
                 text-decoration: none;
                 border-radius: 6px;
+  
 
                 /* Disabled state */
                 &.ittiva-vertical-navigation-item-disabled {
@@ -534,9 +535,9 @@ ittiva-vertical-navigation-collapsable-item {
 
                 &:hover {
                     @apply bg-gray-800 bg-opacity-5 dark:bg-white dark:bg-opacity-12;
-
+                    color: #059e12;
                     .ittiva-vertical-navigation-item-icon {
-                        @apply opacity-100;
+                        @apply opacity-60;
                     }
 
                     .ittiva-vertical-navigation-item-title,

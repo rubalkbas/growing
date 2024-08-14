@@ -4,7 +4,7 @@ import { ittivaNavigationItem } from '@ittiva/components/navigation';
 export const defaultNavigation: ittivaNavigationItem[] = [
  
     {
-        id: 'dsra ',
+        id: 'usuarios',
         title: 'Tickets asignados',
         type: 'collapsable',
         icon: 'heroicons_solid:academic-cap',
@@ -14,73 +14,47 @@ export const defaultNavigation: ittivaNavigationItem[] = [
                 title: 'Criptomonedas',
                 type: 'basic',
                 icon: 'heroicons_outline:clipboard-document-check',
-                link: '/ticketsAsignados',
+                link: '/growing/criptomonedas',
             },
             {
                 id: 'dashboards.materias',
                 title: 'Materias Primas',
                 type: 'basic',
                 icon: 'heroicons_outline:clipboard-document-check',
-                link: '/ticketsAsignados',
+                link: '/growing/materiasPrimas',
             } ,
             {
                 id: 'dashboards.divisas',
                 title: 'Divisas',
                 type: 'basic',
                 icon: 'heroicons_outline:clipboard-document-check',
-                link: '/ticketsAsignados',
+                link: '/growing/divisas',
             } ,
             {
                 id: 'dashboards.acciones',
                 title: 'Acciones',
                 type: 'basic',
                 icon: 'heroicons_outline:clipboard-document-check',
-                link: '/ticketsAsignados',
+                link: '/growing/acciones',
             } ,
             {
                 id: 'dashboards.fondo',
                 title: 'Fondo',
                 type: 'basic',
                 icon: 'heroicons_outline:clipboard-document-check',
-                link: '/ticketsAsignados',
-            } 
+                link: '/growing/fondos',
+            } ,
+      
         ],
-    },
+    } ,
     {
-        id: 'roles',
-        title: 'Roles1',
+        id: 'dashboards.fondo',
+        title: 'Clientes',
         type: 'basic',
-        icon: 'heroicons_solid:user-circle',
-        link: '/roles',
-    },
-    {
-        id: 'usuarios',
-        title: 'Usuarios1',
-        type: 'basic',
-        icon: 'heroicons_solid:user-circle',
-        link: '/usuarios',
-    },
-    {
-        id: 'usuarios',
-        title: 'Área de atención1',
-        type: 'basic',
-        icon: 'heroicons_solid:user-circle',
-        link: '/area-atencion',
-    },
-    // {
-    //     id: 'modal',
-    //     title: 'Modal',
-    //     type: 'basic',
-    //     icon: 'heroicons_solid:user-circle',
-    //     link: '/modal',
-    // },
-    {
-        id: 'proyectos',
-        title: 'Proyectos1',
-        type: 'collapsable',
-        icon: 'heroicons_solid:clipboard-document-list',
-        link: '/proyectos',
-    },
+        icon: 'heroicons_outline:clipboard-document-check',
+        link: '/growing/clientes',
+    } 
+   
 ];
 /* export const compactNavigation: ittivaNavigationItem[] = [
     {

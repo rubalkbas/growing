@@ -6,7 +6,7 @@ export default [
     {
         path     : '',
         data     : {
-            permission: 'Mis tickets'
+            permission: 'usuarios'
         },
         component: MisTicketsComponent,
     },

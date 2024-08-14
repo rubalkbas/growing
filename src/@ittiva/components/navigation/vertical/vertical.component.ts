@@ -351,56 +351,7 @@ export class ittivaVerticalNavigationComponent
      * On init
      */
     ngOnInit(): void {
-        this._userService.user$
-            .pipe(takeUntil(this._unsubscribeAllUsuario))
-            .subscribe((user: any) => {
-                const permisos = user.permisos.map(
-                    (permiso) => permiso.idPermiso.nombre
-                );
-                this.navigation = this.navigation.filter((navItem) =>
-                    permisos.includes(navItem.title)
-                );
-            });
-
-        this.proyectosService.getProyects().subscribe({
-            next: (response) => {
-
-                if (response.estatus === 'OK') {
-                    // Revisamos si en navigation esta Proyectos
-
-                    const proyects = this.navigation.find(
-                        (navItem) => navItem.title === 'Proyectos'
-                    );
-
-                    if (proyects) {
-                        proyects.children = response.lista.map((proyecto) => {
-                            return {
-                                id: proyecto.idProyecto,
-                                title: proyecto.nombre,
-                                type: 'basic',
-                                icon: 'heroicons_solid:clipboard-document-list',
-                                link: `/scrumboard/${proyecto.idProyecto}`,
-                            };
-                        });
-
-                        // Agregamos a children la opcion de ver todos los proyectos
-
-                        proyects.children.unshift({
-                            id: 'proyectos',
-                            title: 'Todos los proyectos',
-                            type: 'basic',
-                            icon: 'heroicons_solid:clipboard-document-list',
-                            link: '/proyectos',
-                        });
-                    }
-
-                    this.onRefreshed.next(true);
-                }
-            },
-            error: (error: Error) => {
-                console.error(error);
-            },
-        });
+    
 
         // Make sure the name input is not an empty string
         if (this.name === '') {

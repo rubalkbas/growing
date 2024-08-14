@@ -27,7 +27,7 @@ import {
 import { TicketsService } from 'app/modules/services/ticket.service';
 import { ModalVerMiTicket } from './ver-mi-ticket-modal/ver-mi-ticket.modal.component';
 import { UserService } from 'app/core/user/user.service';
-import { ExampleService } from '../tickets/tickets.service';
+import { ExampleService } from '../divisas/tickets.service';
 import { AreaAtencionService } from 'app/modules/services/area-atencion.service';
 
 export class CustomPaginatorIntl extends MatPaginatorIntl {

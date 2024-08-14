@@ -1,0 +1,80 @@
+<h1 mat-dialog-title>Retiros</h1>
+<div mat-dialog-content>
+  <form [formGroup]="formCliente"  >
+
+    <div class="form-group">
+      <label for="nocliente">NOCLIENTE: <b>{{ data.usuario }}</b></label>
+    </div>
+
+
+    <div class="overflow-auto ">
+      <h2 mat-dialog-title>Retiros Solicitados</h2>
+      <table mat-table [dataSource]="datasource" class="w-full">
+        <ng-container matColumnDef="monto">
+          <th mat-header-cell *matHeaderCellDef>Monto USD</th>
+          <td mat-cell *matCellDef="let element">{{element.dinero | currency:'USD'}}</td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="tipo">
+          <th mat-header-cell *matHeaderCellDef>Tipo</th>
+          <td mat-cell *matCellDef="let element">{{element.tipo  }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha de Ingreso</th>
+          <td mat-cell *matCellDef="let element">{{element.fechaCreacion | date:'short' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="accion">
+          <th mat-header-cell *matHeaderCellDef>Efectuar Retiro</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="example-button-container  ">
+              <button mat-fab extended class="custom-fab-button" (click)="rerito(element)">
+                <mat-icon>attach_money</mat-icon>
+                Aprobar
+            </button>
+ 
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+
+    <hr>
+ 
+    <div class="overflow-auto ">
+      <h2 mat-dialog-title>Retiros Efectuados</h2>
+      <table mat-table [dataSource]="datasource2" class="w-full">
+        <ng-container matColumnDef="monto">
+          <th mat-header-cell *matHeaderCellDef>Monto USD</th>
+          <td mat-cell *matCellDef="let element">{{element.dinero | currency:'USD'}}</td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="tipo">
+          <th mat-header-cell *matHeaderCellDef>Tipo</th>
+          <td mat-cell *matCellDef="let element">{{element.tipo }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha de Ingreso</th>
+          <td mat-cell *matCellDef="let element">{{element.fechaCreacion | date:'short' }}</td>
+        </ng-container>
+ 
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+      </table>
+    </div>
+
+    <hr>
+
+
+  </form>
+
+</div>

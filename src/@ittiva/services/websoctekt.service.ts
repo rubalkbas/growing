@@ -1,42 +1,27 @@
+// src/app/services/websocket-rxjs.service.ts
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class WebsocketService {
-  private socket: WebSocket;
-  private subject: Subject<MessageEvent>;
+export class WebSocketRxjsService {
+  private socket$: WebSocketSubject<any>;
 
-  constructor() {
-    this.subject = new Subject<MessageEvent>();
+  connect(url: string): void {
+    this.socket$ = webSocket(url);
   }
 
-  public connect(url: string): Observable<MessageEvent> {
-    this.socket = new WebSocket(url);
-
-    this.socket.onmessage = (event: MessageEvent) => {
-        
-      this.subject.next(event);
-    };
-
-    this.socket.onerror = (event: Event) => {
-      console.error('WebSocket error observed:', event);
-    };
-
-    return this.subject.asObservable();
+  sendMessage(message: any): void {
+    this.socket$.next(message);
   }
 
-  public send(message: any): void {
-    if (this.socket.readyState === WebSocket.OPEN) {
-        console.log('WebSocket :', JSON.stringify(message));
-      this.socket.send(JSON.stringify(message));
-    }
+  onMessage(): Observable<any> {
+    return this.socket$.asObservable();
   }
 
-  public close(): void {
-    if (this.socket) {
-      this.socket.close();
-    }
+  close(): void {
+    this.socket$.complete();
   }
 }

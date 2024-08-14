@@ -1,0 +1,62 @@
+<h1 mat-dialog-title>Credito</h1>
+<div mat-dialog-content>
+  <form [formGroup]="formCliente" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="nocliente">NOCLIENTE: <b>{{ data.usuario }}</b></label>
+    </div>
+ 
+
+    <div class="overflow-auto ">
+      <table mat-table [dataSource]="datasource" class="w-full">
+        <ng-container matColumnDef="monto">
+          <th mat-header-cell *matHeaderCellDef>Monto USD</th>
+          <td mat-cell *matCellDef="let element">{{element.dinero | currency:'USD'}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha de Ingreso</th>
+          <td mat-cell *matCellDef="let element">{{element.fechaCreacion | date:'short' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <div class="form-group">
+      <span class="badge border-secondary border-1 text-secondary">Monto Total Creditos: </span>
+      <span>{{ total }} USD</span>
+    </div>
+
+
+    <hr>
+
+    <div class="form-group">
+      <h2 mat-dialog-title>Ingresa Credito</h2>
+     
+      <!-- Email field -->
+      <mat-form-field class="w-full">
+        <mat-label>Monto</mat-label>
+        <input id="correo" matInput [(ngModel)]="this.monto" [ngModelOptions]="{standalone: true}">
+
+      </mat-form-field>
+
+      <div class="example-button-container  ">
+        <button mat-fab extended  (Click)="onSubmit">
+            <mat-icon>monetization_on</mat-icon>
+            Cargar Credito
+        </button>
+    </div>
+
+ 
+    </div>
+
+
+ 
+    <hr>
+
+
+  </form>
+
+</div>

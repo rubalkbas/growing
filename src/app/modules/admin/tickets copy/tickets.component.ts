@@ -8,15 +8,15 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ExampleService } from 'app/modules/admin/tickets/tickets.service';
+import { ExampleService } from 'app/modules/admin/divisas/tickets.service';
 import { ModalNewTicket } from 'app/modules/modal-nvo-ticket/nvo-ticket-modal/nvo-ticket.modal.component';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
-import { Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription, takeUntil } from 'rxjs';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
  
 import { MatCardModule } from '@angular/material/card';
 import { ITradingViewWidget, TradingviewWidgetModule } from 'angular-tradingview-widget';
-import { WebsocketService } from '@ittiva/services/websoctekt.service';
+import { WebSocketRxjsService } from '@ittiva/services/websoctekt.service';
 
 export class CustomPaginatorIntl extends MatPaginatorIntl {
   itemsPerPageLabel = 'Elementos por página';
@@ -37,13 +37,16 @@ export class CustomPaginatorIntl extends MatPaginatorIntl {
 }
 
 
+interface CurrencyData {
+  value: number;
+  change: string;  // Positivo, negativo o sin cambio
+}
 
 @Component({
   selector: 'tickets',
   templateUrl: './tickets.component.html',
   styleUrls: ['./tickets.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomPaginatorIntl }
@@ -73,8 +76,8 @@ export class ExampleComponent implements OnInit {
     locale: "es"
 
   }
-  public messages: string[] = [];
-  
+  public messages: any;
+  private subscription: Subscription;
 
   balance = 1300;
   margenLibre = 300;
@@ -83,7 +86,7 @@ export class ExampleComponent implements OnInit {
   /**
    * Constructor
    */
-  constructor(private websocketService: WebsocketService
+  constructor(private websocketService: WebSocketRxjsService
   ) {
   }
 
@@ -94,19 +97,53 @@ export class ExampleComponent implements OnInit {
   /**
    * On init
    */
+  private currencies: { [key: string]: CurrencyData } = {};
+  private currenciesSubject = new BehaviorSubject<{ [key: string]: CurrencyData }>({});
+
+  
   ngOnInit(): void {
-
+    this.messages = [];
     let miArreglo = ["btc", "eth","ltc","alpha","ada","bnb","doge","avax","shib","bch","dot","trx","link","matic","icp","near","uni","dai","apt","stx","fil","atom","arb","wif","mkr","inj","grt","op","jup","flow","pepe"];
-  this.websocketService.connect('wss://ws.eodhistoricaldata.com/ws/forex?api_token=667d8404377b62.46044727').subscribe(message => {
-      this.messages.push(message.data);
-      console.log(message.data)
-    });
+ 
+    this.websocketService.connect('wss://ws.eodhistoricaldata.com/ws/forex?api_token=667d8404377b62.46044727');
+    this.subscription = this.websocketService.onMessage().subscribe(
+      message => this.handleMessage(message)
+      
+    );
+    this.sendMessage();
+  }
 
+   handleMessage(message: any): void {
+    // Suponiendo que el mensaje contiene el valor de la moneda en `a` y el tipo de moneda en `s`
+    const currencyCode = message.s;  // e.g., "EURJPY"
+    const newValue = parseFloat(message.a);  // e.g., 165.8723
+
+    this.updateCurrencyData(currencyCode, newValue,message);
+  }
+
+  sendMessage( ): void {
+    this.websocketService.sendMessage( {"action": "subscribe", "symbols": "EURUSD,EURJPY,EURMXN,GBPUSD,EURCAD,EURAUD,CHFAUD,CHFCAD,CHFGBP,EURSGD,GBPPLN,GBPNZD,CHFNOK,CHFMXN,ZAREUR,EURCHF,GBPJPY,GBPCHF,AUDUSD,NZDUSD,USDCAD,XAUUSD,EUREUR,EURNZD,EURPLN,GBPEUR,GBPAUD,GBPNOK,GBPNOK,GBPMXN,CHFGBP,USDMXN"} );
+  }
+
+  updateCurrencyData(currencyCode: string, newValue: number, lodemas :any): void {
+    const previousValue = this.currencies[currencyCode]?.value || newValue;
+    let change = 'sin cambios';
+
+    if (newValue > previousValue) {
+      change = 'up';
+    } else if (newValue < previousValue) {
+      change = 'down';
+    }
+
+    this.currencies[currencyCode] = {
+      value: newValue,
+      change: change
+    };
+
+    // Emitir la actualización a los suscriptores
+    this.currenciesSubject.next(this.currencies);
   }
 
 
-  sendMessage(message: string): void {
-    this.websocketService.send({ content: message });
-  }
 }
 

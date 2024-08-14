@@ -84,8 +84,10 @@ export class AuthSignInComponent implements OnInit
     this._authService.signIn(this.signInForm.value).subscribe({
         next: (respuesta: any) => {
             // Check if verificacion is false
+            localStorage.setItem('user', JSON.stringify(respuesta.dto.usuario));
+            localStorage.setItem('idUserWrog',  respuesta.dto.usuario.id);
             if (respuesta.dto.usuario.verificacion === false) {
-
+                
                 this._router.navigate(['/first-pass']);
 
             } else {

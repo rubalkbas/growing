@@ -72,14 +72,14 @@ export const appRoutes: Route[] = [
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard, PermissionGuard, FirstPassGuard],
         data: {
-            permission: 'Tickets asignados'
+            permission: 'usuarios'
         },
         component: LayoutComponent,
         resolve: {
             initialData: initialDataResolver
         },
         children: [
-            {path: 'ticketsAsignados', loadChildren: () => import('app/modules/admin/tickets/tickets.routes')},
+            {path: 'growing', loadChildren: () => import('app/modules/admin/tickets.routes')},
             // {path: 'nvo-ticket', loadChildren: () => import('app/modules/modal-nvo-ticket/modal-nvo-ticket.routes')},
 
         ]
@@ -90,7 +90,7 @@ export const appRoutes: Route[] = [
         canActivateChild: [AuthGuard, PermissionGuard, FirstPassGuard],
         component: LayoutComponent,
         data: {
-            permission: 'Proyectos'
+            permission: 'usuarios'
         },
         resolve: {
             initialData: initialDataResolver
@@ -107,7 +107,7 @@ export const appRoutes: Route[] = [
         canActivateChild: [AuthGuard, PermissionGuard, FirstPassGuard],
         component: LayoutComponent,
         data: {
-            permission: 'Roles'
+            permission: 'usuarios'
         },
         resolve: {
             initialData: initialDataResolver
@@ -124,7 +124,7 @@ export const appRoutes: Route[] = [
         canActivateChild: [AuthGuard, PermissionGuard, FirstPassGuard],
         component: LayoutComponent,
         data: {
-            permission: 'Mis Tickets'
+            permission: 'usuarios'
         },
         resolve: {
             initialData: initialDataResolver
@@ -141,7 +141,7 @@ export const appRoutes: Route[] = [
         canActivateChild: [AuthGuard, PermissionGuard, FirstPassGuard],
         component: LayoutComponent,
         data: {
-            permission: 'Usuarios'
+            permission: 'usuarios'
         },
         resolve: {
             initialData: initialDataResolver
