@@ -36,17 +36,17 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { ClienteService } from '../clientes.service';
 import Swal from 'sweetalert2';
+import { ClienteService } from '../../clientes/clientes.service';
 interface ViewValue {
   value: number;
   viewValue: string;
 }
 
 @Component({
-  selector: 'app-cerradas-modal',
-  templateUrl: './cerradas.component.html',
-  styleUrls: ['./cerradas.component.scss'],
+  selector: 'app-operaciones-abiertas',
+  templateUrl: './operaciones-abiertas.component.html',
+  styleUrls: ['./operaciones-abiertas.component.scss'],
   standalone: true,
   imports: [
     CommonModule,
@@ -66,8 +66,8 @@ interface ViewValue {
   ],
 })
 
-export class  CerradasModalComponent implements OnInit {
-  displayedColumns: string[] = ['tipoCompra', 'compra','valorUnidad', 'unidades','montoApuesta', 'variacion','gananciaPerdida', 'bloqueCompra','estatusCompra', 'fechaCreacion' ];
+export class OperacionesAbiertasComponent implements OnInit {
+  displayedColumns: string[] = ['tipoCompra', 'compra','valorUnidad', 'unidades','montoApuesta', 'variacion','gananciaPerdida', 'bloqueCompra','estatusCompra', 'fechaCreacion','accion' ];
   rolForm: FormGroup;
   permisos = [];
   newRol: any;
@@ -85,11 +85,9 @@ export class  CerradasModalComponent implements OnInit {
   idUser: string;
   monto: any = 0;
   constructor(
-    public dialogRef: MatDialogRef<CerradasModalComponent>,
     private fb: FormBuilder,
     private alertService: AlertService,
     private clienteService: ClienteService,
-    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
     this.formCliente = this.fb.group({
@@ -106,7 +104,7 @@ export class  CerradasModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data)
+    // console.log(this.data)
     this.rolForm = this.fb.group({
       nombre: ['', Validators.required],
       estatus: ['', Validators.required],
@@ -127,7 +125,7 @@ export class  CerradasModalComponent implements OnInit {
       "fechaCreacion": "2024-08-14T19:18:54.451Z",
       "gananciaPerdida": 0,
       "idApuestaCliente": 0,
-      "idUsuario": this.data.data.data,
+      "idUsuario": this.idUser,
       "montoApuesta": 0,
       "tipoCompra": "string",
       "unidades": 0,
@@ -135,7 +133,7 @@ export class  CerradasModalComponent implements OnInit {
       "variacion": 0
     } 
 
-    this.clienteService.consultaCerradas(request).subscribe({
+    this.clienteService.consultaAbiertas(request).subscribe({
       next: (respuesta: any) => {
         this.datasource.data = [];
         console.log('Respuesta completa: ', respuesta);
@@ -161,11 +159,6 @@ export class  CerradasModalComponent implements OnInit {
     return this.rolForm.get('descripcion');
   }
 
-  onClose(): void {
-    this.dialogRef.close(this.newRol);
-  }
-
-
 
   onSubmit(): void {
 
@@ -175,7 +168,7 @@ export class  CerradasModalComponent implements OnInit {
       "estatusRetiro": 0,
       "fechaCreacion": "2024-08-12T05:15:57.772Z",
       "idDinero": 0,
-      "idUsuario": this.data.data.data,
+      "idUsuario": this.idUser,
       "tipo": "string"
     }
 
