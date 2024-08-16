@@ -18,6 +18,8 @@ import { QuickChatComponent } from 'app/layout/common/quick-chat/quick-chat.comp
 import { SearchComponent } from 'app/layout/common/search/search.component';
 import { ShortcutsComponent } from 'app/layout/common/shortcuts/shortcuts.component';
 import { UserComponent } from 'app/layout/common/user/user.component';
+import { MenuMargenComponent } from 'app/modules/admin/menu-margen/menu-margen.component';
+import { TradingViewWidgetComponent } from 'app/modules/admin/tradingViewWidget/trading-view-widget.component';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -25,7 +27,7 @@ import { Subject, takeUntil } from 'rxjs';
     templateUrl  : './classy.component.html',
     encapsulation: ViewEncapsulation.None,
     standalone   : true,
-    imports      : [ittivaLoadingBarComponent, ittivaVerticalNavigationComponent, NotificationsComponent, UserComponent, NgIf, MatIconModule, MatButtonModule, LanguagesComponent, ittivaFullscreenComponent, SearchComponent, ShortcutsComponent, MessagesComponent, RouterOutlet, QuickChatComponent],
+    imports      : [TradingViewWidgetComponent,ittivaLoadingBarComponent, MenuMargenComponent, ittivaVerticalNavigationComponent, NotificationsComponent, UserComponent, NgIf, MatIconModule, MatButtonModule, LanguagesComponent, ittivaFullscreenComponent, SearchComponent, ShortcutsComponent, MessagesComponent, RouterOutlet, QuickChatComponent],
 })
 export class ClassyLayoutComponent implements OnInit, OnDestroy
 {

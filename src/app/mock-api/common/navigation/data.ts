@@ -5,7 +5,7 @@ export const defaultNavigation: ittivaNavigationItem[] = [
  
     {
         id: 'usuarios',
-        title: 'Tickets asignados',
+        title: 'Simbolos',
         type: 'collapsable',
         icon: 'heroicons_solid:academic-cap',
         children: [
@@ -46,6 +46,29 @@ export const defaultNavigation: ittivaNavigationItem[] = [
             } ,
       
         ],
+    },
+   
+    {
+        id: 'dashboards.fondo',
+        title: 'Mis Operaciones',
+        type: 'collapsable',
+        icon: 'heroicons_outline:clipboard-document-check',
+        children: [
+            {
+                id: 'dashboards.project',
+                title: 'Abiertas',
+                type: 'basic',
+                icon: 'heroicons_outline:clipboard-document-check',
+                link: '/growing/abiertas',
+            },
+            {
+                id: 'dashboards.materias',
+                title: 'Cerradas',
+                type: 'basic',
+                icon: 'heroicons_outline:clipboard-document-check',
+                link: '/growing/cerradas',
+            } 
+        ]
     } ,
     {
         id: 'dashboards.fondo',
@@ -53,6 +76,22 @@ export const defaultNavigation: ittivaNavigationItem[] = [
         type: 'basic',
         icon: 'heroicons_outline:clipboard-document-check',
         link: '/growing/clientes',
+    },
+   
+    {
+        id: 'dashboards.fondo',
+        title: 'Calendario Economico',
+        type: 'basic',
+        icon: 'heroicons_outline:clipboard-document-check',
+        link: '/growing/calendario',
+    }  ,
+   
+    {
+        id: 'dashboards.fondo',
+        title: 'Mis Cuenta',
+        type: 'basic',
+        icon: 'heroicons_outline:clipboard-document-check',
+        link: '/growing/miCuenta',
     } 
    
 ];

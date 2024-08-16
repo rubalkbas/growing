@@ -130,7 +130,7 @@ cargaDatos():void{
       let request =
       {
  
-        "idUsuario": this.idUser,
+        "idUsuario": this.data.data,
         "nombre": "string",
         "pass": "string",
         "rol": "string",

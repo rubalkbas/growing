@@ -7,8 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ExampleService } from 'app/modules/admin/divisas/tickets.service';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table'; 
 import { ModalNewTicket } from 'app/modules/modal-nvo-ticket/nvo-ticket-modal/nvo-ticket.modal.component';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
 import { BehaviorSubject, Subject, Subscription, takeUntil } from 'rxjs';
@@ -18,6 +17,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ITradingViewWidget, TradingviewWidgetModule } from 'angular-tradingview-widget';
 import { WebSocketRxjsService } from '@ittiva/services/websoctekt.service';
 import { ComprarModalComponent } from './comprar-modal/comprar.component';
+import { TradingViewWidgetService } from '../tradingViewWidget/trading-view-widget.service';
 
 export class CustomPaginatorIntl extends MatPaginatorIntl {
   itemsPerPageLabel = 'Elementos por página';
@@ -57,52 +57,31 @@ interface CurrencyData {
 }
 
 @Component({
-  selector: 'tickets',
-  templateUrl: './tickets.component.html',
-  styleUrls: ['./tickets.component.scss'],
+  selector: 'materiasPrimas',
+  templateUrl: './materiasPrimas.component.html',
+  styleUrls: ['./materiasPrimas.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomPaginatorIntl }
   ],
-  imports: [CommonModule, MatButtonModule, MatPaginatorModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, MatTableModule, MatSortModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule,TradingviewWidgetModule,NgFor],
+  imports: [CommonModule, MatButtonModule, MatPaginatorModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, MatTableModule, MatSortModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule, NgFor],
 })
-export class CriptomonedasComponent implements OnInit {
+export class MateriasPrimasComponent implements OnInit {
   displayedColumns: string[] = ['position', 'instrumento', 'variacion', 'vender', 'comprar' ];
-  cryptos = [
-    { position: 1, symbol: 'BTC', change: '2%', sell: '$30,000', buy: '$29,500' },
-    { position: 2, symbol: 'ETH', change: '1.5%', sell: '$2,000', buy: '$1,950' },
-    { position: 3, symbol: 'LTC', change: '0.5%', sell: '$100', buy: '$95' },
-    { position: 4, symbol: 'XRP', change: '3%', sell: '$0.50', buy: '$0.48' },
-    { position: 5, symbol: 'BCH', change: '1%', sell: '$600', buy: '$590' },
-    { position: 6, symbol: 'EOS', change: '2.5%', sell: '$4', buy: '$3.90' },
-    { position: 7, symbol: 'BNB', change: '1.2%', sell: '$300', buy: '$295' },
-    { position: 8, symbol: 'USDT', change: '0%', sell: '$1', buy: '$1' },
-    { position: 9, symbol: 'ADA', change: '0.8%', sell: '$1.20', buy: '$1.15' },
-    { position: 10, symbol: 'DOT', change: '1.3%', sell: '$15', buy: '$14.50' },
-  ];
-  widgetConfig: ITradingViewWidget = {
-    symbol: 'BITSTAMP:BTCUSD',
-    widgetType: 'widget',
-    // autosize: true,
-    height: 550,
-    width: 1200,
-    locale: "es"
-
-  }
+ 
+ 
   public messages: any;
   private subscription: Subscription;
   posicion = 0;
-  balance = 1300;
-  margenLibre = 300;
-  margen = 1000;
+ 
   datasource = new MatTableDataSource<CurrencyMoneda>();
   listaDatos: CurrencyMoneda[];
   /**
    * Constructor
    */
   constructor(private websocketService: WebSocketRxjsService,
-    public dialog: MatDialog,
+    public dialog: MatDialog,private tradingViewWidgetService: TradingViewWidgetService
   ) {
   }
 
@@ -115,6 +94,13 @@ export class CriptomonedasComponent implements OnInit {
    */
   private currencies: { [key: string]: CurrencyData } = {};
   private currenciesSubject = new BehaviorSubject<{ [key: string]: CurrencyData }>({});
+
+  onRowClicked(row: any) {
+    console.log('Fila seleccionada:', row);
+    this.tradingViewWidgetService.updateSymbol(row.instrumento);
+   // this.selectedSymbol = row.instrumento;
+    // Puedes realizar más acciones con los datos de la fila aquí
+  }
 
   
   ngOnInit(): void { 

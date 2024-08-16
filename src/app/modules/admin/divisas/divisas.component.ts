@@ -7,9 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ExampleService } from 'app/modules/admin/divisas/tickets.service';
-import { ModalNewTicket } from 'app/modules/modal-nvo-ticket/nvo-ticket-modal/nvo-ticket.modal.component';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';  
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
 import { BehaviorSubject, Subject, Subscription, takeUntil } from 'rxjs';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
@@ -18,6 +16,9 @@ import { MatCardModule } from '@angular/material/card';
 import { ITradingViewWidget, TradingviewWidgetModule } from 'angular-tradingview-widget';
 import { WebSocketRxjsService } from '@ittiva/services/websoctekt.service';
 import { ComprarModalComponent } from './comprar-modal/comprar.component';
+import { TradingViewWidgetComponent } from '../tradingViewWidget/trading-view-widget.component';
+import { TradingViewWidgetService } from '../tradingViewWidget/trading-view-widget.service';
+import { WebSocketService } from '@ittiva/services/webSockete';
 
 export class CustomPaginatorIntl extends MatPaginatorIntl {
   itemsPerPageLabel = 'Elementos por página';
@@ -57,39 +58,21 @@ interface CurrencyData {
 }
 
 @Component({
-  selector: 'tickets',
-  templateUrl: './tickets.component.html',
-  styleUrls: ['./tickets.component.scss'],
+  selector: 'divisas',
+  templateUrl: './divisas.component.html',
+  styleUrls: ['./divisas.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomPaginatorIntl }
   ],
-  imports: [CommonModule, MatButtonModule, MatPaginatorModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, MatTableModule, MatSortModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule,TradingviewWidgetModule,NgFor],
+  imports: [CommonModule, MatButtonModule, MatPaginatorModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, MatTableModule, MatSortModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule,NgFor,TradingViewWidgetComponent],
 })
-export class MateriasPrimasComponent implements OnInit {
+export class DivisasComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['position', 'instrumento', 'variacion', 'vender', 'comprar' ];
-  cryptos = [
-    { position: 1, symbol: 'BTC', change: '2%', sell: '$30,000', buy: '$29,500' },
-    { position: 2, symbol: 'ETH', change: '1.5%', sell: '$2,000', buy: '$1,950' },
-    { position: 3, symbol: 'LTC', change: '0.5%', sell: '$100', buy: '$95' },
-    { position: 4, symbol: 'XRP', change: '3%', sell: '$0.50', buy: '$0.48' },
-    { position: 5, symbol: 'BCH', change: '1%', sell: '$600', buy: '$590' },
-    { position: 6, symbol: 'EOS', change: '2.5%', sell: '$4', buy: '$3.90' },
-    { position: 7, symbol: 'BNB', change: '1.2%', sell: '$300', buy: '$295' },
-    { position: 8, symbol: 'USDT', change: '0%', sell: '$1', buy: '$1' },
-    { position: 9, symbol: 'ADA', change: '0.8%', sell: '$1.20', buy: '$1.15' },
-    { position: 10, symbol: 'DOT', change: '1.3%', sell: '$15', buy: '$14.50' },
-  ];
-  widgetConfig: ITradingViewWidget = {
-    symbol: 'BITSTAMP:BTCUSD',
-    widgetType: 'widget',
-    // autosize: true,
-    height: 550,
-    width: 1200,
-    locale: "es"
+  selectedSymbol: string = 'AAPL'; 
 
-  }
+  
   public messages: any;
   private subscription: Subscription;
   posicion = 0;
@@ -102,7 +85,8 @@ export class MateriasPrimasComponent implements OnInit {
    * Constructor
    */
   constructor(private websocketService: WebSocketRxjsService,
-    public dialog: MatDialog,
+    public dialog: MatDialog,private tradingViewWidgetService: TradingViewWidgetService,
+    private webSocketService:WebSocketService
   ) {
   }
 
@@ -115,21 +99,34 @@ export class MateriasPrimasComponent implements OnInit {
    */
   private currencies: { [key: string]: CurrencyData } = {};
   private currenciesSubject = new BehaviorSubject<{ [key: string]: CurrencyData }>({});
+  private messageSubscription!: Subscription;
+  public messages2: string[] = [];
 
-  
   ngOnInit(): void { 
     this.messages = [];
     this.listaDatos = [];
     let miArreglo = ["btc", "eth","ltc","alpha","ada","bnb","doge","avax","shib","bch","dot","trx","link","matic","icp","near","uni","dai","apt","stx","fil","atom","arb","wif","mkr","inj","grt","op","jup","flow","pepe"];
- 
-    this.websocketService.connect('wss://ws.eodhistoricaldata.com/ws/forex?api_token=667d8404377b62.46044727');
+
+    this.subscription = this.webSocketService.messages$.subscribe(
+      message => {
+        this.messages.push(message);
+        console.log('Received message:', message);
+      }
+    );
+
+
+
+/*     this.websocketService.connect('wss://ws.eodhistoricaldata.com/ws/forex?api_token=667d8404377b62.46044727');
     this.subscription = this.websocketService.onMessage().subscribe(
       message => this.handleMessage(message)
       
     );
-    this.sendMessage();
+    this.sendMessage(); */
+    this.sendMessage2();
   }
-
+  sendMessage2() {
+    this.webSocketService.sendMessage('Hello from client!');
+  }
    handleMessage(message: any): void {
     // Suponiendo que el mensaje contiene el valor de la moneda en `a` y el tipo de moneda en `s`
     const currencyCode = message.s;  // e.g., "EURJPY"
@@ -211,6 +208,19 @@ export class MateriasPrimasComponent implements OnInit {
   
     });
 }
+onRowClicked(row: any) {
+  console.log('Fila seleccionada:', row);
+  this.tradingViewWidgetService.updateSymbol(row.instrumento);
+ // this.selectedSymbol = row.instrumento;
+  // Puedes realizar más acciones con los datos de la fila aquí
+}
 
+ngOnDestroy(): void {
+  if (this.subscription) {
+    this.subscription.unsubscribe();
+  }
+  this.webSocketService.disconnect();
+  }
+ 
 }
 

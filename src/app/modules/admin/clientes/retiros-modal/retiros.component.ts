@@ -131,7 +131,7 @@ export class  RetirosModalComponent implements OnInit {
         "estatusRetiro": 0,
         "fechaCreacion": "2024-08-12T05:15:57.772Z",
         "idDinero": 0,
-        "idUsuario": this.idUser,
+        "idUsuario": this.data.data,
         "tipo": "string"
       }
       this.clienteService.getRetirosSolicitados(request).subscribe({

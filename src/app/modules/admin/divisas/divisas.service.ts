@@ -1,11 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'environments/environment.desa';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
-export class ExampleService
-
+export class DivisasService
 {
     private _data: BehaviorSubject<any> = new BehaviorSubject(null);
 
@@ -15,7 +13,7 @@ export class ExampleService
     constructor(private _httpClient: HttpClient)
     {
     }
-    baseUrl = environment.basePathUrl;
+
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
     // -----------------------------------------------------------------------------------------------------

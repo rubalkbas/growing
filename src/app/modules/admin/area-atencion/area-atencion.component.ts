@@ -7,8 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ExampleService } from 'app/modules/admin/divisas/tickets.service';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table'; 
 import { ModalNewTicket } from 'app/modules/modal-nvo-ticket/nvo-ticket-modal/nvo-ticket.modal.component';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
 import { Subject, takeUntil } from 'rxjs';
@@ -71,7 +70,7 @@ export class AreaAtencionComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Constructor
    */
-  constructor(private _financeService: ExampleService, public dialog: MatDialog,
+  constructor(  public dialog: MatDialog,
     private areaAtencionService: AreaAtencionService,
     private _userService: UserService,
   ) {
@@ -96,15 +95,7 @@ export class AreaAtencionComponent implements OnInit, AfterViewInit, OnDestroy {
         //console.log('Usuario loggeado:', this.usuarioLoggeado);
       });
 
-    // Get the data
-    this._financeService.data$
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((data) => {
-        // Store the data
-        this.data = data;
-        
-
-      });
+  
     this.consultaArea();
   }
 

@@ -7,9 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ExampleService } from 'app/modules/admin/divisas/tickets.service';
-import { ModalNewTicket } from 'app/modules/modal-nvo-ticket/nvo-ticket-modal/nvo-ticket.modal.component';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table'; 
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
 import { BehaviorSubject, Subject, Subscription, takeUntil } from 'rxjs';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
@@ -155,13 +153,13 @@ export class ClientesComponent implements OnInit {
     });
   }
   
-  opencDialogCredito( ): void {
+  opencDialogCredito(data: any ): void {
     const dialogRef = this.dialog.open(CreditosModalComponent, {
       width: '30%',
       height: '80%',
       // height: '700px'
       data: {
-        data: { data: '', usuario: 'Usuario de prueba' },
+        data: { data: data, usuario: 'Usuario de prueba' },
       }
     });
 
@@ -172,13 +170,13 @@ export class ClientesComponent implements OnInit {
     });
   }
 
-  opencDialogRetiro( ): void {
+  opencDialogRetiro( data: any): void {
     const dialogRef = this.dialog.open(RetirosModalComponent , {
       width: '60%',
       height: '80%',
       // height: '700px'
       data: {
-        data: { data: '', usuario: 'Usuario de prueba' },
+        data: { data: data, usuario: 'Usuario de prueba' },
       }
     });
 
@@ -190,13 +188,13 @@ export class ClientesComponent implements OnInit {
   }
 
   
-  opencDialogCliente( ): void {
+  opencDialogCliente(data: any ): void {
     const dialogRef = this.dialog.open(ClienteModalComponent , {
       width: '550px',
       height: '550px',
       // height: '700px'
       data: {
-        data: { data: '', usuario: 'Usuario de prueba' },
+        data: { data: data, usuario: 'Usuario de prueba' },
       }
     });
 
@@ -208,13 +206,13 @@ export class ClientesComponent implements OnInit {
   }
 
     
-  opencDialogAbiertas( ): void {
+  opencDialogAbiertas( data: any): void {
     const dialogRef = this.dialog.open(AbiertasModalComponent , {
       width: '60%',
       height: '80%',
       // height: '700px'
       data: {
-        data: { data: '', usuario: 'Usuario de prueba' },
+        data: { data: data, usuario: 'Usuario de prueba' },
       }
     });
 
@@ -225,13 +223,13 @@ export class ClientesComponent implements OnInit {
     });
   }
 
-  opencDialogCerradas( ): void {
+  opencDialogCerradas( data: any): void {
     const dialogRef = this.dialog.open(CerradasModalComponent , {
       width: '60%',
       height: '80%',
       // height: '700px'
       data: {
-        data: { data: '', usuario: 'Usuario de prueba' },
+        data: { data: data, usuario: 'Usuario de prueba' },
       }
     });
 

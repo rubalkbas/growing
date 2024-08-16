@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router'; 
-import { CriptomonedasComponent } from './criptomonedas/tickets.component';
-import { FondosComponent } from './fondos/tickets.component';
-import { AccionesComponent } from './acciones/tickets.component';
-import { MateriasPrimasComponent } from './materiasPrimas/tickets.component';
-import { DivisasComponent } from './divisas/tickets.component';
+import { CriptomonedasComponent } from './criptomonedas/criptomonedas.component';
+import { FondosComponent } from './fondos/fondos.component';
+import { AccionesComponent } from './acciones/acciones.component';
+import { MateriasPrimasComponent } from './materiasPrimas/materiasPrimas.component';
+import { DivisasComponent } from './divisas/divisas.component';
 import { ClientesComponent } from './clientes/clientes.component';
 
 export default [

@@ -51,12 +51,12 @@
                                 <td mat-cell *matCellDef="let element">
                                     <div class="action-buttons ">
                                         <div class="example-button-container  ">
-                                            <button mat-fab extended class="custom-fab-button" (click)="opencDialogAbiertas()">
+                                            <button mat-fab extended class="custom-fab-button" (click)="opencDialogAbiertas(element.idUsuario)">
                                                 <mat-icon>attach_money</mat-icon>
                                                 Abiertas
                                             </button>
                                             <div class="example-button-container  ">
-                                                <button mat-fab extended class="custom-fab-button-red" (click)="opencDialogCerradas()">
+                                                <button mat-fab extended class="custom-fab-button-red" (click)="opencDialogCerradas(element.idUsuario)">
                                                     <mat-icon>money_off</mat-icon>
                                                     Cerradas
                                                 </button>
@@ -71,25 +71,25 @@
                                 <td mat-cell *matCellDef="let element">
                                     <div class="action-buttons ">
                                         <div class="example-button-container  ">
-                                            <button mat-fab extended class="custom-fab-button" (click)="openDialog()">
+                                            <button mat-fab extended class="custom-fab-button" (click)="openDialog(element.idUsuario)">
                                                 <mat-icon>attach_money</mat-icon>
                                                 Ingresos
                                             </button>
                                         </div>
                                         <div class="example-button-container  ">
-                                            <button mat-fab extended class="custom-fab-button-blue" (click)="opencDialogCredito()">
+                                            <button mat-fab extended class="custom-fab-button-blue" (click)="opencDialogCredito(element.idUsuario)">
                                                 <mat-icon>monetization_on</mat-icon>
                                                 Creditos
                                             </button>
                                         </div>
                                         <div class="example-button-container  ">
-                                            <button mat-fab extended class="custom-fab-button-red" (click)="opencDialogRetiro()">
+                                            <button mat-fab extended class="custom-fab-button-red" (click)="opencDialogRetiro(element.idUsuario)">
                                                 <mat-icon>money_off</mat-icon>
                                                 Retiros
                                             </button>
                                         </div>
                                         <div class="example-button-container  ">
-                                            <button mat-fab extended (click)="opencDialogCliente()">
+                                            <button mat-fab extended (click)="opencDialogCliente(element.idUsuario)">
                                                 <mat-icon>contacts</mat-icon>
                                                 Editar
                                             </button>
