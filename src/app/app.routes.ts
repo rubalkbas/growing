@@ -12,14 +12,14 @@ import { FirstPassGuard } from './core/auth/guards/firstPass.guard';
 export const appRoutes: Route[] = [
 
     // Redirect empty path to '/example'
-    {path: '', pathMatch : 'full', redirectTo: 'tickets'},
+    {path: '', pathMatch : 'full', redirectTo: 'growing'},
 
     // Redirect signed-in user to the '/example'
     //
     // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
-    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'tickets'},
+    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'growing'},
 
     // Auth routes for guests
     {
@@ -79,7 +79,7 @@ export const appRoutes: Route[] = [
             initialData: initialDataResolver
         },
         children: [
-            {path: 'growing', loadChildren: () => import('app/modules/admin/tickets.routes')},
+            {path: 'growing', loadChildren: () => import('app/modules/admin/growing.routes')},
             // {path: 'nvo-ticket', loadChildren: () => import('app/modules/modal-nvo-ticket/modal-nvo-ticket.routes')},
 
         ]
@@ -131,7 +131,7 @@ export const appRoutes: Route[] = [
         },
         children: [
             //{path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
-            {path: 'tickets', loadChildren: () => import('app/modules/admin/tickets.routes')},
+            {path: 'tickets', loadChildren: () => import('app/modules/admin/growing.routes')},
 
         ]
     },

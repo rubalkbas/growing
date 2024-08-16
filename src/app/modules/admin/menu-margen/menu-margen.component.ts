@@ -16,6 +16,7 @@ import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/mat
 import { MatCardModule } from '@angular/material/card';
 import { ITradingViewWidget, TradingviewWidgetModule } from 'angular-tradingview-widget';
 import { WebSocketRxjsService } from '@ittiva/services/websoctekt.service'; 
+import { WebSocketService } from '@ittiva/services/webSockete';
 
  
 
@@ -42,23 +43,28 @@ interface CurrencyData {
   selector: 'menu-margen',
   templateUrl: './menu-margen.component.html',
   styleUrls: ['./menu-margen.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.Emulated,
   standalone: true,
  
   imports: [CommonModule, MatButtonModule, MatPaginatorModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, MatTableModule, MatSortModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule,TradingviewWidgetModule,NgFor],
 })
 export class MenuMargenComponent implements OnInit {
- 
-   
+  private currenciesSubject2 = new BehaviorSubject<{ [key: string]: any }>({});
+  private currencies2: { [key: string]: any } = {};
+  private subscription2: Subscription;
   posicion = 0;
   balance = 1300;
   margenLibre = 300;
   margen = 1000;
+  public messages: any;
+  listaDatos: any;
+  margenesUsuario: any;
   /**
    * Constructor
    */
-  constructor(private websocketService: WebSocketRxjsService,
+  constructor( 
     public dialog: MatDialog,
+    private webSocketService:WebSocketService
   ) {
   }
 
@@ -69,13 +75,79 @@ export class MenuMargenComponent implements OnInit {
   /**
    * On init
    */
-  private currencies: { [key: string]: CurrencyData } = {};
-  private currenciesSubject = new BehaviorSubject<{ [key: string]: CurrencyData }>({});
-
+ 
   
   ngOnInit(): void { 
-    
+    this.margenesUsuario = [];
+    this.listaDatos = {
+      position: 0,
+      idUsuario: 0,
+      totalDinero: '',
+      margenLibre: '',
+      margen: ''
+  
+    };
+    this.subscription2 = this.webSocketService.messages$.subscribe(
+      message => {
+        this.updateCurrencyData(message);
+      }
+    );
+
   }
+ 
+updateCurrencyData(  margenes :any): void {
+ 
+ 
+  let datos: any = {
+    position: 0,
+    idUsuario: 0,
+    totalDinero: '',
+    margenLibre: '',
+    margen: ''
+
+  }
+
+  datos.position = this.posicion + 1;
+  this.posicion = this.posicion +1;
+
+
+
+ 
+  const dataArray = this.listaDatos;
+
+ 
+
+    const index = margenes.findIndex(item => item.idUsuario.toString() === localStorage.getItem('idUserWrog'));
+
+    if (index >= 0) {
+      dataArray[index] = datos;
+    } else {
+      dataArray.push(datos);
+    } 
+ 
+
+ 
+
+    datos.idUsuario = margenes[index].idUsuario;
+    datos.totalDinero =  margenes[index].totalDinero ;
+    datos.margenLibre =  margenes[index].margenLibre ;
+    datos.margen =   margenes[index].margen ;
+
+  this.margenesUsuario = datos;
+  this.currencies2[datos.idUsuario] = {
+ 
+    position: datos.position,
+    idUsuario: datos.idUsuario,
+    totalDinero: datos.totalDinero,
+    margenLibre: datos.margenLibre,
+    margen: datos.margen
+
+  };
+
+  // Emitir la actualización a los suscriptores
+  this.currenciesSubject2.next(this.currencies2);
+}
+
 
    handleMessage(message: any): void {
     // Suponiendo que el mensaje contiene el valor de la moneda en `a` y el tipo de moneda en `s`
@@ -83,10 +155,7 @@ export class MenuMargenComponent implements OnInit {
     const newValue = parseFloat(message.a);  // e.g., 165.8723
  
   }
-
-  sendMessage( ): void {
-    this.websocketService.sendMessage( {"action": "subscribe", "symbols": "EURUSD,EURJPY,EURMXN,GBPUSD,EURCAD,EURAUD,CHFAUD,CHFCAD,CHFGBP,EURSGD,GBPPLN,GBPNZD,CHFNOK,CHFMXN,ZAREUR,EURCHF,GBPJPY,GBPCHF,AUDUSD,NZDUSD,USDCAD,XAUUSD,EUREUR,EURNZD,EURPLN,GBPEUR,GBPAUD,GBPNOK,GBPNOK,GBPMXN,CHFGBP,USDMXN"} );
-  }
+ 
 
  
  
