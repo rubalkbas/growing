@@ -1,0 +1,34 @@
+<h1 mat-dialog-title>Retirar</h1>
+<div mat-dialog-content>
+
+    <div class="form-group">
+      <label for="nocliente">NOCLIENTE: <b>{{ data.idUser }}</b></label>
+    </div>
+
+    <div class="form-group">
+      <label for="Monto">Monto: <b>{{ data.idUser }}</b></label>
+    </div>
+
+    <hr>
+
+    <div class="form-group">     
+      <!-- Email field -->
+      <mat-form-field class="w-full">
+        <mat-label>Monto a retirar</mat-label>
+        <input id="correo" matInput [(ngModel)]="this.monto" [ngModelOptions]="{standalone: true}">
+
+      </mat-form-field>
+
+      <div class="flex justify-center">
+        <button mat-fab extended  (Click)="onSubmit">
+            <mat-icon>monetization_on</mat-icon>
+            Solicitar Dinero
+        </button>
+    </div>
+
+ 
+    </div>
+
+    <hr>
+
+</div>

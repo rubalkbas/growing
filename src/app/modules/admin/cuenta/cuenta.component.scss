@@ -1,0 +1,67 @@
+.highlight-hover:hover {
+    border: 2px solid #FF0000; /* Cambia el color y el grosor del borde según tus necesidades */
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); /* Opcional: Agrega una sombra para mayor énfasis */
+    border-radius: 5px; /* Opcional: Redondear las esquinas */
+  }
+
+  .highlight-hover-blue:hover {
+    border: 2px solid blue; /* Cambia el color y el grosor del borde según tus necesidades */
+    box-shadow: 0 0 10px rgba(18, 29, 236, 0.922); /* Opcional: Agrega una sombra para mayor énfasis */
+    border-radius: 5px; /* Opcional: Redondear las esquinas */
+  }
+
+  .highlight-hover-green:hover {
+    border: 2px solid green; /* Cambia el color y el grosor del borde según tus necesidades */
+    box-shadow: 0 0 10px rgba(38, 236, 38, 0.923); /* Opcional: Agrega una sombra para mayor énfasis */
+    border-radius: 5px; /* Opcional: Redondear las esquinas */
+  }
+
+  .custom-fab-button {
+    background-color: white !important;  /* Color de relleno blanco */
+    color: rgb(20, 139, 9) !important; /* Letras azules */
+    border: 1px solid lightgreen !important; /* Orilla verde claro */
+    border-radius: 50px !important; /* Esquinas redondeadas típicas de fab buttons */
+    box-shadow: none !important; /* Eliminar sombra por defecto */
+  }
+  
+  .custom-fab-button:hover {
+    background-color: #b4ebb9 !important; /* Cambia ligeramente el color de fondo al pasar el cursor */
+  }
+  
+  .custom-fab-button mat-icon {
+    color: blue !important; /* Cambia el color del icono a azul */
+  }
+
+
+  .custom-fab-button-blue {
+    background-color: rgb(255, 255, 255) !important;  /* Color de relleno blanco */
+    color: rgb(9, 61, 173) !important; /* Letras azules */
+    border: 1px solid rgb(143, 204, 233) !important; /* Orilla verde claro */
+    border-radius: 50px !important; /* Esquinas redondeadas típicas de fab buttons */
+    box-shadow: none !important; /* Eliminar sombra por defecto */
+  }
+  
+  .custom-fab-button-blue:hover {
+    background-color: #d4faff !important; /* Cambia ligeramente el color de fondo al pasar el cursor */
+  }
+  
+  .custom-fab-button-blue mat-icon {
+    color: blue !important; /* Cambia el color del icono a azul */
+  }
+
+
+  .custom-fab-button-red {
+    background-color: rgb(255, 255, 255) !important;  /* Color de relleno blanco */
+    color: rgb(134, 10, 6) !important; /* Letras azules */
+    border: 1px solid rgb(243, 140, 140) !important; /* Orilla verde claro */
+    border-radius: 50px !important; /* Esquinas redondeadas típicas de fab buttons */
+    box-shadow: none !important; /* Eliminar sombra por defecto */
+  }
+  
+  .custom-fab-button-red:hover {
+    background-color: #fad6d6 !important; /* Cambia ligeramente el color de fondo al pasar el cursor */
+  }
+  
+  .custom-fab-button-red mat-icon {
+    color: rgb(255, 0, 0) !important; /* Cambia el color del icono a azul */
+  }

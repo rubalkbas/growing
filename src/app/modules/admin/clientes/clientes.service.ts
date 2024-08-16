@@ -87,5 +87,9 @@ export class ClienteService
         return this._httpClient.post<any>(`${this.baseUrl}/apuestaCliente/consultaApuestasCerradasClienteID`,request);
     }
 
+    cargarRetiro(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/dinero/cargarRetiro`,request);
+    }
+
     
 }

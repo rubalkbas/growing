@@ -59,14 +59,14 @@ export const defaultNavigation: ittivaNavigationItem[] = [
                 title: 'Abiertas',
                 type: 'basic',
                 icon: 'heroicons_outline:clipboard-document-check',
-                link: '/growing/abiertas',
+                link: '/growing/operacionesAbiertas',
             },
             {
                 id: 'dashboards.materias',
                 title: 'Cerradas',
                 type: 'basic',
                 icon: 'heroicons_outline:clipboard-document-check',
-                link: '/growing/cerradas',
+                link: '/growing/operacionesCerradas',
             } 
         ]
     } ,

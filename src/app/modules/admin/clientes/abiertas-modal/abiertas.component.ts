@@ -127,7 +127,7 @@ export class AbiertasModalComponent implements OnInit {
       "fechaCreacion": "2024-08-14T19:18:54.451Z",
       "gananciaPerdida": 0,
       "idApuestaCliente": 0,
-      "idUsuario": this.data.data,
+      "idUsuario": this.data.data.data,
       "montoApuesta": 0,
       "tipoCompra": "string",
       "unidades": 0,
@@ -175,7 +175,7 @@ export class AbiertasModalComponent implements OnInit {
       "estatusRetiro": 0,
       "fechaCreacion": "2024-08-12T05:15:57.772Z",
       "idDinero": 0,
-      "idUsuario": this.data.data,
+      "idUsuario": this.data.data.data,
       "tipo": "string"
     }
 
