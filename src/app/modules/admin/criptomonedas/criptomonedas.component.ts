@@ -18,6 +18,7 @@ import { WebSocketRxjsService } from '@ittiva/services/websoctekt.service';
 import { ComprarModalComponent } from './comprar-modal/comprar.component';
 import { TradingViewWidgetComponent } from '../tradingViewWidget/trading-view-widget.component';
 import { TradingViewWidgetService } from '../tradingViewWidget/trading-view-widget.service';
+import { WebSocketCriptoService } from '@ittiva/services/websoctektCryptos.service';
 
 export class CustomPaginatorIntl extends MatPaginatorIntl {
   itemsPerPageLabel = 'Elementos por página';
@@ -79,10 +80,14 @@ export class CriptomonedasComponent implements OnInit {
   margen = 1000;
   datasource = new MatTableDataSource<CurrencyMoneda>();
   listaDatos: CurrencyMoneda[];
+  miArreglo: string[];
+
+  stockData: any[] = [];
+  sockets: WebSocket[] = [];
   /**
    * Constructor
    */
-  constructor(private websocketService: WebSocketRxjsService,
+  constructor(private websocketService: WebSocketCriptoService,
     public dialog: MatDialog,private tradingViewWidgetService: TradingViewWidgetService
   ) {
   }
@@ -101,14 +106,34 @@ export class CriptomonedasComponent implements OnInit {
   ngOnInit(): void { 
     this.messages = [];
     this.listaDatos = [];
-    let miArreglo = ["btc", "eth","ltc","alpha","ada","bnb","doge","avax","shib","bch","dot","trx","link","matic","icp","near","uni","dai","apt","stx","fil","atom","arb","wif","mkr","inj","grt","op","jup","flow","pepe"];
+     this.miArreglo = ["btc", "eth","ltc","alpha","ada","bnb","doge","avax","shib","bch","dot","trx","link","matic","icp","near","uni","dai","apt","stx","fil","atom","arb","wif","mkr","inj","grt","op","jup","flow","pepe"];
  
-    this.websocketService.connect('wss://ws.eodhistoricaldata.com/ws/forex?api_token=667d8404377b62.46044727');
-    this.subscription = this.websocketService.onMessage().subscribe(
-      message => this.handleMessage(message)
-      
-    );
-    this.sendMessage();
+ 
+   
+    this.miArreglo.forEach(symbol => {
+      const socket = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}usdt@ticker`);
+
+      socket.onmessage = (event: MessageEvent) => {
+        const data = JSON.parse(event.data);
+        console.log(data);
+        const symbol = data.s;
+        const maximo = parseFloat(data.x).toFixed(2);
+        const porce = parseFloat(data.P).toFixed(2);
+        const price = parseFloat(data.c).toFixed(2);
+        const venta = parseFloat(data.l).toFixed(2);
+
+        // Buscar o crear el registro en stockData
+        let stockItem = this.stockData.find(item => item.symbol === symbol);
+        if (!stockItem) {
+          stockItem = { symbol: symbol, lastprice: null, lastventa: null };
+          this.stockData.push(stockItem);
+        }
+
+  
+      };
+
+      this.sockets.push(socket);
+    });
   }
 
    handleMessage(message: any): void {
@@ -120,7 +145,7 @@ export class CriptomonedasComponent implements OnInit {
   }
 
   sendMessage( ): void {
-    this.websocketService.sendMessage( {"action": "subscribe", "symbols": "EURUSD,EURJPY,EURMXN,GBPUSD,EURCAD,EURAUD,CHFAUD,CHFCAD,CHFGBP,EURSGD,GBPPLN,GBPNZD,CHFNOK,CHFMXN,ZAREUR,EURCHF,GBPJPY,GBPCHF,AUDUSD,NZDUSD,USDCAD,XAUUSD,EUREUR,EURNZD,EURPLN,GBPEUR,GBPAUD,GBPNOK,GBPNOK,GBPMXN,CHFGBP,USDMXN"} );
+    this.websocketService.sendMessage( this.miArreglo);
   }
 
   updateCurrencyData(currencyCode: string, newValue: number, lodemas :any): void {
