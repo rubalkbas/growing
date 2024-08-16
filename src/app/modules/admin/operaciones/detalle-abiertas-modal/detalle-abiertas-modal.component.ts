@@ -1,7 +1,6 @@
 import { Component, CSP_NONCE, Inject, OnInit } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialog,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
@@ -39,16 +38,15 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import Swal from 'sweetalert2';
 import { ClienteService } from '../../clientes/clientes.service';
-import { DetalleAbiertasModalComponent } from '../detalle-abiertas-modal/detalle-abiertas-modal.component';
 interface ViewValue {
   value: number;
   viewValue: string;
 }
 
 @Component({
-  selector: 'app-operaciones-abiertas',
-  templateUrl: './operaciones-abiertas.component.html',
-  styleUrls: ['./operaciones-abiertas.component.scss'],
+  selector: 'app-detalle-abiertas-modal',
+  templateUrl: './detalle-abiertas-modal.component.html',
+  styleUrls: ['./detalle-abiertas-modal.component.scss'],
   standalone: true,
   imports: [
     CommonModule,
@@ -68,8 +66,12 @@ interface ViewValue {
   ],
 })
 
-export class OperacionesAbiertasComponent implements OnInit {
-  displayedColumns: string[] = ['tipoCompra', 'compra','valorUnidad', 'unidades','montoApuesta', 'variacion','gananciaPerdida', 'bloqueCompra','estatusCompra', 'fechaCreacion','accion' ];
+export class DetalleAbiertasModalComponent implements OnInit {
+  displayedColumns: string[] = [
+    'valorCompra',
+    'valorWebSocket',
+    'ganPer',
+    'montoGanPer'];
   rolForm: FormGroup;
   permisos = [];
   newRol: any;
@@ -80,18 +82,18 @@ export class OperacionesAbiertasComponent implements OnInit {
     { value: 0, viewValue: 'Inactivo' },
   ];
   formCliente: FormGroup;
- 
+
   showAlert = false;
   total = 0;
   datasource = new MatTableDataSource<any>();
   idUser: string;
   monto: any = 0;
   constructor(
+    public dialogRef: MatDialogRef<DetalleAbiertasModalComponent>,
     private fb: FormBuilder,
     private alertService: AlertService,
     private clienteService: ClienteService,
-    public dialog: MatDialog,
-
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
     this.formCliente = this.fb.group({
@@ -108,11 +110,6 @@ export class OperacionesAbiertasComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log(this.data)
-    this.rolForm = this.fb.group({
-      nombre: ['', Validators.required],
-      estatus: ['', Validators.required],
-    });
 
     this.cargaIngreso();
 
@@ -122,22 +119,15 @@ export class OperacionesAbiertasComponent implements OnInit {
 
     let request =
     {
-      "bloqueCompra": "string",
-      "compra": "string",
-      "estatusCompra": "string",
-      "fechaCierre": "2024-08-14T19:18:54.451Z",
-      "fechaCreacion": "2024-08-14T19:18:54.451Z",
-      "gananciaPerdida": 0,
-      "idApuestaCliente": 0,
-      "idUsuario": this.idUser,
-      "montoApuesta": 0,
-      "tipoCompra": "string",
-      "unidades": 0,
-      "valorUnidad": 0,
-      "variacion": 0
-    } 
+      "ganPer": "string",
+      "idApuestaCliente": this.data.idApuestaCliente,
+      "idHistApuestaCliente": 0,
+      "montoGanPer": 0,
+      "valorCompra": 0,
+      "valorWebSocket": 0
+    }
 
-    this.clienteService.consultaAbiertas(request).subscribe({
+    this.clienteService.consultaHistoricoApuestas(request).subscribe({
       next: (respuesta: any) => {
         this.datasource.data = [];
         console.log('Respuesta completa: ', respuesta);
@@ -145,7 +135,7 @@ export class OperacionesAbiertasComponent implements OnInit {
         if (respuesta.estatus === 'OK') {
 
           this.datasource.data = respuesta.lista;
- 
+
         } else {
           console.log(
             'La respuesta no contiene una lista válida de areas de atención.'
@@ -163,18 +153,7 @@ export class OperacionesAbiertasComponent implements OnInit {
     return this.rolForm.get('descripcion');
   }
 
-
-  abrirDetalle(idApuestaCliente: any): void {
-    
-    const dialogRef = this.dialog.open(DetalleAbiertasModalComponent, {
-      width: '70%',
-      data: { idApuestaCliente: idApuestaCliente}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-
-
-}
+  onClose(): void {
+    this.dialogRef.close();
+  }
 }

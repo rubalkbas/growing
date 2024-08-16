@@ -38,6 +38,7 @@ import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ClienteService } from '../../clientes/clientes.service';
 import { CreditosModalComponent } from '../../clientes/creditos-modal/creditos.component';
+import Swal from 'sweetalert2';
 interface ViewValue {
     value: number;
     viewValue: string;
@@ -59,44 +60,90 @@ interface ViewValue {
         MatIcon,
         MatRadioModule,
         MatPaginatorModule,
-        MatTableModule, 
+        MatTableModule,
         MatSortModule,
-        FormsModule ,
-        MatButtonModule,   MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule,   NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule
+        FormsModule,
+        MatButtonModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule
     ],
 })
-export class CuentaModalComponent implements  OnInit {
+export class CuentaModalComponent implements OnInit {
 
     idUser: string;
-    monto: any = 0;
+    retirarForm: FormGroup;
+
     constructor(
+        @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<CreditosModalComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any
+        private fb: FormBuilder,
+        private clienteService: ClienteService,
+
     ) {
 
-          this.idUser =  localStorage.getItem('idUserWrog');
+        this.idUser = localStorage.getItem('idUserWrog');
+        this.retirarForm = this.fb.group({
+            monto: ['', [Validators.required, Validators.min(1)]],
+        });
 
     }
 
     ngOnInit(): void {
-   console.log(this.data)
- 
+        console.log(this.data)
+
     }
-
-
 
     onClose(): void {
         this.dialogRef.close();
     }
- 
-    
 
-    onSubmit(): void {
-
- 
-        
+    onSubmit() {
+        if (this.retirarForm.valid) {
+            const monto = Number(this.retirarForm.value.monto);
+            if (this.data.margenLibre < monto) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'El monto a retirar es mayor al margen libre.'
+                });
+                return;
+            }
+            
+            const request = {
+                idCliente: this.data.idCliente,
+                monto: monto
+            };
+            this.cargarRetiro(request);
+        }
     }
 
- 
+    cargarRetiro(request) {
+
+        this.clienteService.cargarRetiro(request).subscribe({
+            next: (respuesta: any) => {
+                console.log('Respuesta completa: ', respuesta);
+                // Accediendo a la lista de areas de atención dentro de la respuesta
+                if (respuesta.estatus === 'OK') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Retiro exitoso',
+                        text: 'Se ha realizado el retiro de forma exitosa.',
+                    });
+
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: respuesta.mensaje
+                    });
+                }
+            },
+            error: (error: Error) => {
+                console.error(error);
+            },
+        });
+    }
+
+
+
+
 
 }

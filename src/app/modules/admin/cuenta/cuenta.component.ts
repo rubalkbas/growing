@@ -78,9 +78,8 @@ export class CuentaComponent implements OnInit {
   public messages: any;
   private subscription: Subscription;
   posicion = 0;
-  balance = 1300;
-  margenLibre = 300;
-  margen = 1000;
+
+  margenLibre = 0;
   listaDatos: CurrencyMoneda[];
   data: any;
   totalCreditos = 0;
@@ -117,6 +116,7 @@ export class CuentaComponent implements OnInit {
 
     this.cargaIngreso();
     this.cargaRetiros();
+    this.obtenerUsuario();
   }
 
   cargaIngreso(): void {
@@ -185,7 +185,7 @@ export class CuentaComponent implements OnInit {
 
           const dialogRef = this.dialog.open(CuentaModalComponent, {
             width: '500px',
-            data: { idUser: this.idUser, totalCreditos: this.totalCreditos }
+            data: { idUser: this.idUser, totalCreditos: this.totalCreditos, margenLibre: this.margenLibre }
           });
 
           dialogRef.afterClosed().subscribe(result => {
@@ -246,6 +246,37 @@ export class CuentaComponent implements OnInit {
       },
     });
   
+  }
+
+  obtenerUsuario(){
+    let request = {
+      "accion": "string",
+      "dinero": 0,
+      "estatusRetiro": 0,
+      "fechaCreacion": "2024-08-12T05:15:57.772Z",
+      "idDinero": 0,
+      "idUsuario": this.idUser,
+      "tipo": "string"
+    }
+
+    this.clienteService.consultaCliente(request).subscribe({
+      next: (data: any) => {
+     
+    
+        // Accediendo a la lista de areas de atención dentro de la respuesta
+        if (data.estatus === 'OK') {
+          this.margenLibre = data.dto.margenLibre;
+          // console.log('margenLibre', this.margenLibre);
+        } else {
+          console.log(
+            'La respuesta no contiene una lista válida de areas de atención.'
+          );
+        }
+      },
+      error: (error: Error) => {
+        console.error(error);
+      },
+    });
   }
 }
 

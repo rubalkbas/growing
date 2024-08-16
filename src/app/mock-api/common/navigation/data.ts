@@ -7,41 +7,41 @@ export const defaultNavigation: ittivaNavigationItem[] = [
         id: 'usuarios',
         title: 'Simbolos',
         type: 'collapsable',
-        icon: 'heroicons_solid:academic-cap',
+        icon: 'heroicons_outline:currency-dollar',
         children: [
             {
                 id: 'dashboards.project',
                 title: 'Criptomonedas',
                 type: 'basic',
-                icon: 'heroicons_outline:clipboard-document-check',
+                icon: 'heroicons_outline:currency-dollar',
                 link: '/growing/criptomonedas',
             },
             {
                 id: 'dashboards.materias',
                 title: 'Materias Primas',
                 type: 'basic',
-                icon: 'heroicons_outline:clipboard-document-check',
+                icon: 'heroicons_outline:currency-dollar',
                 link: '/growing/materiasPrimas',
             } ,
             {
                 id: 'dashboards.divisas',
                 title: 'Divisas',
                 type: 'basic',
-                icon: 'heroicons_outline:clipboard-document-check',
+                icon: 'heroicons_outline:currency-dollar',
                 link: '/growing/divisas',
             } ,
             {
                 id: 'dashboards.acciones',
                 title: 'Acciones',
                 type: 'basic',
-                icon: 'heroicons_outline:clipboard-document-check',
+                icon: 'heroicons_outline:currency-dollar',
                 link: '/growing/acciones',
             } ,
             {
                 id: 'dashboards.fondo',
                 title: 'Fondo',
                 type: 'basic',
-                icon: 'heroicons_outline:clipboard-document-check',
+                icon: 'heroicons_outline:currency-dollar',
                 link: '/growing/fondos',
             } ,
       
@@ -52,20 +52,20 @@ export const defaultNavigation: ittivaNavigationItem[] = [
         id: 'dashboards.fondo',
         title: 'Mis Operaciones',
         type: 'collapsable',
-        icon: 'heroicons_outline:clipboard-document-check',
+        icon: 'heroicons_outline:banknotes',
         children: [
             {
                 id: 'dashboards.project',
                 title: 'Abiertas',
                 type: 'basic',
-                icon: 'heroicons_outline:clipboard-document-check',
+                icon: 'heroicons_outline:banknotes',
                 link: '/growing/operacionesAbiertas',
             },
             {
                 id: 'dashboards.materias',
                 title: 'Cerradas',
                 type: 'basic',
-                icon: 'heroicons_outline:clipboard-document-check',
+                icon: 'heroicons_outline:banknotes',
                 link: '/growing/operacionesCerradas',
             } 
         ]
@@ -74,7 +74,7 @@ export const defaultNavigation: ittivaNavigationItem[] = [
         id: 'dashboards.fondo',
         title: 'Clientes',
         type: 'basic',
-        icon: 'heroicons_outline:clipboard-document-check',
+        icon: 'heroicons_outline:user-group',
         link: '/growing/clientes',
     },
    
@@ -82,7 +82,7 @@ export const defaultNavigation: ittivaNavigationItem[] = [
         id: 'dashboards.fondo',
         title: 'Calendario Economico',
         type: 'basic',
-        icon: 'heroicons_outline:clipboard-document-check',
+        icon: 'heroicons_outline:calendar-days',
         link: '/growing/calendario',
     }  ,
    
@@ -90,7 +90,7 @@ export const defaultNavigation: ittivaNavigationItem[] = [
         id: 'dashboards.fondo',
         title: 'Mis Cuenta',
         type: 'basic',
-        icon: 'heroicons_outline:clipboard-document-check',
+        icon: 'heroicons_outline:user',
         link: '/growing/miCuenta',
     } 
    
