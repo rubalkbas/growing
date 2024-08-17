@@ -172,7 +172,7 @@ export class CuentaComponent implements OnInit {
       next: (respuesta: any) => {
         console.log('Respuesta completa: ', respuesta);
         // Accediendo a la lista de areas de atención dentro de la respuesta
-        if (respuesta.estatus === 'OK') {
+        if (respuesta.estatus === 'OK' ) {
           if (respuesta.lista.length > 0) {
             Swal.fire({
               title: 'Retiro',
@@ -181,17 +181,17 @@ export class CuentaComponent implements OnInit {
               confirmButtonText: 'Aceptar'
             });
             return;
-          }
-
-          const dialogRef = this.dialog.open(CuentaModalComponent, {
-            width: '500px',
-            data: { idUser: this.idUser, totalCreditos: this.totalCreditos, margenLibre: this.margenLibre }
-          });
-
-          dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed');
-          });
+          }         
         }
+
+        const dialogRef = this.dialog.open(CuentaModalComponent, {
+          width: '500px',
+          data: { idUser: this.idUser, totalCreditos: this.totalCreditos, margenLibre: this.margenLibre }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed');
+        });
 
 
       },

@@ -98,11 +98,11 @@ export class CuentaModalComponent implements OnInit {
     onSubmit() {
         if (this.retirarForm.valid) {
             const monto = Number(this.retirarForm.value.monto);
-            if (this.data.margenLibre < monto) {
+            if (this.data.balance < monto) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'El monto a retirar es mayor al margen libre.'
+                    text: 'El monto a retirar es mayor al balance.'
                 });
                 return;
             }
@@ -125,7 +125,7 @@ export class CuentaModalComponent implements OnInit {
                     Swal.fire({
                         icon: 'success',
                         title: 'Retiro exitoso',
-                        text: 'Se ha realizado el retiro de forma exitosa.',
+                        text: 'Se ha realizado la solicitud del retiro de forma exitosa.',
                     });
 
                 } else {
