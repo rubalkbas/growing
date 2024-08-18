@@ -12,11 +12,12 @@ import { provideAuth } from 'app/core/auth/auth.provider';
 import { provideIcons } from 'app/core/icons/icons.provider';
 import { mockApiServices } from 'app/mock-api';
 import { TranslocoHttpLoader } from './core/transloco/transloco.http-loader';
-import { provideittiva } from '@ittiva/itv.provider';
+import { provideittiva } from '@ittiva/itv.provider'; 
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
     providers: [
+     
         provideAnimations(),
         provideHttpClient(),
         { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -44,40 +45,8 @@ export const appConfig: ApplicationConfig = {
                 },
             },
         },
-
-        // Transloco Config
-        provideTransloco({
-            config: {
-                availableLangs      : [
-                    {
-                        id   : 'en',
-                        label: 'English',
-                    },
-                    {
-                        id   : 'tr',
-                        label: 'Turkish',
-                    },
-                ],
-                defaultLang         : 'en',
-                fallbackLang        : 'en',
-                reRenderOnLangChange: false,
-                prodMode            : false,
-            },
-            loader: TranslocoHttpLoader,
-        }),
-        {
-            // Preload the default language before the app starts to prevent empty/jumping content
-            provide   : APP_INITIALIZER,
-            useFactory: () =>
-            {
-                const translocoService = inject(TranslocoService);
-                const defaultLang = translocoService.getDefaultLang();
-                translocoService.setActiveLang(defaultLang);
-
-                return () => firstValueFrom(translocoService.load(defaultLang));
-            },
-            multi     : true,
-        },
+ 
+ 
 
         // ittiva
         provideAuth(),

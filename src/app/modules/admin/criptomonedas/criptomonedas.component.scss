@@ -15,3 +15,41 @@
     box-shadow: 0 0 10px rgba(38, 236, 38, 0.923); /* Opcional: Agrega una sombra para mayor énfasis */
     border-radius: 5px; /* Opcional: Redondear las esquinas */
   }
+
+  .mat-table {
+    border: 1px solid #00ffea !important; /* Cambia este color al que desees */
+    border-radius: 4px; /* Opcional: Para redondear las esquinas */
+  }
+
+
+  .mat-mdc-row:nth-child(odd) {
+    background-color: #f3fcf8;
+  }
+  
+  .mat-mdc-row:nth-child(even) {
+    background-color: #e2fcfa;
+  }
+  
+  .mat-mdc-row:hover {
+    background-color: #c96a82 !important;
+    cursor: pointer;
+  }
+
+  .balloon-text {
+    display:flex; /* Ajusta el ancho del div al contenido */
+    padding: 12px 19px; /* Espaciado interno */
+    background-color: #047272; /* Color de fondo del globo */
+    border-radius: 8px; /* Bordes redondeados para crear el efecto de globo */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra para darle profundidad */
+    font-size: 20px; /* Tamaño de la fuente grande */
+    font-weight: bold; /* Texto en negrita */
+    color: #ffffff; /* Color del texto */
+    text-align: center; /* Centrar el texto */
+    transition: transform 0.2s, color 0.2s; /* Efecto de transición al hacer hover */
+  }
+  
+  .balloon-text:hover {
+    color: #3edbf7; /* Cambia el color del texto a un tono más claro */
+    transform: scale(1.05); /* Efecto de agrandar ligeramente el texto */
+    cursor: pointer; /* Cambia el cursor a un puntero al hacer hover */
+  }

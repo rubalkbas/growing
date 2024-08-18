@@ -17,6 +17,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
+                        "serviceWorker": true,
                         "outputPath": "dist/ittiva",
                         "index": "src/index.html",
                         "main": "src/main.ts",
@@ -37,6 +38,7 @@
                         "assets": [
                             "src/favicon-16x16.png",
                             "src/favicon-32x32.png",
+                            "src/manifest.webmanifest",
                             "src/assets",
                             {
                                 "glob": "_redirects",

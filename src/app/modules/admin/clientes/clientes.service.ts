@@ -94,6 +94,12 @@ export class ClienteService
     consultaHistoricoApuestas(request: any): Observable<any> {
         return this._httpClient.post<any>(`${this.baseUrl}/apuestaCliente/consultaApuestasHistoricoAbiertasClienteID`,request);
     }
+    crearApuesta(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/apuestaCliente/crearApuestas`,request);
+    }
 
     
+    
+    
+
 }
