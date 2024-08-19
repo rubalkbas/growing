@@ -30,7 +30,7 @@ declare const TradingView: any;
  
   imports: [CommonModule, MatButtonModule, MatPaginatorModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, MatTableModule, MatSortModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule,TradingviewWidgetModule,NgFor],
 })
-export class TradingViewWidgetComponent implements OnInit, OnChanges, OnDestroy {
+export class TradingViewWidgetComponent implements OnInit, OnChanges, OnDestroy,AfterViewInit  {
  
   @Input() symbol: string = 'AAPL';
  
@@ -47,7 +47,9 @@ export class TradingViewWidgetComponent implements OnInit, OnChanges, OnDestroy 
   }
 
  
-
+  ngAfterViewInit(): void {
+    this.initializeWidget();
+  }
   
   ngOnInit(): void { 
     this.subscriptions.add(
@@ -74,6 +76,7 @@ export class TradingViewWidgetComponent implements OnInit, OnChanges, OnDestroy 
  
   }
   initializeWidget() {
+    if (typeof TradingView !== 'undefined') {
     this.widget = new TradingView.widget({
       symbol: this.symbol,
       interval: 'D',
@@ -92,6 +95,9 @@ export class TradingViewWidgetComponent implements OnInit, OnChanges, OnDestroy 
       allow_symbol_change: true,
       save_image: false,
     });
+  } else {
+    console.error('TradingView is not defined');
+  }
   }
 
   updateWidget() {

@@ -3,12 +3,12 @@ import { CriptomonedasComponent } from './criptomonedas/criptomonedas.component'
 import { FondosComponent } from './fondos/fondos.component';
 import { AccionesComponent } from './acciones/acciones.component';
 import { MateriasPrimasComponent } from './materiasPrimas/materiasPrimas.component';
-import { DivisasComponent } from './divisas/divisas.component';
-import { ClientesComponent } from './clientes/clientes.component';
+import { DivisasComponent } from './divisas/divisas.component'; 
 import { CuentaComponent } from './cuenta/cuenta.component';
 import { OperacionesAbiertasComponent } from './operaciones/abiertas/operaciones-abiertas.component';
 import { OperacionesCerradasComponent } from './operaciones/cerradas/operaciones-cerradas.component';
 import { CalendarioComponent } from './calendario/calendario.component';
+import { ClientesComponent } from './clientes/clientes.component';
 
 export default [
     {
@@ -49,7 +49,7 @@ export default [
     {
         path     : 'clientes',
         data     : {
-            permission: 'usuarios'
+            permission: 'administrador'
         },
         component: ClientesComponent,
     },

@@ -125,7 +125,7 @@ export class ComprarModalComponent implements OnInit {
             return;
         }
         
-        this.apuesta.bloqueCompra = 'CRIPTOMONEDA';
+        this.apuesta.bloqueCompra = 'CRIPTO';
         this.apuesta.compra = this.data.data.instrumento;
         this.apuesta.idUsuario = localStorage.getItem('idUserWrog');
         this.apuesta.montoApuesta = this.formCliente.get('valorA')?.value;

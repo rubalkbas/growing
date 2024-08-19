@@ -72,7 +72,7 @@ export const appRoutes: Route[] = [
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard, PermissionGuard, FirstPassGuard],
         data: {
-            permission: 'usuarios'
+            permission: 'administrador'
         },
         component: LayoutComponent,
         resolve: {
@@ -131,7 +131,7 @@ export const appRoutes: Route[] = [
         },
         children: [
             //{path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
-            {path: 'tickets', loadChildren: () => import('app/modules/admin/growing.routes')},
+            {path: 'growing', loadChildren: () => import('app/modules/admin/growing.routes')},
 
         ]
     },

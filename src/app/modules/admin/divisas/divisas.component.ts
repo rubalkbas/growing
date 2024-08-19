@@ -19,6 +19,8 @@ import { ComprarModalComponent } from './comprar-modal/comprar.component';
 import { TradingViewWidgetComponent } from '../tradingViewWidget/trading-view-widget.component';
 import { TradingViewWidgetService } from '../tradingViewWidget/trading-view-widget.service';
 import { WebSocketService } from '@ittiva/services/webSockete';
+import { VenderModalComponent } from './vender-modal/vender.component';
+import { ClienteService } from '../clientes/clientes.service';
 
 export class CustomPaginatorIntl extends MatPaginatorIntl {
   itemsPerPageLabel = 'Elementos por página';
@@ -81,12 +83,14 @@ export class DivisasComponent implements OnInit, OnDestroy {
   margen = 1000;
   datasource = new MatTableDataSource<CurrencyMoneda>();
   listaDatos: CurrencyMoneda[];
+  dinero: any;
   /**
    * Constructor
    */
   constructor(private websocketService: WebSocketRxjsService,
     public dialog: MatDialog,private tradingViewWidgetService: TradingViewWidgetService,
-    private webSocketService:WebSocketService
+    private webSocketService:WebSocketService,
+    private clienteService: ClienteService
   ) {
   }
 
@@ -106,27 +110,48 @@ export class DivisasComponent implements OnInit, OnDestroy {
     this.messages = [];
     this.listaDatos = [];
     let miArreglo = ["btc", "eth","ltc","alpha","ada","bnb","doge","avax","shib","bch","dot","trx","link","matic","icp","near","uni","dai","apt","stx","fil","atom","arb","wif","mkr","inj","grt","op","jup","flow","pepe"];
-
-    this.subscription = this.webSocketService.messages$.subscribe(
-      message => {
-        this.messages.push(message);
-        console.log('Received message:', message);
-      }
-    );
-
-
-
-/*     this.websocketService.connect('wss://ws.eodhistoricaldata.com/ws/forex?api_token=667d8404377b62.46044727');
+ 
+    this.websocketService.connect('wss://ws.eodhistoricaldata.com/ws/forex?api_token=667d8404377b62.46044727');
     this.subscription = this.websocketService.onMessage().subscribe(
       message => this.handleMessage(message)
       
     );
-    this.sendMessage(); */
-    this.sendMessage2();
+    this.sendMessage();
+
+
+
+    let request =
+    {
+
+      "idUsuario": localStorage.getItem('idUserWrog'),
+      "nombre": "string",
+      "pass": "string",
+      "rol": "string",
+      "tipo": "string",
+      "totalDinero": 0
+    } 
+    
+    this.clienteService.consultaCliente(request).subscribe({
+      next: (data: any) => {
+     
+    
+        // Accediendo a la lista de areas de atención dentro de la respuesta
+        if (data.estatus === 'OK') {
+          this.dinero = data.dto;
+
+        } else {
+          console.log(
+            'La respuesta no contiene una lista válida de areas de atención.'
+          );
+        }
+      },
+      error: (error: Error) => {
+        console.error(error);
+      },
+    });
+ 
   }
-  sendMessage2() {
-    this.webSocketService.sendMessage('Hello from client!');
-  }
+  
    handleMessage(message: any): void {
     // Suponiendo que el mensaje contiene el valor de la moneda en `a` y el tipo de moneda en `s`
     const currencyCode = message.s;  // e.g., "EURJPY"
@@ -198,9 +223,9 @@ export class DivisasComponent implements OnInit, OnDestroy {
   }
   openDialog(data:any): void {
     const dialogRef = this.dialog.open(ComprarModalComponent, {
-      width: '20%',
+      width: '22%',
       height: '80%',
-        data: { data: data, usuario: 'Usuario de prueba' },
+        data: { data: data, usuario: this.dinero.nombre, dinero:this.dinero.totalDinero},
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -208,6 +233,20 @@ export class DivisasComponent implements OnInit, OnDestroy {
   
     });
 }
+
+openDialogVender(data:any): void {
+  const dialogRef = this.dialog.open(VenderModalComponent, {
+    width: '22%',
+    height: '80%',
+      data: { data: data, usuario: this.dinero.nombre, dinero:this.dinero.totalDinero},
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+
+  });
+}
+ 
 onRowClicked(row: any) {
   console.log('Fila seleccionada:', row);
   this.tradingViewWidgetService.updateSymbol(row.instrumento);

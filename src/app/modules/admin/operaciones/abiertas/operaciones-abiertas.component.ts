@@ -177,4 +177,27 @@ export class OperacionesAbiertasComponent implements OnInit {
 
 
 }
+
+cerrar(request):void{
+
+  this.clienteService.cerrarApuesta(request).subscribe({
+    next: (respuesta: any) => {
+       
+      // Accediendo a la lista de areas de atención dentro de la respuesta
+      if (respuesta.estatus === 'OK') {
+        this.alertService.success('APUESTA CERRADA','La apuesta se cerro satisfactoriamente')
+        this.datasource.data = respuesta.lista;
+
+      } else {
+        this.alertService.error('APUESTA CERRADA','Hubo un problema para cerrar la apuesta, inetentelo de nuevo.')
+        console.log(
+          'La respuesta no contiene una lista válida de areas de atención.'
+        );
+      }
+    },
+    error: (error: Error) => {
+      console.error(error);
+    },
+  });
+}
 }

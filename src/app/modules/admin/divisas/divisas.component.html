@@ -28,7 +28,7 @@
                         <th mat-header-cell *matHeaderCellDef>Vender</th>
                         <td mat-cell *matCellDef="let element">
 
-                            <div *ngIf="element.change === 'up'" class="ml-2 flex items-center highlight-hover-green">
+                            <div *ngIf="element.change === 'up'" class="ml-2 flex items-center highlight-hover-green" (click)="openDialogVender(element)">
                                 <mat-icon class="text-green-500 icon-size-5" [svgIcon]="
                                             'heroicons_solid:arrow-up-circle'
                                         "></mat-icon>
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
 
-                            <div *ngIf="element.change === 'down'" class="ml-2 flex items-center highlight-hover">
+                            <div *ngIf="element.change === 'down'" class="ml-2 flex items-center highlight-hover" (click)="openDialogVender(element)">
                                 <mat-icon class="text-red-500 icon-size-5" [svgIcon]="
                                                     'heroicons_solid:arrow-down-circle'
                                                 "></mat-icon>
@@ -47,7 +47,7 @@
                             </div>
 
                             <div *ngIf="element.change === 'sin cambios'"
-                                class="ml-2 flex items-center highlight-hover-blue">
+                                class="ml-2 flex items-center highlight-hover-blue" (click)="openDialogVender(element)">
                                 <mat-icon class="text-blue-500 icon-size-5" [svgIcon]="
                                                     'heroicons_solid:minus-circle'
                                                 "></mat-icon>

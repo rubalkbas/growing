@@ -36,9 +36,9 @@ interface ViewValue {
 }
 
 @Component({
-    selector: 'app-comprar-modal',
-    templateUrl: './comprar.component.html',
-    styleUrls: ['./comprar.component.scss'],
+    selector: 'app-vender-modal',
+    templateUrl: './vender.component.html',
+    styleUrls: ['./vender.component.scss'],
     standalone: true,
     imports: [
         CommonModule,
@@ -54,7 +54,7 @@ interface ViewValue {
         MatSlideToggle
     ],
 })
-export class ComprarModalComponent implements OnInit {
+export class VenderModalComponent implements OnInit {
 
     rolForm: FormGroup;
     apuesta: ApuestaRequest = new ApuestaRequest();
@@ -71,7 +71,7 @@ export class ComprarModalComponent implements OnInit {
     textVariacion = '0.00'; // replace with your actual value
     showAlert = false;
     constructor(
-        public dialogRef: MatDialogRef<ComprarModalComponent>,
+        public dialogRef: MatDialogRef<VenderModalComponent>,
         private fb: FormBuilder,
         private alertService: AlertService,
         private clienteService:ClienteService, 
@@ -104,7 +104,7 @@ export class ComprarModalComponent implements OnInit {
 
     // Simulación de obtención del monto (esto debe adaptarse según tu lógica de obtención)
     getMonto(): number {
-        return this.data.data.comprar || 0; // Aquí asume que data.data.comprar tiene el valor de monto
+        return this.data.data.vender || 0; // Aquí asume que data.data.comprar tiene el valor de monto
     }
 
     onSubmit(): void {
@@ -120,20 +120,20 @@ export class ComprarModalComponent implements OnInit {
 
 
     generaApuesta():void{
+
         if(this.formCliente.get('porcentaje')?.value > this.data.dinero){
             this.alertService.error('Apuesta Inclompleta!','No tienes elk suficiente efectivo para realizar la apuesta.')
             return;
         }
-        
         this.apuesta.bloqueCompra = 'ACCIONES';
         this.apuesta.compra = this.data.data.instrumento;
         this.apuesta.idUsuario = localStorage.getItem('idUserWrog');
         this.apuesta.montoApuesta = this.formCliente.get('valorA')?.value;
-        this.apuesta.tipoCompra = 'COMPRA';
+        this.apuesta.tipoCompra = 'VENDER';
         this.apuesta.unidades =  this.formCliente.get('porcentaje')?.value;
         this.apuesta.valorUnidad = this.data.data.comprar;
         this.apuesta.variacion = this.data.variacion;
-        this.apuesta.estatusCompra = 'SISTEMA'
+        this.apuesta.estatusCompra = 'SISTEMA';
         this.apuesta.fechaCierre = "2024-08-18T16:28:03.032Z";
         this.apuesta.fechaCreacion = "2024-08-18T16:28:03.032Z";
         this.apuesta.gananciaPerdida = 0;

@@ -47,3 +47,60 @@
     height: 100%; /* Para asegurar que el scroll funcione correctamente */
 }
 
+.form-group {
+    margin-bottom: 15px;
+  }
+  
+  .instrument-label {
+    color: #3f51b5;
+  }
+  
+  .unit-controls, .toggle-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .unit-controls button, .toggle-controls button {
+    margin: 0 10px;
+  }
+  
+  .cotizacion-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .badge {
+    font-size: 1.1em;
+    padding: 5px 10px;
+    border-radius: 12px;
+    background-color: #e0f7fa;
+  }
+
+  .custom-button {
+    background-color: #57e78e; /* Color de fondo verde moderno */
+    color: white; /* Color del texto */
+    border-radius: 12px; /* Esquinas redondeadas */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de fuente */
+    font-weight: bold; /* Negrita */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para darle profundidad */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+  }
+  
+  .custom-button .icon-dollar {
+    margin-right: 6px; /* Espacio entre el icono y el texto */
+    font-size: 22px; /* Tamaño del icono */
+  }
+  
+  .custom-button:hover {
+    background-color: #3a923e; /* Color de fondo al hacer hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra más intensa al hacer hover */
+    cursor: pointer; /* Cambia el cursor a puntero */
+  }
+  
+  .custom-button:active {
+    background-color: #0cbb12; /* Color de fondo al hacer clic */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra más ligera al hacer clic */
+  }

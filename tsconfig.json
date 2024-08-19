@@ -3,6 +3,7 @@
     "compileOnSave": false,
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
+        "skipLibCheck": true,
         "baseUrl": "./src",
         "outDir": "./dist/out-tsc",
         "sourceMap": true,
@@ -17,7 +18,10 @@
         "lib": [
             "ES2022",
             "dom"
-        ]
+        ],
+        "typeRoots": [
+            "node_modules/@types"
+          ]
     },
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false

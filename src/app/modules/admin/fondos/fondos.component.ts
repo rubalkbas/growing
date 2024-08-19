@@ -17,6 +17,9 @@ import { ITradingViewWidget, TradingviewWidgetModule } from 'angular-tradingview
 import { WebSocketRxjsService } from '@ittiva/services/websoctekt.service';
 import { ComprarModalComponent } from './comprar-modal/comprar.component';
 import { TradingViewWidgetService } from '../tradingViewWidget/trading-view-widget.service';
+import { WebSocketFondoService } from '@ittiva/services/websoctektFondos.service';
+import { ClienteService } from '../clientes/clientes.service';
+import { VenderModalComponent } from './vender-modal/vender.component';
 
 export class CustomPaginatorIntl extends MatPaginatorIntl {
   itemsPerPageLabel = 'Elementos por página';
@@ -67,7 +70,7 @@ interface CurrencyData {
   imports: [CommonModule, MatButtonModule, MatPaginatorModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, MatTableModule, MatSortModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule,NgFor],
 })
 export class FondosComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'instrumento', 'variacion', 'vender', 'comprar' ];
+  displayedColumns: string[] = [  'instrumento', 'variacion', 'vender', 'comprar' ];
  
   public messages: any;
   private subscription: Subscription;
@@ -77,12 +80,22 @@ export class FondosComponent implements OnInit {
   margen = 1000;
   datasource = new MatTableDataSource<CurrencyMoneda>();
   listaDatos: CurrencyMoneda[];
+  stockData: any[] = [];
+  sockets: WebSocket[] = [];
+  socketSubjects: { [symbol: string]: Subject<any> } = {};
+  subscriptions: Subscription[] = [];
+  miLista: any[];
+  dinero: any;
+  miArreglo: string[];
   /**
    * Constructor
    */
-  constructor(private websocketService: WebSocketRxjsService,
-    public dialog: MatDialog,private tradingViewWidgetService: TradingViewWidgetService
+  constructor(private websocketService: WebSocketFondoService,
+    public dialog: MatDialog,private tradingViewWidgetService: TradingViewWidgetService,
+    private clienteService: ClienteService
   ) {
+    
+    this.miLista = []
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -94,107 +107,176 @@ export class FondosComponent implements OnInit {
    */
   private currencies: { [key: string]: CurrencyData } = {};
   private currenciesSubject = new BehaviorSubject<{ [key: string]: CurrencyData }>({});
-
-  onRowClicked(row: any) {
-    console.log('Fila seleccionada:', row);
-    this.tradingViewWidgetService.updateSymbol(row.instrumento);
-   // this.selectedSymbol = row.instrumento;
-    // Puedes realizar más acciones con los datos de la fila aquí
-  }
+ 
   
   ngOnInit(): void { 
-    this.messages = [];
-    this.listaDatos = [];
-    let miArreglo = ["btc", "eth","ltc","alpha","ada","bnb","doge","avax","shib","bch","dot","trx","link","matic","icp","near","uni","dai","apt","stx","fil","atom","arb","wif","mkr","inj","grt","op","jup","flow","pepe"];
+    this.miArreglo = ["imx","ai","dia"];
+   
+    this.miArreglo.forEach(symbol => {
+      // Crear un Subject para cada símbolo
+      this.socketSubjects[symbol] = new Subject<any>();
+
+      const socket = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}usdt@ticker`);
+
+      // Manejar los mensajes entrantes del WebSocket
+      socket.onmessage = (event: MessageEvent) => {
+        const data = JSON.parse(event.data);
+        this.socketSubjects[symbol].next(data);  // Emitir los datos a través del Subject
+      };
+
+      // Guardar el socket para cerrarlo luego si es necesario
+      this.sockets.push(socket);
+
+      // Suscribirse al Subject para escuchar los cambios
+      const subscription = this.socketSubjects[symbol].subscribe(data => {
+        this.handleSocketData(symbol, data, parseFloat(data.l) ,parseFloat(data.c));  // Manejar los datos recibidos
+      });
+
+      // Guardar la suscripción para poder cancelarla en ngOnDestroy
+      this.subscriptions.push(subscription);
+    });
+
+
+    let request =
+    {
+
+      "idUsuario": localStorage.getItem('idUserWrog'),
+      "nombre": "string",
+      "pass": "string",
+      "rol": "string",
+      "tipo": "string",
+      "totalDinero": 0
+    } 
+    this.clienteService.consultaCliente(request).subscribe({
+      next: (data: any) => {
+     
+    
+        // Accediendo a la lista de areas de atención dentro de la respuesta
+        if (data.estatus === 'OK') {
+          this.dinero = data.dto;
+
+        } else {
+          console.log(
+            'La respuesta no contiene una lista válida de areas de atención.'
+          );
+        }
+      },
+      error: (error: Error) => {
+        console.error(error);
+      },
+    });
+
+
+  }
+  private handleSocketData(symbol: string,data:any,newValueC:any, newValueV: any): void {
+    // console.log(`Data for ${symbol}:`, data);
+     let datos  = {
+       position: 0,
+       instrumento: '',
+       variacion: 0,
+       vender: 0,
+       comprar: 0,
+       changeV: '',
+       changeC: '',
+       changeVa: ''
+     };
  
-    this.websocketService.connect('wss://ws.eodhistoricaldata.com/ws/forex?api_token=667d8404377b62.46044727');
-    this.subscription = this.websocketService.onMessage().subscribe(
-      message => this.handleMessage(message)
-      
-    );
-    this.sendMessage();
-  }
+     let changeV = 'sin cambios';
+     let changeC = 'sin cambios';
+     let changeVa = 'sin cambios';
+ 
+     const index = this.miLista.findIndex(item => item.instrumento === symbol);
+     if (index >= 0) {
+         const newValueVFloat = parseFloat(newValueV);
+         const venderValueFloat = parseFloat(this.miLista[index].vender);
+ 
+         if (newValueVFloat > venderValueFloat) {
+           changeV = 'up';
+         } else if (newValueVFloat < venderValueFloat) {
+           changeV = 'down';
+         }
+ 
+         const newValueCFloat = parseFloat(newValueC);
+         const comprarValueFloat = parseFloat(this.miLista[index].comprar);
+ 
+         if (newValueCFloat > comprarValueFloat) {
+           changeC = 'up';
+         } else if (newValueCFloat < comprarValueFloat) {
+           changeC = 'down';
+         }
+ 
+         const dataPFloat = parseFloat(data.P);
+         const variacionValueFloat = parseFloat(this.miLista[index].variacion);
+ 
+         if (dataPFloat > variacionValueFloat) {
+           changeVa = 'up';
+         } else if (dataPFloat < variacionValueFloat) {
+           changeVa = 'down';
+         }
+ 
+         // Actualizar los datos en la lista
+         this.miLista[index].vender = newValueVFloat;
+         this.miLista[index].comprar = newValueCFloat;
+         this.miLista[index].variacion = dataPFloat;
+         this.miLista[index].changeV = changeV;
+         this.miLista[index].changeC = changeC;
+         this.miLista[index].changeVa = changeVa;
+     } else {
+         datos.instrumento = symbol;
+         datos.vender = parseFloat(newValueV);
+         datos.variacion = parseFloat(data.P);
+         datos.comprar = parseFloat(data.c);
+         datos.changeV = changeV;
+         datos.changeC = changeC;
+         datos.changeVa = changeVa;
+         this.miLista.push(datos);
+     }
+ 
+     // Solo actualizar los datos en lugar de reasignar el datasource
+     this.datasource.data = this.miLista;
+    
+   }  
 
-   handleMessage(message: any): void {
-    // Suponiendo que el mensaje contiene el valor de la moneda en `a` y el tipo de moneda en `s`
-    const currencyCode = message.s;  // e.g., "EURJPY"
-    const newValue = parseFloat(message.a);  // e.g., 165.8723
-
-    this.updateCurrencyData(currencyCode, newValue,message);
-  }
-
-  sendMessage( ): void {
-    this.websocketService.sendMessage( {"action": "subscribe", "symbols": "EURUSD,EURJPY,EURMXN,GBPUSD,EURCAD,EURAUD,CHFAUD,CHFCAD,CHFGBP,EURSGD,GBPPLN,GBPNZD,CHFNOK,CHFMXN,ZAREUR,EURCHF,GBPJPY,GBPCHF,AUDUSD,NZDUSD,USDCAD,XAUUSD,EUREUR,EURNZD,EURPLN,GBPEUR,GBPAUD,GBPNOK,GBPNOK,GBPMXN,CHFGBP,USDMXN"} );
-  }
-
-  updateCurrencyData(currencyCode: string, newValue: number, lodemas :any): void {
-    const previousValue = this.currencies[currencyCode]?.value || newValue;
-    let change = 'sin cambios';
-    let datos: CurrencyMoneda = {
-      position: 0,
-      instrumento: '',
-      variacion: '',
-      vender: '',
-      comprar: '',
-      change:''
-
-    }
-
-    datos.position = this.posicion + 1;
-    this.posicion = this.posicion +1;
-
-
-    if (newValue > previousValue) {
-      change = 'up';
-    } else if (newValue < previousValue) {
-      change = 'down';
-    }
-
-    datos.instrumento = currencyCode;
-    datos.variacion =  lodemas.dc ;
-    datos.comprar =  lodemas.a ;
-    datos.vender =   lodemas.b ;
-    datos.change = change;
-    const dataArray = this.listaDatos;
-
-    if(datos.vender !== 'NaN' && datos.position !== 1){
-
-      const index = dataArray.findIndex(item => item.instrumento === datos.instrumento);
-
-      if (index >= 0) {
-        dataArray[index] = datos;
-      } else {
-        dataArray.push(datos);
-      } 
-    }
   
-
-    this.datasource.data = dataArray;
-    this.currencies[currencyCode] = {
-      value: newValue,
-      change: change,
-      position: datos.position,
-      instrumento: datos.instrumento,
-      variacion: datos.variacion,
-      vender: datos.vender,
-      comprar: datos.comprar
-
-    };
-
-    // Emitir la actualización a los suscriptores
-    this.currenciesSubject.next(this.currencies);
+   ngOnDestroy(): void {
+    // Cerrar todos los sockets y cancelar todas las suscripciones cuando se destruya el componente
+    this.sockets.forEach(socket => socket.close());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
+
+  
+openDialogVender(data:any): void {
+  const dialogRef = this.dialog.open(VenderModalComponent, {
+    width: '22%',
+    height: '80%',
+      data: { data: data, usuario: this.dinero.nombre, dinero:this.dinero.totalDinero},
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+
+  });
+}
+
+   
   openDialog(data:any): void {
     const dialogRef = this.dialog.open(ComprarModalComponent, {
       width: '20%',
       height: '80%',
-        data: { data: data, usuario: 'Usuario de prueba' },
+      data: { data: data, usuario: this.dinero.nombre, dinero:this.dinero.totalDinero},
     });
 
     dialogRef.afterClosed().subscribe((result) => {
         console.log('The dialog was closed');
   
     });
+}
+
+onRowClicked(row: any) {
+  console.log('Fila seleccionada:', row);
+  this.tradingViewWidgetService.updateSymbol(row.instrumento);
+ // this.selectedSymbol = row.instrumento;
+  // Puedes realizar más acciones con los datos de la fila aquí
 }
 
 }

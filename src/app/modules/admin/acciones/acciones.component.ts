@@ -1,3 +1,4 @@
+
 import { CommonModule, CurrencyPipe, DatePipe, NgClass, NgFor, getCurrencySymbol } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,6 +18,9 @@ import { ITradingViewWidget, TradingviewWidgetModule } from 'angular-tradingview
 import { WebSocketRxjsService } from '@ittiva/services/websoctekt.service';
 import { ComprarModalComponent } from './comprar-modal/comprar.component';
 import { TradingViewWidgetService } from '../tradingViewWidget/trading-view-widget.service';
+import { WebSocketFondoService } from '@ittiva/services/websoctektFondos.service';
+import { ClienteService } from '../clientes/clientes.service';
+import { VenderModalComponent } from '../criptomonedas/vender-modal/vender.component'; 
 
 export class CustomPaginatorIntl extends MatPaginatorIntl {
   itemsPerPageLabel = 'Elementos por página';
@@ -59,17 +63,18 @@ interface CurrencyData {
   selector: 'acciones',
   templateUrl: './acciones.component.html',
   styleUrls: ['./acciones.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None, 
   standalone: true,
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomPaginatorIntl }
   ],
-  imports: [CommonModule, MatButtonModule, MatPaginatorModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, MatTableModule, MatSortModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule,TradingviewWidgetModule,NgFor],
+  imports: [CommonModule, MatButtonModule, MatPaginatorModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, MatTableModule, MatSortModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule,NgFor],
 })
-export class AccionesComponent implements OnInit {
+export class AccionesComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['position', 'instrumento', 'variacion', 'vender', 'comprar' ];
- 
- 
+  selectedSymbol: string = 'AAPL'; 
+
+  
   public messages: any;
   private subscription: Subscription;
   posicion = 0;
@@ -78,11 +83,13 @@ export class AccionesComponent implements OnInit {
   margen = 1000;
   datasource = new MatTableDataSource<CurrencyMoneda>();
   listaDatos: CurrencyMoneda[];
+  dinero: any;
   /**
    * Constructor
    */
-  constructor(private websocketService: WebSocketRxjsService,
-    public dialog: MatDialog,private tradingViewWidgetService: TradingViewWidgetService
+  constructor(private websocketService: WebSocketFondoService,
+    public dialog: MatDialog,private tradingViewWidgetService: TradingViewWidgetService,
+    private clienteService: ClienteService
   ) {
   }
 
@@ -95,26 +102,53 @@ export class AccionesComponent implements OnInit {
    */
   private currencies: { [key: string]: CurrencyData } = {};
   private currenciesSubject = new BehaviorSubject<{ [key: string]: CurrencyData }>({});
-  onRowClicked(row: any) {
-    console.log('Fila seleccionada:', row);
-    this.tradingViewWidgetService.updateSymbol(row.instrumento);
-   // this.selectedSymbol = row.instrumento;
-    // Puedes realizar más acciones con los datos de la fila aquí
-  }
-  
+  private messageSubscription!: Subscription;
+  public messages2: string[] = [];
+
   ngOnInit(): void { 
     this.messages = [];
     this.listaDatos = [];
-    let miArreglo = ["btc", "eth","ltc","alpha","ada","bnb","doge","avax","shib","bch","dot","trx","link","matic","icp","near","uni","dai","apt","stx","fil","atom","arb","wif","mkr","inj","grt","op","jup","flow","pepe"];
- 
-    this.websocketService.connect('wss://ws.eodhistoricaldata.com/ws/forex?api_token=667d8404377b62.46044727');
+    this.websocketService.connect('wss://ws.eodhistoricaldata.com/ws/us-quote?api_token=667d8404377b62.46044727');
     this.subscription = this.websocketService.onMessage().subscribe(
       message => this.handleMessage(message)
       
     );
     this.sendMessage();
-  }
 
+
+
+    let request =
+    {
+
+      "idUsuario": localStorage.getItem('idUserWrog'),
+      "nombre": "string",
+      "pass": "string",
+      "rol": "string",
+      "tipo": "string",
+      "totalDinero": 0
+    } 
+    
+    this.clienteService.consultaCliente(request).subscribe({
+      next: (data: any) => {
+     
+    
+        // Accediendo a la lista de areas de atención dentro de la respuesta
+        if (data.estatus === 'OK') {
+          this.dinero = data.dto;
+
+        } else {
+          console.log(
+            'La respuesta no contiene una lista válida de areas de atención.'
+          );
+        }
+      },
+      error: (error: Error) => {
+        console.error(error);
+      },
+    });
+ 
+  }
+  
    handleMessage(message: any): void {
     // Suponiendo que el mensaje contiene el valor de la moneda en `a` y el tipo de moneda en `s`
     const currencyCode = message.s;  // e.g., "EURJPY"
@@ -124,7 +158,7 @@ export class AccionesComponent implements OnInit {
   }
 
   sendMessage( ): void {
-    this.websocketService.sendMessage( {"action": "subscribe", "symbols": "EURUSD,EURJPY,EURMXN,GBPUSD,EURCAD,EURAUD,CHFAUD,CHFCAD,CHFGBP,EURSGD,GBPPLN,GBPNZD,CHFNOK,CHFMXN,ZAREUR,EURCHF,GBPJPY,GBPCHF,AUDUSD,NZDUSD,USDCAD,XAUUSD,EUREUR,EURNZD,EURPLN,GBPEUR,GBPAUD,GBPNOK,GBPNOK,GBPMXN,CHFGBP,USDMXN"} );
+    this.websocketService.sendMessage( {"action": "subscribe", "symbols": "AMZN,TSLA,MSFT,NVDA,AAPL,GOOG,META,LLY,JNJ,ORCL,ADBE,UBER,SBUX,MCD,KO,WMT,PFE,AZN,BABA,PEP,BBVA,MA,INTC,ERII,BE,CARR,CMI"} );
   }
 
   updateCurrencyData(currencyCode: string, newValue: number, lodemas :any): void {
@@ -186,9 +220,9 @@ export class AccionesComponent implements OnInit {
   }
   openDialog(data:any): void {
     const dialogRef = this.dialog.open(ComprarModalComponent, {
-      width: '20%',
+      width: '22%',
       height: '80%',
-        data: { data: data, usuario: 'Usuario de prueba' },
+        data: { data: data, usuario: this.dinero.nombre, dinero:this.dinero.totalDinero},
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -197,5 +231,31 @@ export class AccionesComponent implements OnInit {
     });
 }
 
+openDialogVender(data:any): void {
+  const dialogRef = this.dialog.open(VenderModalComponent, {
+    width: '22%',
+    height: '80%',
+      data: { data: data, usuario: this.dinero.nombre, dinero:this.dinero.totalDinero},
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+
+  });
+}
+ 
+onRowClicked(row: any) {
+  console.log('Fila seleccionada:', row);
+  this.tradingViewWidgetService.updateSymbol(row.instrumento);
+ // this.selectedSymbol = row.instrumento;
+  // Puedes realizar más acciones con los datos de la fila aquí
+}
+
+ngOnDestroy(): void {
+  if (this.subscription) {
+    this.subscription.unsubscribe();
+  }
+  this.websocketService.close();
+  }
 }
 

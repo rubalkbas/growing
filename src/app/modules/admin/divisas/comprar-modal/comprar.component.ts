@@ -26,6 +26,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PerfilamientoService } from 'app/modules/services/perfilamientos.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatDivider, MatDividerModule } from '@angular/material/divider';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { ApuestaRequest } from '../../models/apuesta';
+import { ClienteService } from '../../clientes/clientes.service';
 interface ViewValue {
     value: number;
     viewValue: string;
@@ -45,12 +49,15 @@ interface ViewValue {
         ReactiveFormsModule,
         MatCheckboxModule,
         MatIcon,
-        MatRadioModule
+        MatRadioModule,
+        MatDividerModule,
+        MatSlideToggle
     ],
 })
 export class ComprarModalComponent implements OnInit {
 
     rolForm: FormGroup;
+    apuesta: ApuestaRequest = new ApuestaRequest();
     permisos = [];
     newRol: any;
     usuarioLoggeado: any;
@@ -60,41 +67,125 @@ export class ComprarModalComponent implements OnInit {
         { value: 0, viewValue: 'Inactivo' },
     ];
     formCliente: FormGroup;
-    divi = 'USD'; // replace with your actual value
-    nocliente = '12345'; // replace with your actual value
-    montototal = 1000; // replace with your actual value
-    textCosto = '0.00'; // replace with your actual value
+
     textVariacion = '0.00'; // replace with your actual value
     showAlert = false;
     constructor(
         public dialogRef: MatDialogRef<ComprarModalComponent>,
         private fb: FormBuilder,
-        private alertService:AlertService,
-    
-        private perfilamientoService: PerfilamientoService,
+        private alertService: AlertService,
+        private clienteService:ClienteService, 
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
+        console.log(this.data)
 
         this.formCliente = this.fb.group({
-            tipom: ['venta', Validators.required],
-            porcentaje: [0, Validators.required],
-            valorA: ['', Validators.required],
+            tipom: [true, Validators.required],
+            porcentaje: [0, [Validators.required, Validators.min(0)]],
+            valorA: [{ value: 0, disabled: true }, Validators.required],
             cierreGanancia: [false],
-            porceganancia: [''],
-            cierrePerdida: [false],
-            porceperdida: ['']
+            porceganancia: [{ value: 0, disabled: true }],
+            cierrePerdida: [true],
+            porceperdida: [{ value: 0, disabled: true }],
+            // Otros controles que puedas tener
+        });
+
+
+    }
+    calculate(): void {
+        const monto = this.getMonto(); // Obtiene el monto de tu data
+        const unidades = this.formCliente.get('porcentaje')?.value || 0;
+
+        const margenRequerido = monto * unidades;
+
+        // Establece el valor del margen requerido en el formulario
+        this.formCliente.get('valorA')?.setValue(margenRequerido);
+    }
+
+    // Simulación de obtención del monto (esto debe adaptarse según tu lógica de obtención)
+    getMonto(): number {
+        return this.data.data.comprar || 0; // Aquí asume que data.data.comprar tiene el valor de monto
+    }
+
+    onSubmit(): void {
+        if (this.formCliente.valid) {
+            // Lógica de envío del formulario
+            console.log(this.data);
+            this.generaApuesta();
+
+
+        }
+    }
+
+
+
+    generaApuesta():void{
+        if(this.formCliente.get('porcentaje')?.value > this.data.dinero){
+            this.alertService.error('Apuesta Inclompleta!','No tienes elk suficiente efectivo para realizar la apuesta.')
+            return;
+        }
+        
+        this.apuesta.bloqueCompra = 'DIVISAS';
+        this.apuesta.compra = this.data.data.instrumento;
+        this.apuesta.idUsuario = localStorage.getItem('idUserWrog');
+        this.apuesta.montoApuesta = this.formCliente.get('valorA')?.value;
+        this.apuesta.tipoCompra = 'COMPRA';
+        this.apuesta.unidades =  this.formCliente.get('porcentaje')?.value;
+        this.apuesta.valorUnidad = this.data.data.comprar;
+        this.apuesta.variacion = this.data.variacion;
+        this.apuesta.estatusCompra = 'SISTEMA'
+        this.apuesta.fechaCierre = "2024-08-18T16:28:03.032Z";
+        this.apuesta.fechaCreacion = "2024-08-18T16:28:03.032Z";
+        this.apuesta.gananciaPerdida = 0;
+
+
+
+        this.clienteService.crearApuesta(this.apuesta).subscribe({
+            next: (respuesta: any) => {
+           
+              console.log('Respuesta completa: ', respuesta);
+              // Accediendo a la lista de areas de atención dentro de la respuesta
+              this.alertService.success('Apuesta Generada!','La apuesta a sido registrada correctamente.')
+              if (respuesta.estatus === 'OK') {
+           
+              } else {
+                console.log(
+                  'La apuesta no se pudo generar.'
+                );
+              }
+            },
+            error: (error: Error) => {
+              console.error(error);
+            },
           });
+
 
 
     }
 
+    // Métodos para aumentar/disminuir unidades
+    increaseIncrement(): void {
+        let unidades = this.formCliente.get('porcentaje')?.value || 0;
+        unidades++;
+        this.formCliente.get('porcentaje')?.setValue(unidades);
+    }
+
+    decreaseIncrement(): void {
+        let unidades = this.formCliente.get('porcentaje')?.value || 0;
+        if (unidades > 0) {
+            unidades--;
+            this.formCliente.get('porcentaje')?.setValue(unidades);
+        }
+    }
+
+
     ngOnInit(): void {
-   console.log(this.data)
-        this.rolForm = this.fb.group({
-            nombre: ['', Validators.required],
-            estatus: ['', Validators.required],
+        this.calculate(); // Llama a calcular al iniciar para establecer el valor inicial de margen requerido
+
+        // Suscribir cambios en monto y unidades para recalcular el margen requerido
+        this.formCliente.get('porcentaje')?.valueChanges.subscribe(() => {
+            this.calculate();
         });
- 
     }
 
     get descripcion() {
@@ -104,118 +195,10 @@ export class ComprarModalComponent implements OnInit {
     onClose(): void {
         this.dialogRef.close(this.newRol);
     }
- 
-    
 
-    onSubmit(): void {
 
-        if (this.rolForm.valid) {
-            const rol: Rol = {
-                nombreRol: this.rolForm.value.nombre,
-                estatus: this.rolForm.value.estatus,
-                fechaCreacion: new Date().toISOString(),
-                fechaAct:
-                    this.rolForm.value.estatus === 1
-                        ? new Date().toISOString()
-                        : null,
-            };
 
-            
-        } else {
-            this.rolForm.markAllAsTouched();
-        }
-    }
 
-    crearPermisoRol(rol:any) {
 
-        this.newRol = rol;
-        const selectedPermissions = this.permisos
-            .filter(
-                (permiso) =>
-                    this.rolForm.get('permiso' + permiso.idPermiso).value
-            )
-            .map((permiso) => permiso);
-
-        selectedPermissions.forEach((permiso) => {
-
-            const perfilamiento = {
-                idRol: this.newRol.idRol,
-                idPermiso: permiso.idPermiso,
-            };
-
-            // Se crea el registro en la tabla roles_permisos
-            this.perfilamientoService
-                .createPerfilamiento(perfilamiento)
-                .subscribe({
-                    next: (response) => {
-
-                        if (response.estatus === 'OK') {
-                            
-                            this.alertService.success(
-                                'Rol creado',
-                                'El rol se ha creado correctamente'
-                            );
-
-                            this.rolForm.reset();
-                            this.dialogRef.close(this.newRol);
-
-                        } else {
-                            this.alertService.error(
-                                'Error',
-                                'Error al guardar los permisos'
-                            );
-                        }
-                    },
-                    error: (error) => {
-                        this.alertService.error(
-                            'Error',
-                            'Error al guardar los permisos'
-                        );
-                        console.error(error);
-                    },
-                });
-        });
-    }
-
-    
-    calculate() {
-        // calculation logic here
-      }
-    
-      increaseIncrement() {
-        const current = this.formCliente.get('porcentaje').value;
-        this.formCliente.patchValue({ porcentaje: current + 1 });
-      }
-    
-      decreaseIncrement() {
-        const current = this.formCliente.get('porcentaje').value;
-        if (current > 0) {
-          this.formCliente.patchValue({ porcentaje: current - 1 });
-        }
-      }
-    
-      increaseProfit() {
-        const current = this.formCliente.get('porceganancia').value;
-        this.formCliente.patchValue({ porceganancia: current + 1 });
-      }
-    
-      decreaseProfit() {
-        const current = this.formCliente.get('porceganancia').value;
-        if (current > 0) {
-          this.formCliente.patchValue({ porceganancia: current - 1 });
-        }
-      }
-    
-      increaseLoss() {
-        const current = this.formCliente.get('porceperdida').value;
-        this.formCliente.patchValue({ porceperdida: current + 1 });
-      }
-    
-      decreaseLoss() {
-        const current = this.formCliente.get('porceperdida').value;
-        if (current > 0) {
-          this.formCliente.patchValue({ porceperdida: current - 1 });
-        }
-      }
 
 }

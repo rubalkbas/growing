@@ -18,7 +18,9 @@
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
                         "serviceWorker": true,
-                        "outputPath": "dist/ittiva",
+                        "ngswConfigPath": "src/ngsw-config.json",
+                        "aot": true,
+                        "outputPath": "dist",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "polyfills": [
@@ -57,7 +59,8 @@
                             "src/styles/vendors.scss",
                             "src/@ittiva/styles/main.scss",
                             "src/styles/styles.scss",
-                            "src/styles/tailwind.scss"
+                            "src/styles/tailwind.scss",
+                            "node_modules/quill/dist/quill.snow.css"
                         ],
                         "scripts": []
                     },
@@ -75,7 +78,15 @@
                                     "maximumError": "90kb"
                                 }
                             ],
-                            "outputHashing": "all"
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "aot": true,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "serviceWorker": true
                         },
                         "development": {
                             "buildOptimizer": false,
@@ -92,10 +103,10 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                          "buildTarget": "ittiva:build:production"
+                            "buildTarget": "ittiva:build:production"
                         },
                         "development": {
-                          "buildTarget": "ittiva:build:development"
+                            "buildTarget": "ittiva:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -103,7 +114,7 @@
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                      "buildTarget": "ittiva:build"
+                        "buildTarget": "ittiva:build"
                     }
                 },
                 "test": {
@@ -130,6 +141,6 @@
         }
     },
     "cli": {
-      "analytics": false
+        "analytics": false
     }
 }
