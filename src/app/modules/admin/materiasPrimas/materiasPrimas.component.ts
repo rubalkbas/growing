@@ -125,7 +125,7 @@ export class MateriasPrimasComponent implements OnInit {
   }
 
   sendMessage( ): void {
-    this.websocketService.sendMessage( {"action": "subscribe", "symbols": "EURUSD,EURJPY,EURMXN,GBPUSD,EURCAD,EURAUD,CHFAUD,CHFCAD,CHFGBP,EURSGD,GBPPLN,GBPNZD,CHFNOK,CHFMXN,ZAREUR,EURCHF,GBPJPY,GBPCHF,AUDUSD,NZDUSD,USDCAD,XAUUSD,EUREUR,EURNZD,EURPLN,GBPEUR,GBPAUD,GBPNOK,GBPNOK,GBPMXN,CHFGBP,USDMXN"} );
+    this.websocketService.sendMessage( {"action": "subscribe", "symbols": "WTIUSD,XBRUSD,XAUUSD,XAGUSD,BRLUSD,THBUSD"} );
   }
 
   updateCurrencyData(currencyCode: string, newValue: number, lodemas :any): void {

@@ -99,7 +99,7 @@ export class ClienteService
     }
 
     cerrarApuesta(request: any): Observable<any> {
-        return this._httpClient.post<any>(`${this.baseUrl}/apuestaCliente/crearApuestas`,request);
+        return this._httpClient.post<any>(`${this.baseUrl}/apuestaCliente/cerrarApuesta`,request);
     }
 
     
