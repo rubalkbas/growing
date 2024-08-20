@@ -78,7 +78,7 @@ export class ComprarModalComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         console.log(this.data)
-
+        this.data.data.comprar = parseFloat(this.data.data.comprar); 
         this.formCliente = this.fb.group({
             tipom: [true, Validators.required],
             porcentaje: [0, [Validators.required, Validators.min(0)]],

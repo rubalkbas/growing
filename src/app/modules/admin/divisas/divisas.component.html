@@ -21,14 +21,25 @@
 
                     <ng-container matColumnDef="variacion">
                         <th mat-header-cell *matHeaderCellDef>Cambiar</th>
-                        <td mat-cell *matCellDef="let element">{{element.variacion}}</td>
+                        <td mat-cell *matCellDef="let element">
+                            <div *ngIf="element.changeVa === 'up'" class="ml-1 text-md font-medium text-green-500">
+                                {{element.variacion}}
+                            </div>
+                            <div *ngIf="element.changeVa === 'down'" class="ml-1 text-md font-medium text-red-500">
+                                {{element.variacion}}
+                            </div>
+                            <div *ngIf="element.changeVa === 'sin cambios'" class="ml-1 text-md font-medium text-blue-500">
+                                {{element.variacion}}
+                            </div>
+                            
+                            </td>
                     </ng-container>
 
                     <ng-container matColumnDef="vender">
                         <th mat-header-cell *matHeaderCellDef>Vender</th>
                         <td mat-cell *matCellDef="let element">
 
-                            <div *ngIf="element.change === 'up'" class="ml-2 flex items-center highlight-hover-green" (click)="openDialogVender(element)">
+                            <div *ngIf="element.changeV === 'up'" class="ml-2 flex items-center highlight-hover-green" (click)="openDialogVender(element)">
                                 <mat-icon class="text-green-500 icon-size-5" [svgIcon]="
                                             'heroicons_solid:arrow-up-circle'
                                         "></mat-icon>
@@ -37,7 +48,7 @@
                                 </div>
                             </div>
 
-                            <div *ngIf="element.change === 'down'" class="ml-2 flex items-center highlight-hover" (click)="openDialogVender(element)">
+                            <div *ngIf="element.changeV === 'down'" class="ml-2 flex items-center highlight-hover" (click)="openDialogVender(element)">
                                 <mat-icon class="text-red-500 icon-size-5" [svgIcon]="
                                                     'heroicons_solid:arrow-down-circle'
                                                 "></mat-icon>
@@ -46,7 +57,7 @@
                                 </div>
                             </div>
 
-                            <div *ngIf="element.change === 'sin cambios'"
+                            <div *ngIf="element.changeV === 'sin cambios'"
                                 class="ml-2 flex items-center highlight-hover-blue" (click)="openDialogVender(element)">
                                 <mat-icon class="text-blue-500 icon-size-5" [svgIcon]="
                                                     'heroicons_solid:minus-circle'
@@ -64,7 +75,7 @@
                         <td mat-cell *matCellDef="let element">
 
 
-                            <div *ngIf="element.change === 'up'" (click)="openDialog(element)"
+                            <div *ngIf="element.changeC === 'up'" (click)="openDialog(element)"
                                 class="ml-2 flex items-center highlight-hover-green">
                                 <mat-icon class="text-green-500 icon-size-5" [svgIcon]="
                                                     'heroicons_solid:arrow-up-circle'
@@ -74,7 +85,7 @@
                                 </div>
                             </div>
 
-                            <div *ngIf="element.change === 'down'" (click)="openDialog(element)"
+                            <div *ngIf="element.changeC === 'down'" (click)="openDialog(element)"
                                 class="ml-2 flex items-center highlight-hover">
                                 <mat-icon class="text-red-500 icon-size-5" [svgIcon]="
                                                             'heroicons_solid:arrow-down-circle'
@@ -84,7 +95,7 @@
                                 </div>
                             </div>
 
-                            <div *ngIf="element.change === 'sin cambios'" (click)="openDialog(element)"
+                            <div *ngIf="element.changeC === 'sin cambios'" (click)="openDialog(element)"
                                 class="ml-2 flex items-center highlight-hover-blue">
                                 <mat-icon class="text-blue-500 icon-size-5" [svgIcon]="
                                                             'heroicons_solid:minus-circle'

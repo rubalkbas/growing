@@ -40,25 +40,7 @@ export class CustomPaginatorIntl extends MatPaginatorIntl {
   }
 }
 
-export interface CurrencyMoneda {
-  position: number;
-  instrumento: string;
-  variacion: string;
-  vender: string;
-  comprar: string;
-  change: string;
-}
-
-interface CurrencyData {
-  value: number;
-  change: string;  // Positivo, negativo o sin cambio
-  position: number;
-  instrumento: string;
-  variacion: string;
-  vender: string;
-  comprar: string;
-}
-
+ 
 @Component({
   selector: 'acciones',
   templateUrl: './acciones.component.html',
@@ -71,7 +53,7 @@ interface CurrencyData {
   imports: [CommonModule, MatButtonModule, MatPaginatorModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, MatTableModule, MatSortModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule,NgFor],
 })
 export class AccionesComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = ['position', 'instrumento', 'variacion', 'vender', 'comprar' ];
+  displayedColumns: string[] = ['position', 'instrumento', 'vender', 'comprar' ];
   selectedSymbol: string = 'AAPL'; 
 
   
@@ -81,8 +63,8 @@ export class AccionesComponent implements OnInit, OnDestroy {
   balance = 1300;
   margenLibre = 300;
   margen = 1000;
-  datasource = new MatTableDataSource<CurrencyMoneda>();
-  listaDatos: CurrencyMoneda[];
+  datasource = new MatTableDataSource<any>();
+  listaDatos: any[];
   dinero: any;
   /**
    * Constructor
@@ -100,8 +82,8 @@ export class AccionesComponent implements OnInit, OnDestroy {
   /**
    * On init
    */
-  private currencies: { [key: string]: CurrencyData } = {};
-  private currenciesSubject = new BehaviorSubject<{ [key: string]: CurrencyData }>({});
+  private currencies: { [key: string]: any } = {};
+  private currenciesSubject = new BehaviorSubject<{ [key: string]: any }>({});
   private messageSubscription!: Subscription;
   public messages2: string[] = [];
 
@@ -152,72 +134,92 @@ export class AccionesComponent implements OnInit, OnDestroy {
    handleMessage(message: any): void {
     // Suponiendo que el mensaje contiene el valor de la moneda en `a` y el tipo de moneda en `s`
     const currencyCode = message.s;  // e.g., "EURJPY"
-    const newValue = parseFloat(message.a);  // e.g., 165.8723
-
-    this.updateCurrencyData(currencyCode, newValue,message);
+    const newValue = parseFloat(message.ap);  // e.g., 165.8723
+    const newValueVender = parseFloat(message.bp);  // e.g., 165.8723
+    this.updateCurrencyData(currencyCode, newValue,message,newValueVender);
   }
 
   sendMessage( ): void {
     this.websocketService.sendMessage( {"action": "subscribe", "symbols": "AMZN,TSLA,MSFT,NVDA,AAPL,GOOG,META,LLY,JNJ,ORCL,ADBE,UBER,SBUX,MCD,KO,WMT,PFE,AZN,BABA,PEP,BBVA,MA,INTC,ERII,BE,CARR,CMI"} );
   }
 
-  updateCurrencyData(currencyCode: string, newValue: number, lodemas :any): void {
-    const previousValue = this.currencies[currencyCode]?.value || newValue;
-    let change = 'sin cambios';
-    let datos: CurrencyMoneda = {
+  updateCurrencyData(currencyCode: string, newValue: number, lodemas :any, newValueVender :any): void {
+    //const previousValue = this.currencies[currencyCode]?.value || newValue;
+    let changeV = 'sin cambios';
+    let changeC = 'sin cambios';
+    
+
+    let datos  = {
       position: 0,
       instrumento: '',
-      variacion: '',
-      vender: '',
-      comprar: '',
-      change:''
-
-    }
-
-    datos.position = this.posicion + 1;
-    this.posicion = this.posicion +1;
-
-
-    if (newValue > previousValue) {
-      change = 'up';
-    } else if (newValue < previousValue) {
-      change = 'down';
-    }
-
-    datos.instrumento = currencyCode;
-    datos.variacion =  lodemas.dc ;
-    datos.comprar =  lodemas.a ;
-    datos.vender =   lodemas.b ;
-    datos.change = change;
-    const dataArray = this.listaDatos;
-
-    if(datos.vender !== 'NaN' && datos.position !== 1){
-
-      const index = dataArray.findIndex(item => item.instrumento === datos.instrumento);
-
-      if (index >= 0) {
-        dataArray[index] = datos;
-      } else {
-        dataArray.push(datos);
-      } 
-    }
-  
-
-    this.datasource.data = dataArray;
-    this.currencies[currencyCode] = {
-      value: newValue,
-      change: change,
-      position: datos.position,
-      instrumento: datos.instrumento,
-      variacion: datos.variacion,
-      vender: datos.vender,
-      comprar: datos.comprar
-
+      variacion: 0,
+      vender: 0,
+      comprar: 0,
+      changeV: '',
+      changeC: '',
+      changeVa: ''
     };
 
-    // Emitir la actualización a los suscriptores
-    this.currenciesSubject.next(this.currencies);
+    const index = this.listaDatos.findIndex(item => item.instrumento === lodemas.s);
+
+    if(index > 0 ){
+
+
+  
+    const venderValueFloat = parseFloat(this.listaDatos[index].vender);
+    const comprarValueFloat = parseFloat(this.listaDatos[index].comprar);
+    const variacionValueFloat = parseFloat(this.listaDatos[index].variacion);
+    
+    
+  
+
+    if (newValue > comprarValueFloat) {
+      changeC = 'up';
+    } else if (newValue < comprarValueFloat) {
+      changeC = 'down';
+    }
+
+    if (newValueVender > venderValueFloat) {
+      changeV = 'up';
+    } else if (newValueVender < venderValueFloat) {
+      changeV = 'down';
+    }
+
+
+    datos.instrumento = currencyCode;
+    datos.comprar =  lodemas.ap ;
+    datos.vender =   lodemas.bp ;
+    datos.changeV = changeV;
+    datos.changeC = changeC;
+ 
+    this.listaDatos[index].vender = newValueVender;
+    this.listaDatos[index].comprar = newValue;
+    this.listaDatos[index].changeV = changeV;
+    this.listaDatos[index].changeC = changeC;
+
+
+  // Emitir la actualización a los suscriptores
+  this.currenciesSubject.next(this.currencies);
+  }else{
+   
+    datos.instrumento = currencyCode;
+    datos.comprar =  lodemas.ap ;
+    datos.vender =   lodemas.bp ;
+    datos.changeV = changeV;
+    datos.changeC = changeC;
+    datos.position = this.posicion
+    if(this.posicion > 0 ){
+      this.listaDatos.push(datos);
+    }
+    this.posicion= this.posicion + 1;
+ 
+    this.currenciesSubject.next(datos);
   }
+
+  this.datasource.data = this.listaDatos;
+ 
+  }
+
   openDialog(data:any): void {
     const dialogRef = this.dialog.open(ComprarModalComponent, {
       width: '22%',

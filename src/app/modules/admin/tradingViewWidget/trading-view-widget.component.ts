@@ -76,7 +76,7 @@ export class TradingViewWidgetComponent implements OnInit, OnChanges, OnDestroy,
  
   }
   initializeWidget() {
-    if (typeof TradingView !== 'undefined') {
+  
     this.widget = new TradingView.widget({
       symbol: this.symbol,
       interval: 'D',
@@ -95,9 +95,7 @@ export class TradingViewWidgetComponent implements OnInit, OnChanges, OnDestroy,
       allow_symbol_change: true,
       save_image: false,
     });
-  } else {
-    console.error('TradingView is not defined');
-  }
+ 
   }
 
   updateWidget() {

@@ -48,9 +48,9 @@
     <mat-divider></mat-divider>
 
     <div class="form-group cotizacion-group">
-      <span *ngIf="data.data.changeVa === 'up'" class="badge text-secondary ml-1 text-md font-medium text-green-500" >Cotización Vigente: {{ data.data.comprar }} USD</span>
-      <span *ngIf="data.data.changeVa === 'down'" class="badge text-secondary ml-1 text-md font-medium text-red-500" >Cotización Vigente: {{ data.data.comprar }} USD</span>
-      <span *ngIf="data.data.changeVa === 'sin cambios'" class="badge text-secondary ml-1 text-md font-medium text-blue-500" >Cotización Vigente: {{ data.data.comprar }} USD</span>
+      <span *ngIf="data.data.changeVa === 'up'" class="badge text-secondary ml-1 text-md font-medium text-green-500" >Cotización Vigente: {{ data.data.vender }} USD</span>
+      <span *ngIf="data.data.changeVa === 'down'" class="badge text-secondary ml-1 text-md font-medium text-red-500" >Cotización Vigente: {{ data.data.vender }} USD</span>
+      <span *ngIf="data.data.changeVa === 'sin cambios'" class="badge text-secondary ml-1 text-md font-medium text-blue-500" >Cotización Vigente: {{ data.data.vender }} USD</span>
  
       <span class="badge text-danger">{{ textVariacion }}</span>
     </div>
