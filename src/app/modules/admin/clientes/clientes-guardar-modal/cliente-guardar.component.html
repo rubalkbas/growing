@@ -1,0 +1,44 @@
+ 
+
+<h1 mat-dialog-title class="text-2xl text-center font-bold">Cliente</h1>
+<div mat-dialog-content class="p-4">
+  <div class="mx-auto p-6 bg-white shadow-lg rounded-lg max-w-md">
+    <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" placeholder="Ingrese el nombre">
+        <mat-error *ngIf="clienteForm.get('nombre').hasError('required')">
+          El nombre es obligatorio
+        </mat-error>
+        <mat-error *ngIf="clienteForm.get('nombre').hasError('minlength')">
+          El nombre debe tener al menos 3 caracteres
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Correo</mat-label>
+        <input matInput formControlName="correo" placeholder="Ingrese el correo electrónico">
+        <mat-error *ngIf="clienteForm.get('correo').hasError('required')">
+          El correo es obligatorio
+        </mat-error>
+        <mat-error *ngIf="clienteForm.get('correo').hasError('email')">
+          Ingrese un correo válido
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="password" placeholder="Ingrese la contraseña" type="password">
+        <mat-error *ngIf="clienteForm.get('password').hasError('required')">
+          La contraseña es obligatoria
+        </mat-error>
+        <mat-error *ngIf="clienteForm.get('password').hasError('minlength')">
+          La contraseña debe tener al menos 6 caracteres
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="clienteForm.invalid" class="w-full">Guardar Cliente</button>
+    </form>
+  </div>
+</div>

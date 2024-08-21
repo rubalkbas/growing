@@ -22,6 +22,7 @@ import { RetirosModalComponent } from './retiros-modal/retiros.component';
 import { ClienteModalComponent } from './clientes-modal/cliente.component';
 import { AbiertasModalComponent } from './abiertas-modal/abiertas.component';
 import { CerradasModalComponent } from './cerradas-modal/cerradas.component';
+import { ClienteGuardarModalComponent } from './clientes-guardar-modal/cliente-guardar.component';
 export class CustomPaginatorIntl extends MatPaginatorIntl {
   itemsPerPageLabel = 'Elementos por página';
   nextPageLabel = 'Página siguiente';
@@ -240,7 +241,21 @@ export class ClientesComponent implements OnInit {
     });
   }
 
-  
+  opencDialogNuevoCliente( ): void {
+    const dialogRef = this.dialog.open(ClienteGuardarModalComponent , {
+      width: '550px',
+      height: '550px',
+      // height: '700px'
+ 
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('The dialog was closed');
+      }
+    });
+  }
+
   
 
 }

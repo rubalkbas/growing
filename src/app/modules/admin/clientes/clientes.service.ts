@@ -82,6 +82,15 @@ export class ClienteService
         return this._httpClient.post<any>(`${this.baseUrl}/usuarios/consultaUsuarioClienteID`,request);
     }
 
+    actualizaCliente(request: any): Observable<any> {
+        return this._httpClient.put<any>(`${this.baseUrl}/usuarios/actualiza-usuario`,request);
+    }
+
+    agregaCliente(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/auth/nuevo`,request);
+    }
+
+
     consultaAbiertas(request: any): Observable<any> {
         return this._httpClient.post<any>(`${this.baseUrl}/apuestaCliente/consultaApuestasAbiertasClienteID`,request);
     }

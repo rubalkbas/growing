@@ -35,9 +35,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NgApexchartsModule } from 'ng-apexcharts';
-import { ClienteService } from '../clientes.service';
+import { NgApexchartsModule } from 'ng-apexcharts'; 
 import Swal from 'sweetalert2';
+import { ClienteService } from 'app/modules/admin/clientes/clientes.service';
 interface ViewValue {
     value: number;
     viewValue: string;
@@ -161,7 +161,7 @@ cargaDatos():void{
       let request =
       {
  
-        "idUsuario": this.data.data.data,
+        "idUsuario": this.data.data.data.idUsuario,
         "nombre": "string",
         "pass": "string",
         "rol": "string",

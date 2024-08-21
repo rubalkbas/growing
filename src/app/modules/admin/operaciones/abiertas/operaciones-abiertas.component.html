@@ -36,11 +36,7 @@
             <th mat-header-cell *matHeaderCellDef>Variación</th>
             <td mat-cell *matCellDef="let element">{{element.variacion}}</td>
           </ng-container>
-
-          <ng-container matColumnDef="gananciaPerdida">
-            <th mat-header-cell *matHeaderCellDef>Ganancia/Perdida</th>
-            <td mat-cell *matCellDef="let element">{{element.gananciaPerdida | currency:'USD'}}</td>
-          </ng-container>
+ 
 
           <ng-container matColumnDef="bloqueCompra">
             <th mat-header-cell *matHeaderCellDef>Bloque</th>

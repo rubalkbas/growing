@@ -1,0 +1,41 @@
+<h1 mat-dialog-title class="text-2xl text-center font-bold">Cliente</h1>
+<div mat-dialog-content class="p-4">
+  <div class="mx-auto p-6 bg-white shadow-lg rounded-lg max-w-md">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+
+      <div class="mb-6">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Nombre</mat-label>
+          <input matInput placeholder="Ingresa tu nombre" formControlName="nombre">
+          <mat-error *ngIf="userForm.get('nombre').invalid && userForm.get('nombre').touched">
+            El nombre es requerido.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="mb-6">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Correo</mat-label>
+          <input matInput placeholder="Ingresa tu correo" formControlName="correo">
+          <mat-error *ngIf="userForm.get('correo').invalid && userForm.get('correo').touched">
+            <span *ngIf="userForm.get('correo').hasError('required')">El correo es requerido.</span>
+            <span *ngIf="userForm.get('correo').hasError('email')">Formato de correo inválido.</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="mb-6">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Contraseña</mat-label>
+          <input matInput placeholder="Ingresa tu contraseña" formControlName="contrasena">
+          <mat-error *ngIf="userForm.get('contrasena').invalid && userForm.get('contrasena').touched">
+            <span *ngIf="userForm.get('contrasena').hasError('required')">La contraseña es requerida.</span>
+            <span *ngIf="userForm.get('contrasena').hasError('minlength')">La contraseña debe tener al menos 6 caracteres.</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="userForm.invalid" class="w-full">Enviar</button>
+    </form>
+  </div>
+</div>

@@ -231,7 +231,7 @@ export class MateriasPrimasComponent implements OnInit {
     const dialogRef = this.dialog.open(ComprarModalComponent, {
       width: '20%',
       height: '80%',
-      data: { data: data, usuario: 'Usuario de prueba' },
+      data: { data: data, usuario: this.dinero.nombre, dinero: this.dinero.totalDinero },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

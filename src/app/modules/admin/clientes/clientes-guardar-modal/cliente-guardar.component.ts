@@ -1,7 +1,6 @@
 import { Component, CSP_NONCE, Inject, OnInit } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialog,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
@@ -37,18 +36,17 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { ClienteService } from '../clientes.service';
 import Swal from 'sweetalert2';
-import { ClienteService } from '../../clientes/clientes.service';
-import { DetalleAbiertasModalComponent } from '../detalle-abiertas-modal/detalle-abiertas-modal.component';
 interface ViewValue {
   value: number;
   viewValue: string;
 }
 
 @Component({
-  selector: 'app-operaciones-abiertas',
-  templateUrl: './operaciones-abiertas.component.html',
-  styleUrls: ['./operaciones-abiertas.component.scss'],
+  selector: 'app-cliente-guardar-modal',
+  templateUrl: './cliente-guardar.component.html',
+  styleUrls: ['./cliente-guardar.component.scss'],
   standalone: true,
   imports: [
     CommonModule,
@@ -68,8 +66,9 @@ interface ViewValue {
   ],
 })
 
-export class OperacionesAbiertasComponent implements OnInit {
-  displayedColumns: string[] = ['tipoCompra', 'compra','valorUnidad', 'unidades','montoApuesta', 'variacion',  'bloqueCompra',  'fechaCreacion','accion' ];
+export class ClienteGuardarModalComponent implements OnInit {
+  displayedColumns: string[] = ['monto', 'fecha', 'tipo', 'accion'];
+  displayedColumns2: string[] = ['monto', 'tipo', 'fecha'];
   rolForm: FormGroup;
   permisos = [];
   newRol: any;
@@ -79,125 +78,87 @@ export class OperacionesAbiertasComponent implements OnInit {
     { value: 1, viewValue: 'Activo' },
     { value: 0, viewValue: 'Inactivo' },
   ];
-  formCliente: FormGroup;
- 
+  clienteForm: FormGroup;
+  divi = 'USD'; // replace with your actual value
+  nocliente = '12345'; // replace with your actual value
+  montototal = 1000; // replace with your actual value
+  textCosto = '0.00'; // replace with your actual value
+  textVariacion = '0.00'; // replace with your actual value
   showAlert = false;
   total = 0;
   datasource = new MatTableDataSource<any>();
   idUser: string;
   monto: any = 0;
+  datasource2 = new MatTableDataSource<any>();
   constructor(
+    public dialogRef: MatDialogRef<ClienteGuardarModalComponent>,
     private fb: FormBuilder,
     private alertService: AlertService,
     private clienteService: ClienteService,
-    public dialog: MatDialog,
-
+    private perfilamientoService: PerfilamientoService,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-
-    this.formCliente = this.fb.group({
-      tipom: ['venta', Validators.required],
-      porcentaje: [0, Validators.required],
-      valorA: ['', Validators.required],
-      cierreGanancia: [false],
-      porceganancia: [''],
-      cierrePerdida: [false],
-      porceperdida: ['']
+    this.clienteForm = this.fb.group({
+      nombre: ['', [Validators.required, Validators.minLength(3)]],
+      correo: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
     this.idUser = localStorage.getItem('idUserWrog');
 
   }
 
   ngOnInit(): void {
-    // console.log(this.data)
+    console.log(this.data)
     this.rolForm = this.fb.group({
       nombre: ['', Validators.required],
       estatus: ['', Validators.required],
     });
-
-    this.cargaIngreso();
+ 
 
   }
+  // Método para manejar el envío del formulario
+  onSubmit() {
 
-  cargaIngreso(): void {
-
-    let request =
-    {
-      "bloqueCompra": "string",
-      "compra": "string",
-      "estatusCompra": "string",
-      "fechaCierre": "2024-08-14T19:18:54.451Z",
-      "fechaCreacion": "2024-08-14T19:18:54.451Z",
-      "gananciaPerdida": 0,
-      "idApuestaCliente": 0,
-      "idUsuario": this.idUser,
-      "montoApuesta": 0,
-      "tipoCompra": "string",
-      "unidades": 0,
-      "valorUnidad": 0,
-      "variacion": 0
-    } 
-
-    this.clienteService.consultaAbiertas(request).subscribe({
-      next: (respuesta: any) => {
-        this.datasource.data = [];
-        console.log('Respuesta completa: ', respuesta);
-        // Accediendo a la lista de areas de atención dentro de la respuesta
-        if (respuesta.estatus === 'OK') {
-
-          this.datasource.data = respuesta.lista;
+    let request = {
  
+      "correo": this.clienteForm.get('correo').value,
+      "idRol": {    
+        "idRol": 2
+      },  
+      "nombre": this.clienteForm.get('nombre').value,
+      "pass": this.clienteForm.get('password').value,
+      "rol": "Cliente",
+      "tipo": "Cliente"
+    }
+
+    this.clienteService.agregaCliente(request).subscribe({
+      next: (data: any) => {
+     
+   // Accediendo a la lista de areas de atención dentro de la respuesta
+        if (data.estatus === 'OK') {
+          
+          this.alertService.success('Cliente','Cliente creado correctamente.')
+
         } else {
+                    
+          this.alertService.error('Cliente','Cliente nbuevo no se ejecuto de manera correcta, contacta a los que saben.')
           console.log(
             'La respuesta no contiene una lista válida de areas de atención.'
           );
         }
+        this.clienteForm.reset();
       },
       error: (error: Error) => {
+        this.alertService.error('Cliente','Cliente nbuevo no se ejecuto de manera correcta, contacta a los que saben.')
         console.error(error);
       },
     });
 
-  }
 
-  get descripcion() {
-    return this.rolForm.get('descripcion');
   }
 
 
-  abrirDetalle(idApuestaCliente: any): void {
-    
-    const dialogRef = this.dialog.open(DetalleAbiertasModalComponent, {
-      width: '70%',
-      data: { idApuestaCliente: idApuestaCliente}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
 
 
-}
 
-cerrar(request):void{
-
-  this.clienteService.cerrarApuesta(request).subscribe({
-    next: (respuesta: any) => {
-       
-      // Accediendo a la lista de areas de atención dentro de la respuesta
-      if (respuesta.estatus === 'OK') {
-        this.alertService.success('APUESTA CERRADA','La apuesta se cerro satisfactoriamente')
-        this.datasource.data = respuesta.lista;
-
-      } else {
-        this.alertService.error('APUESTA CERRADA','Hubo un problema para cerrar la apuesta, inetentelo de nuevo.')
-        console.log(
-          'La respuesta no contiene una lista válida de areas de atención.'
-        );
-      }
-    },
-    error: (error: Error) => {
-      console.error(error);
-    },
-  });
-}
 }

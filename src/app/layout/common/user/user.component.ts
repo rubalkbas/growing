@@ -2,13 +2,16 @@ import { BooleanInput } from '@angular/cdk/coercion';
 import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { UserService } from 'app/core/user/user.service';
-import { User } from 'app/core/user/user.types';
+import { User } from 'app/core/user/user.types'; 
+import { ClienteService } from 'app/modules/admin/clientes/clientes.service';
 import { Subject, takeUntil } from 'rxjs';
+import { ClienteModalComponent } from './clientes-modal/cliente.component';
 
 @Component({
     selector       : 'user',
@@ -29,6 +32,7 @@ export class UserComponent implements OnInit, OnDestroy
     user: User;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    usuario: any;
 
     /**
      * Constructor
@@ -37,6 +41,8 @@ export class UserComponent implements OnInit, OnDestroy
         private _changeDetectorRef: ChangeDetectorRef,
         private _router: Router,
         private _userService: UserService,
+        public dialog: MatDialog,
+        private vlienteService: ClienteService
     )
     {
     }
@@ -50,6 +56,36 @@ export class UserComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+
+        let request = {
+            "accion": "string",
+            "dinero": 0,
+            "estatusRetiro": 0,
+            "fechaCreacion": "2024-08-12T05:15:57.772Z",
+            "idDinero": 0,
+            "idUsuario": localStorage.getItem('idUserWrog'),
+            "tipo": "string"
+          }
+      
+        
+
+        this.vlienteService.consultaCliente(request).subscribe({
+            next: (respuesta: any) => {
+              console.log('Respuesta completa: ', respuesta);
+              // Accediendo a la lista de areas de atención dentro de la respuesta
+              if (respuesta.estatus === 'OK') {
+                this.usuario = respuesta.dto; 
+              } else {
+                console.log(
+                  'La respuesta no contiene una lista válida de areas de atención.'
+                );
+              }
+            },
+            error: (error: Error) => {
+              console.error(error);
+            },
+          });
+
         // Subscribe to user changes
         this._userService.user$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -103,4 +139,27 @@ export class UserComponent implements OnInit, OnDestroy
     {
         this._router.navigate(['/sign-out']);
     }
+
+  
+    modalCuenta( ): void {
+        
+        const dialogRef = this.dialog.open(ClienteModalComponent , {
+          width: '550px',
+          height: '550px',
+          // height: '700px'
+          data: {
+            data: { data: this.usuario, usuario: 'Usuario de prueba' },
+          }
+        });
+    
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            console.log('The dialog was closed');
+          }
+        });
+      }
+
+      
+
+
 }

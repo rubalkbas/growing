@@ -154,7 +154,8 @@ export class CuentaComponent implements OnInit {
         console.log('Respuesta completa: ', respuesta);
         // Accediendo a la lista de areas de atención dentro de la respuesta
         if (respuesta.estatus === 'OK') {
-          this.totalCreditos = respuesta.sumaTotal
+          this.totalGanPerd = respuesta.sumaTotal;
+        
           // console.log('Respuesta completa: ', this.totalCreditos);
         } else {
           console.log(

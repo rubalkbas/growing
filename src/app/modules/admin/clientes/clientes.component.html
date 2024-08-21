@@ -6,10 +6,11 @@
             <!-- Asegúrate de que el grid ocupe toda la altura -->
             <div class="xl:col-span-3 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
                 <div class="container p-6">
-                    <div class="flex space-x-4 mb-6">
-                        <div class="text-2xl font-medium tracking-tight leading-6 mb-4">Activos</div>
-                        <button type="button" class="btn btn-primary" onclick="Abrir_ventana('crear_cliente.php')"><i
-                                class="bi bi-person-plus me-1"></i> AGREGAR CLIENTE</button>
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="text-2xl font-medium tracking-tight leading-6">Activos</div>
+                        <button mat-raised-button color="primary" class="flex items-center" (click)="opencDialogNuevoCliente()">
+                            <mat-icon class="mr-2">person_add</mat-icon> AGREGAR CLIENTE
+                        </button>
                     </div>
 
 
@@ -42,8 +43,8 @@
                             </ng-container>
 
                             <ng-container matColumnDef="edita">
-                                <th mat-header-cell *matHeaderCellDef>Edita</th>
-                                <td mat-cell *matCellDef="let element">{{element.estatus}}</td>
+                                <th mat-header-cell *matHeaderCellDef>Estatus</th>
+                                <td mat-cell *matCellDef="let element"> {{ element.estatus === 1 ? 'Activo' : 'Inactivo' }}</td>
                             </ng-container>
 
                             <ng-container matColumnDef="posiciones">
@@ -55,12 +56,12 @@
                                                 <mat-icon>attach_money</mat-icon>
                                                 Abiertas
                                             </button>
-                                            <div class="example-button-container  ">
-                                                <button mat-fab extended class="custom-fab-button-red" (click)="opencDialogCerradas(element.idUsuario)">
-                                                    <mat-icon>money_off</mat-icon>
-                                                    Cerradas
-                                                </button>
-                                            </div>
+                                        </div>
+                                        <div class="example-button-container  ">
+                                            <button mat-fab extended class="custom-fab-button-red" (click)="opencDialogCerradas(element.idUsuario)">
+                                                <mat-icon>money_off</mat-icon>
+                                                Cerradas
+                                            </button>
                                         </div>
                                     </div>
                                 </td>
@@ -94,19 +95,8 @@
                                                 Editar
                                             </button>
                                         </div>
-                                        <div class="example-button-container  ">
-                                            <button mat-fab extended color="warn">
-                                                <mat-icon>contacts</mat-icon>
-                                                Eliminar
-                                            </button>
-                                        </div>
-                                        <div class="action-button">
-                                            <mat-icon class="text-blue-500 icon-size-5"
-                                                [svgIcon]="'heroicons_solid:minus-circle'"></mat-icon>
-                                            <div class="ml-1 text-md font-medium text-blue-500">
-                                                {{ element.estatus }}
-                                            </div>
-                                        </div>
+   
+                                         
                                     </div>
                                 </td>
                             </ng-container>
