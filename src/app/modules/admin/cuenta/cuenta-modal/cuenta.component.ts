@@ -108,8 +108,8 @@ export class CuentaModalComponent implements OnInit {
             }
             
             const request = {
-                idCliente: this.data.idCliente,
-                monto: monto
+                idUsuario: this.data.idUser,
+                dinero: monto
             };
             this.cargarRetiro(request);
         }

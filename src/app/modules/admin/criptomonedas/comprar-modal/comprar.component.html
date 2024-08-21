@@ -48,9 +48,9 @@
     <mat-divider></mat-divider>
 
     <div class="form-group cotizacion-group">
-      <span *ngIf="data.data.changeVa === 'up'" class="badge text-secondary ml-1 text-md font-medium text-green-500" >Cotización Vigente: {{ data.data.comprar }} USD</span>
-      <span *ngIf="data.data.changeVa === 'down'" class="badge text-secondary ml-1 text-md font-medium text-red-500" >Cotización Vigente: {{ data.data.comprar }} USD</span>
-      <span *ngIf="data.data.changeVa === 'sin cambios'" class="badge text-secondary ml-1 text-md font-medium text-blue-500" >Cotización Vigente: {{ data.data.comprar }} USD</span>
+      <span *ngIf="data.data.changeC === 'up'" class="badge text-secondary ml-1 text-md font-medium text-green-500" >Cotización Vigente: {{ data.data.comprar }} USD</span>
+      <span *ngIf="data.data.changeC === 'down'" class="badge text-secondary ml-1 text-md font-medium text-red-500" >Cotización Vigente: {{ data.data.comprar }} USD</span>
+      <span *ngIf="data.data.changeC === 'sin cambios'" class="badge text-secondary ml-1 text-md font-medium text-blue-500" >Cotización Vigente: {{ data.data.comprar }} USD</span>
  
       <span class="badge text-danger">{{ textVariacion }}</span>
     </div>
@@ -68,7 +68,7 @@
     <div class="form-group" style="text-align: center; margin-top: 15px;">
       <button mat-raised-button color="primary" type="submit" class="custom-button">
         <mat-icon class="icon-dollar">attach_money</mat-icon>
-        <span class="button-text" style="margin-bottom: 5px;">Vender</span>
+        <span class="button-text" style="margin-bottom: 5px;">Comprar</span>
       </button>
     </div>
 

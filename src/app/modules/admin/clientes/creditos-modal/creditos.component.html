@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>Credito</h1>
 <div mat-dialog-content>
-  <form [formGroup]="formCliente" (ngSubmit)="onSubmit()">
+  <form [formGroup]="formCliente" >
 
     <div class="form-group">
       <label for="nocliente">NOCLIENTE: <b>{{ data.usuario }}</b></label>
@@ -18,6 +18,21 @@
           <th mat-header-cell *matHeaderCellDef>Fecha de Ingreso</th>
           <td mat-cell *matCellDef="let element">{{element.fechaCreacion | date:'short' }}</td>
         </ng-container>
+
+        <ng-container matColumnDef="creditos">
+          <th mat-header-cell *matHeaderCellDef>Pagar</th>
+          <td mat-cell *matCellDef="let element">
+            <div *ngIf="element.estatusRetiro === 0" class="example-button-container  ">
+              <button mat-fab extended class="custom-fab-button-blue" (click)="pagarCredito(element)">
+                  <mat-icon>monetization_on</mat-icon>
+                  Pagar Credito
+              </button>
+             </div>
+
+          </td>
+        </ng-container>
+
+   
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

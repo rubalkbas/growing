@@ -67,7 +67,7 @@ interface ViewValue {
 })
 
 export class AbiertasModalComponent implements OnInit {
-  displayedColumns: string[] = ['tipoCompra', 'compra','valorUnidad', 'unidades','montoApuesta', 'variacion','gananciaPerdida', 'bloqueCompra','estatusCompra', 'fechaCreacion','accion' ];
+  displayedColumns: string[] = ['tipoCompra', 'compra','valorUnidad', 'unidades','montoApuesta', 'variacion','gananciaPerdida', 'bloqueCompra' , 'fechaCreacion','accion' ];
   rolForm: FormGroup;
   permisos = [];
   newRol: any;

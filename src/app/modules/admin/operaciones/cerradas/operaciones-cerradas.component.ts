@@ -67,7 +67,7 @@ interface ViewValue {
 })
 
 export class  OperacionesCerradasComponent implements OnInit {
-  displayedColumns: string[] = ['tipoCompra', 'compra','valorUnidad', 'unidades','montoApuesta', 'variacion','gananciaPerdida', 'bloqueCompra','estatusCompra', 'fechaCreacion' ];
+  displayedColumns: string[] = ['tipoCompra', 'compra','valorUnidad', 'unidades','montoApuesta', 'variacion','gananciaPerdida', 'bloqueCompra',  'fechaCreacion' ];
   rolForm: FormGroup;
   permisos = [];
   newRol: any;

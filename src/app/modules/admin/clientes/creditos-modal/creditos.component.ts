@@ -67,7 +67,7 @@ interface ViewValue {
 })
  
 export class  CreditosModalComponent implements OnInit {
-    displayedColumns: string[] = ['monto', 'fecha' ];
+    displayedColumns: string[] = ['monto', 'fecha', 'creditos' ];
     rolForm: FormGroup;
     permisos = [];
     newRol: any;
@@ -201,6 +201,33 @@ export class  CreditosModalComponent implements OnInit {
         
     }
 
+    pagarCredito(element:any): void {
+
+ 
+        this.clienteService.pagaCredito(element).subscribe({
+          next: (respuesta: any) => {
+            console.log('Respuesta completa: ', respuesta);
+            // Accediendo a la lista de areas de atención dentro de la respuesta
+            if (respuesta.estatus === 'OK') {
+              this.alertService.success('Credito','El monto del credito fue pagado correctamente.')
+              
+              this.cargaIngreso();
+            } else {
+              console.log(
+                'La respuesta no contiene una lista válida de areas de atención.'
+              );
+              this.alertService.error('Credito','Ocurrio un error, contacte a sistemas.')
+            }
+          },
+          error: (error: Error) => {
+            console.error(error);
+          },
+        });
+
+      
+
+      
+  }
  
 
 }

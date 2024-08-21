@@ -53,7 +53,7 @@ export class CustomPaginatorIntl extends MatPaginatorIntl {
   imports: [CommonModule, MatButtonModule, MatPaginatorModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, MatTableModule, MatSortModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule,NgFor],
 })
 export class AccionesComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = ['position', 'instrumento', 'vender', 'comprar' ];
+  displayedColumns: string[] = [  'instrumento', 'vender', 'comprar' ];
   selectedSymbol: string = 'AAPL'; 
 
   
@@ -147,6 +147,7 @@ export class AccionesComponent implements OnInit, OnDestroy {
     //const previousValue = this.currencies[currencyCode]?.value || newValue;
     let changeV = 'sin cambios';
     let changeC = 'sin cambios';
+    let changeVa = 'sin cambios';
     
 
     let datos  = {
@@ -170,7 +171,7 @@ export class AccionesComponent implements OnInit, OnDestroy {
     const comprarValueFloat = parseFloat(this.listaDatos[index].comprar);
     const variacionValueFloat = parseFloat(this.listaDatos[index].variacion);
     
-    
+    datos.position = this.posicion + 1;
   
 
     if (newValue > comprarValueFloat) {
@@ -184,34 +185,34 @@ export class AccionesComponent implements OnInit, OnDestroy {
     } else if (newValueVender < venderValueFloat) {
       changeV = 'down';
     }
-
+ 
 
     datos.instrumento = currencyCode;
-    datos.comprar =  lodemas.ap ;
-    datos.vender =   lodemas.bp ;
+    datos.variacion =  lodemas.dc ;
+    datos.comprar =  lodemas.a ;
+    datos.vender =   lodemas.b ;
     datos.changeV = changeV;
     datos.changeC = changeC;
+    datos.changeVa = changeVa;
  
     this.listaDatos[index].vender = newValueVender;
-    this.listaDatos[index].comprar = newValue;
+    this.listaDatos[index].comprar = newValue; 
     this.listaDatos[index].changeV = changeV;
     this.listaDatos[index].changeC = changeC;
+    this.listaDatos[index].changeVa = changeVa;
 
 
   // Emitir la actualización a los suscriptores
   this.currenciesSubject.next(this.currencies);
   }else{
-   
+
     datos.instrumento = currencyCode;
     datos.comprar =  lodemas.ap ;
     datos.vender =   lodemas.bp ;
     datos.changeV = changeV;
     datos.changeC = changeC;
-    datos.position = this.posicion
-    if(this.posicion > 0 ){
-      this.listaDatos.push(datos);
-    }
-    this.posicion= this.posicion + 1;
+    datos.changeVa = changeVa;
+    this.listaDatos.push(datos);
  
     this.currenciesSubject.next(datos);
   }
@@ -219,6 +220,7 @@ export class AccionesComponent implements OnInit, OnDestroy {
   this.datasource.data = this.listaDatos;
  
   }
+
 
   openDialog(data:any): void {
     const dialogRef = this.dialog.open(ComprarModalComponent, {

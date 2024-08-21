@@ -84,7 +84,7 @@ export class CuentaComponent implements OnInit {
   data: any;
   totalCreditos = 0;
   idUser: string;
-  totalGanPerd = 1;
+  totalGanPerd = 0;
   totalRetirosSolicitados = 0;
   totalRetirosEfectuados = 0;
   retiroBool = false;
@@ -148,6 +148,25 @@ export class CuentaComponent implements OnInit {
       },
     });
 
+
+    this.clienteService.consultaCerradas(request).subscribe({
+      next: (respuesta: any) => {
+        console.log('Respuesta completa: ', respuesta);
+        // Accediendo a la lista de areas de atención dentro de la respuesta
+        if (respuesta.estatus === 'OK') {
+          this.totalCreditos = respuesta.sumaTotal
+          // console.log('Respuesta completa: ', this.totalCreditos);
+        } else {
+          console.log(
+            'La respuesta no contiene una lista válida de areas de atención.'
+          );
+        }
+      },
+      error: (error: Error) => {
+        console.error(error);
+      },
+    });
+
   }
   consultaAbiertas(): void {
 
@@ -176,7 +195,7 @@ export class CuentaComponent implements OnInit {
           if (respuesta.lista.length > 0) {
             Swal.fire({
               title: 'Retiro',
-              text: 'Tines apuestas abiertas, no puedes realizar un retiro.',
+              text: 'Tines Posiciones abiertas, no puedes realizar un retiro.',
               icon: 'warning',
               confirmButtonText: 'Aceptar'
             });

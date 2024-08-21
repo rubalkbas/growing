@@ -61,6 +61,9 @@ export class ClienteService
     postCredito(request: any): Observable<any> {
         return this._httpClient.post<any>(`${this.baseUrl}/dinero/cargarCredito`,request);
     }
+    pagaCredito(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/dinero/pagoCredito`,request);
+    }
 
     getRetirosSolicitados(request: any): Observable<any> {
         return this._httpClient.post<any>(`${this.baseUrl}/dinero/consultaRetiroSolicitado`,request);

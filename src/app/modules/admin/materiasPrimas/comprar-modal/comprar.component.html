@@ -1,78 +1,77 @@
-<h1 mat-dialog-title>Inversión</h1>
+<h1 mat-dialog-title>Inversión Comprar</h1>
 <div mat-dialog-content>
   <form [formGroup]="formCliente" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="dsimbolo"><h1><b>{{ data.data.instrumento      }}</b></h1></label>
+    <div class="form-group" style="text-align: center; margin-bottom: 20px;">
+      <h1 class="instrument-label"><b>{{ data.data.instrumento }}</b></h1>
     </div>
-    <div class="form-group">
-      <label for="nocliente">NOCLIENTE: <b>{{ data.usuario }}</b></label>
-    </div>
-    <div class="form-group">
-      <label for="monto">Monto: <span><b>{{ data.data.comprar | currency }}</b></span></label>
-    </div>
-    <hr>
 
     <div class="form-group">
-      <mat-radio-group formControlName="tipom">
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>NOCLIENTE </mat-label>
+        <input matInput [value]="data.usuario" readonly />
+      </mat-form-field>
+    </div>
+
+    <div class="form-group">
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Monto</mat-label>
+        <input matInput [value]="data.dinero | currency" readonly />
+      </mat-form-field>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="form-group">
+      <mat-radio-group formControlName="tipom" onlyRead>
         <mat-radio-button value="venta">Venta</mat-radio-button>
       </mat-radio-group>
     </div>
-    <hr>
+
+    <mat-divider></mat-divider>
 
     <div class="form-group">
       <h4>Unidades</h4>
-      <button mat-icon-button color="warn" (click)="decreaseIncrement()">
-        <mat-icon>remove</mat-icon>
-      </button>
-      <input matInput formControlName="porcentaje" type="number" (change)="calculate()" />
-      <button mat-icon-button color="primary" (click)="increaseIncrement()">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
-    <hr>
+      <div class="unit-controls w-full">
 
-    <div class="form-group">
-      <span class="badge border-secondary border-1 text-secondary">Cotización Vigente</span>
-      <span>{{ textCosto }} USD</span>
-      <span class="badge border-danger border-1 text-danger">{{ textVariacion }}</span>
-    </div>
-
-    <div class="form-group">
-      <label for="valorA">Margen requerido</label>
-      <input matInput formControlName="valorA" type="number" />
-    </div>
-    <hr>
-
-    <div class="form-group">
-      <mat-slide-toggle formControlName="cierreGanancia">Cierre en Ganancias</mat-slide-toggle>
-      <div *ngIf="formCliente.get('cierreGanancia').value">
-        <button mat-icon-button color="warn" (click)="decreaseProfit()">
+        <button mat-icon-button color="warn" (click)="decreaseIncrement()">
           <mat-icon>remove</mat-icon>
         </button>
-        <input matInput formControlName="porceganancia" type="number" />
-        <button mat-icon-button color="primary" (click)="increaseProfit()">
+        <mat-form-field appearance="fill" class="w-full">
+          <input matInput formControlName="porcentaje" type="number" (change)="calculate()" />
+        </mat-form-field>
+        <button mat-icon-button color="primary" (click)="increaseIncrement()">
           <mat-icon>add</mat-icon>
         </button>
       </div>
     </div>
 
-    <div class="form-group">
-      <mat-slide-toggle formControlName="cierrePerdida">Cierre en Pérdida</mat-slide-toggle>
-      <div *ngIf="formCliente.get('cierrePerdida').value">
-        <button mat-icon-button color="warn" (click)="decreaseLoss()">
-          <mat-icon>remove</mat-icon>
-        </button>
-        <input matInput formControlName="porceperdida" type="number" />
-        <button mat-icon-button color="primary" (click)="increaseLoss()">
-          <mat-icon>add</mat-icon>
-        </button>
-      </div>
+    <mat-divider></mat-divider>
+
+    <div class="form-group cotizacion-group">
+      <span *ngIf="data.data.changeC === 'up'" class="badge text-secondary ml-1 text-md font-medium text-green-500" >Cotización Vigente: {{ data.data.comprar }} USD</span>
+      <span *ngIf="data.data.changeC === 'down'" class="badge text-secondary ml-1 text-md font-medium text-red-500" >Cotización Vigente: {{ data.data.comprar }} USD</span>
+      <span *ngIf="data.data.changeC === 'sin cambios'" class="badge text-secondary ml-1 text-md font-medium text-blue-500" >Cotización Vigente: {{ data.data.comprar }} USD</span>
+ 
+      <span class="badge text-danger">{{ textVariacion }}</span>
     </div>
-    <hr>
 
     <div class="form-group">
-      <button mat-raised-button color="warn" type="submit">Vender</button>
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Margen requerido</mat-label>
+        <input matInput formControlName="valorA" onlyRead/>
+      </mat-form-field>
     </div>
+
+    <mat-divider></mat-divider>
+ 
+
+    <div class="form-group" style="text-align: center; margin-top: 15px;">
+      <button mat-raised-button color="primary" type="submit" class="custom-button">
+        <mat-icon class="icon-dollar">attach_money</mat-icon>
+        <span class="button-text" style="margin-bottom: 5px;">Comprar</span>
+      </button>
+    </div>
+
     <div *ngIf="showAlert" class="alert alert-danger">
       Monto superado!!!!
       <button mat-icon-button (click)="showAlert = false">
@@ -80,5 +79,4 @@
       </button>
     </div>
   </form>
- 
 </div>

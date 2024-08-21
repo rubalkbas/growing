@@ -71,7 +71,7 @@ interface CurrencyData {
   imports: [CommonModule, MatButtonModule, MatPaginatorModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, MatTableModule, MatSortModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule,NgFor,TradingViewWidgetComponent],
 })
 export class DivisasComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = ['position', 'instrumento', 'variacion', 'vender', 'comprar' ];
+  displayedColumns: string[] = [ 'instrumento', 'variacion', 'vender', 'comprar' ];
   selectedSymbol: string = 'AAPL'; 
 
   
@@ -193,7 +193,7 @@ export class DivisasComponent implements OnInit, OnDestroy {
     const comprarValueFloat = parseFloat(this.listaDatos[index].comprar);
     const variacionValueFloat = parseFloat(this.listaDatos[index].variacion);
     
-    
+    datos.position = this.posicion + 1;
   
 
     if (newValue > comprarValueFloat) {
@@ -233,7 +233,7 @@ export class DivisasComponent implements OnInit, OnDestroy {
   // Emitir la actualización a los suscriptores
   this.currenciesSubject.next(this.currencies);
   }else{
-   
+
     datos.instrumento = currencyCode;
     datos.variacion =  lodemas.dc ;
     datos.comprar =  lodemas.a ;
@@ -241,11 +241,7 @@ export class DivisasComponent implements OnInit, OnDestroy {
     datos.changeV = changeV;
     datos.changeC = changeC;
     datos.changeVa = changeVa;
-    datos.position = this.posicion
-    if(this.posicion > 0 ){
-      this.listaDatos.push(datos);
-    }
-    this.posicion= this.posicion + 1;
+    this.listaDatos.push(datos);
  
     this.currenciesSubject.next(datos);
   }
