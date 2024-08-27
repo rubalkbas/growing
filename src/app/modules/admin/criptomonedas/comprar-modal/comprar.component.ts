@@ -121,7 +121,7 @@ export class ComprarModalComponent implements OnInit {
 
     generaApuesta():void{
         if(this.formCliente.get('porcentaje')?.value > this.data.dinero){
-            this.alertService.error('Apuesta Inclompleta!','No tienes elk suficiente efectivo para realizar la apuesta.')
+            this.alertService.error('Apuesta Inclompleta!','No tienes el suficiente efectivo para realizar la apuesta.')
             return;
         }
         
@@ -132,7 +132,7 @@ export class ComprarModalComponent implements OnInit {
         this.apuesta.tipoCompra = 'COMPRA';
         this.apuesta.unidades =  this.formCliente.get('porcentaje')?.value;
         this.apuesta.valorUnidad = this.data.data.comprar;
-        this.apuesta.variacion = this.data.variacion;
+        this.apuesta.variacion = this.data.data.variacion;
         this.apuesta.estatusCompra = 'SISTEMA'
         this.apuesta.fechaCierre = "2024-08-18T16:28:03.032Z";
         this.apuesta.fechaCreacion = "2024-08-18T16:28:03.032Z";
@@ -143,14 +143,15 @@ export class ComprarModalComponent implements OnInit {
         this.clienteService.crearApuesta(this.apuesta).subscribe({
             next: (respuesta: any) => {
            
-              console.log('Respuesta completa: ', respuesta);
-              // Accediendo a la lista de areas de atención dentro de la respuesta
-              this.alertService.success('Apuesta Generada!','La apuesta a sido registrada correctamente.')
+        
               if (respuesta.estatus === 'OK') {
-           
+                console.log('Respuesta completa: ', respuesta);
+                // Accediendo a la lista de areas de atención dentro de la respuesta
+                this.alertService.success('Posición Generada!','La Posición a sido registrada correctamente.')
+                this.dialogRef.close();
               } else {
                 console.log(
-                  'La apuesta no se pudo generar.'
+                  'La Posición no se pudo generar.'
                 );
               }
             },

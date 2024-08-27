@@ -10,11 +10,11 @@
                 <ittiva-horizontal-navigation-basic-item
                     class="ittiva-horizontal-navigation-menu-item"
                     [item]="item"
-                    [name]="name"></ittiva-horizontal-navigation-basic-item>
+                    [name]="name"> hola </ittiva-horizontal-navigation-basic-item>
             </ng-container>
 
             <!-- Branch: aside, collapsable, group -->
-            <ng-container *ngIf="item.type === 'aside' || item.type === 'collapsable' || item.type === 'group'">
+            <ng-container *ngIf="(item.type === 'aside' || item.type === 'collapsable' || item.type === 'group') ">
                 <ittiva-horizontal-navigation-branch-item
                     class="ittiva-horizontal-navigation-menu-item"
                     [item]="item"

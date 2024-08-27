@@ -138,10 +138,10 @@ export class ClienteGuardarModalComponent implements OnInit {
         if (data.estatus === 'OK') {
           
           this.alertService.success('Cliente','Cliente creado correctamente.')
-
+          this.dialogRef.close();
         } else {
                     
-          this.alertService.error('Cliente','Cliente nbuevo no se ejecuto de manera correcta, contacta a los que saben.')
+          this.alertService.error('Cliente','Cliente nbuevo no se ejecuto de manera correcta, contacta a sistemas.')
           console.log(
             'La respuesta no contiene una lista válida de areas de atención.'
           );
@@ -149,7 +149,7 @@ export class ClienteGuardarModalComponent implements OnInit {
         this.clienteForm.reset();
       },
       error: (error: Error) => {
-        this.alertService.error('Cliente','Cliente nbuevo no se ejecuto de manera correcta, contacta a los que saben.')
+        this.alertService.error('Cliente','Cliente nbuevo no se ejecuto de manera correcta, contacta a sistemas.')
         console.error(error);
       },
     });

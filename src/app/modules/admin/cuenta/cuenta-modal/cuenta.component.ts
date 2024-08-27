@@ -127,7 +127,7 @@ export class CuentaModalComponent implements OnInit {
                         title: 'Retiro exitoso',
                         text: 'Se ha realizado la solicitud del retiro de forma exitosa.',
                     });
-
+                    this.dialogRef.close();
                 } else {
                     Swal.fire({
                         icon: 'error',

@@ -183,7 +183,7 @@ export class BalanceModalComponent implements OnInit {
               if (respuesta.estatus === 'OK') {
                 this.alertService.success('Ingreso','El monto fue registrado correctamente.')
                 
-                this.cargaIngreso();
+                this.dialogRef.close();
               } else {
                 console.log(
                   'La respuesta no contiene una lista válida de areas de atención.'

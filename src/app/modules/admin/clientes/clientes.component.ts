@@ -117,7 +117,11 @@ export class ClientesComponent implements OnInit {
     this.listaDatos = [];
     let miArreglo = ["btc", "eth", "ltc", "alpha", "ada", "bnb", "doge", "avax", "shib", "bch", "dot", "trx", "link", "matic", "icp", "near", "uni", "dai", "apt", "stx", "fil", "atom", "arb", "wif", "mkr", "inj", "grt", "op", "jup", "flow", "pepe"];
 
+    this.traeUsuarios();
+    
+  }
 
+  traeUsuarios(): void {
     this.vlienteService.getUsuarios().subscribe({
       next: (respuesta: any) => {
         console.log('Respuesta completa: ', respuesta);
@@ -135,9 +139,9 @@ export class ClientesComponent implements OnInit {
         console.error(error);
       },
     });
+
+
   }
-
-
 
 
 
@@ -145,7 +149,7 @@ export class ClientesComponent implements OnInit {
     const dialogRef = this.dialog.open(BalanceModalComponent, {
       width: '30%',
       height: '80%',
-      data: { data: data, usuario: 'Usuario de prueba' },
+      data: { data: data.idUsuario, usuario: data.nombre },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -160,7 +164,7 @@ export class ClientesComponent implements OnInit {
       height: '80%',
       // height: '700px'
       data: {
-        data: { data: data, usuario: 'Usuario de prueba' },
+        data: { data: data.idUsuario, usuario: data.nombre },
       }
     });
 
@@ -177,7 +181,7 @@ export class ClientesComponent implements OnInit {
       height: '80%',
       // height: '700px'
       data: {
-        data: { data: data, usuario: 'Usuario de prueba' },
+        data: { data: data.idUsuario, usuario: data.nombre },
       }
     });
 
@@ -195,12 +199,13 @@ export class ClientesComponent implements OnInit {
       height: '550px',
       // height: '700px'
       data: {
-        data: { data: data, usuario: 'Usuario de prueba' },
+        data: { data: data.idUsuario, usuario: data.nombre },
       }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        this.traeUsuarios();
         console.log('The dialog was closed');
       }
     });
@@ -213,7 +218,7 @@ export class ClientesComponent implements OnInit {
       height: '80%',
       // height: '700px'
       data: {
-        data: { data: data, usuario: 'Usuario de prueba' },
+        data: { data: data.idUsuario, usuario: data.nombre },
       }
     });
 
@@ -230,7 +235,7 @@ export class ClientesComponent implements OnInit {
       height: '80%',
       // height: '700px'
       data: {
-        data: { data: data, usuario: 'Usuario de prueba' },
+        data: { data: data.idUsuario, usuario: data.nombre },
       }
     });
 
@@ -251,6 +256,7 @@ export class ClientesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        this.traeUsuarios();
         console.log('The dialog was closed');
       }
     });

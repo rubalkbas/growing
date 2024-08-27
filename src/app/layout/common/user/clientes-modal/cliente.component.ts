@@ -137,6 +137,7 @@ onSubmit() {
         if (data.estatus === 'OK') {
           
           this.alertService.success('Cliente','Modificación realizada correctamente.')
+          this.dialogRef.close();
 
         } else {
                     

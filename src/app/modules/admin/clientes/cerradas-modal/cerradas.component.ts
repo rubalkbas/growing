@@ -186,7 +186,7 @@ export class  CerradasModalComponent implements OnInit {
         if (respuesta.estatus === 'OK') {
           this.alertService.success('Credito', 'El monto del credito fue registrado correctamente.')
 
-          this.cargaIngreso();
+          this.dialogRef.close();
         } else {
           console.log(
             'La respuesta no contiene una lista válida de areas de atención.'

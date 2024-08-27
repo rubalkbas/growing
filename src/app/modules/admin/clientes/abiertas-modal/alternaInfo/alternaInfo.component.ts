@@ -1,7 +1,6 @@
 import { Component, CSP_NONCE, Inject, OnInit } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialog,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
@@ -18,9 +17,14 @@ import { CommonModule, CurrencyPipe, DatePipe, NgClass } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { AlertService } from 'app/modules/services/alerts.service'; 
-import { Subject, takeUntil } from 'rxjs'; 
-import { MatCheckboxModule } from '@angular/material/checkbox'; 
+import { AlertService } from 'app/modules/services/alerts.service';
+import { User } from 'app/core/user/user.types';
+import { Subject, takeUntil } from 'rxjs';
+import { UserService } from 'app/core/user/user.service';
+import { Rol } from 'app/mock-api/common/interfaces/rol.interface';
+import { RolesService } from 'app/modules/services/roles.service';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { PerfilamientoService } from 'app/modules/services/perfilamientos.service';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -32,18 +36,17 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { ClienteService } from '../clientes.service';
-import { AlternaModalComponent } from './alternaInfo/alternaInfo.component';
- 
+import { ClienteService } from '../../clientes.service';
+import Swal from 'sweetalert2';
 interface ViewValue {
   value: number;
   viewValue: string;
 }
 
 @Component({
-  selector: 'app-abiertas-modal',
-  templateUrl: './abiertas.component.html',
-  styleUrls: ['./abiertas.component.scss'],
+  selector: 'app-alternaInfo-modal',
+  templateUrl: './alternaInfo.component.html',
+  styleUrls: ['./alternaInfo.component.scss'],
   standalone: true,
   imports: [
     CommonModule,
@@ -63,9 +66,9 @@ interface ViewValue {
   ],
 })
 
-export class AbiertasModalComponent implements OnInit {
+export class AlternaModalComponent implements OnInit {
   displayedColumns: string[] = ['tipoCompra', 'compra','valorUnidad', 'unidades','montoApuesta', 'variacion','gananciaPerdida', 'bloqueCompra' , 'fechaCreacion','accion' ];
-  rolForm: FormGroup;
+  userForm: FormGroup;
   permisos = [];
   newRol: any;
   usuarioLoggeado: any;
@@ -82,100 +85,63 @@ export class AbiertasModalComponent implements OnInit {
   idUser: string;
   monto: any = 0;
   constructor(
-    public dialogRef: MatDialogRef<AbiertasModalComponent>,
+    public dialogRef: MatDialogRef<AlternaModalComponent>,
     private fb: FormBuilder,
-    public dialog: MatDialog,
     private alertService: AlertService,
     private clienteService: ClienteService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
-    this.formCliente = this.fb.group({
-      tipom: ['venta', Validators.required],
-      porcentaje: [0, Validators.required],
-      valorA: ['', Validators.required],
-      cierreGanancia: [false],
-      porceganancia: [''],
-      cierrePerdida: [false],
-      porceperdida: ['']
+    this.userForm = this.fb.group({
+      unidades: ['', Validators.required],
+      valorUnidad: ['', Validators.required],
+    
     });
+    this.userForm.get('unidades').patchValue(this.data.data.unidades);
+    this.userForm.get('valorUnidad').patchValue(this.data.data.valorUnidad);
+
     this.idUser = localStorage.getItem('idUserWrog');
 
   }
 
   ngOnInit(): void {
-    console.log(this.data)
-    this.rolForm = this.fb.group({
-      nombre: ['', Validators.required],
-      estatus: ['', Validators.required],
-    });
+  
 
-    this.cargaIngreso();
-
-  }
-
-  cargaIngreso(): void {
-
-    let request =
-    {
-      "bloqueCompra": "string",
-      "compra": "string",
-      "estatusCompra": "string",
-      "fechaCierre": "2024-08-14T19:18:54.451Z",
-      "fechaCreacion": "2024-08-14T19:18:54.451Z",
-      "gananciaPerdida": 0,
-      "idApuestaCliente": 0,
-      "idUsuario": this.data.data.data,
-      "montoApuesta": 0,
-      "tipoCompra": "string",
-      "unidades": 0,
-      "valorUnidad": 0,
-      "variacion": 0
-    } 
-
-    this.clienteService.consultaAbiertas(request).subscribe({
-      next: (respuesta: any) => {
-        this.datasource.data = [];
-        console.log('Respuesta completa: ', respuesta);
-        // Accediendo a la lista de areas de atención dentro de la respuesta
-        if (respuesta.estatus === 'OK') {
-
-          this.datasource.data = respuesta.lista;
- 
-        } else {
-          console.log(
-            'La respuesta no contiene una lista válida de areas de atención.'
-          );
-        }
-      },
-      error: (error: Error) => {
-        console.error(error);
-      },
-    });
-
-  }
-
-  get descripcion() {
-    return this.rolForm.get('descripcion');
-  }
+  } 
 
   onClose(): void {
     this.dialogRef.close(this.newRol);
   }
 
 
+
+  onSubmit(): void {
+
+   this.data.data.unidades = this.userForm.get('unidades').value
+   this.data.data.valorUnidad = this.userForm.get('valorUnidad').value
+
+   this.clienteService.actualizaApuesta(this.data.data).subscribe({
+    next: (respuesta: any) => {
  
+      console.log('Respuesta completa: ', respuesta);
+      // Accediendo a la lista de areas de atención dentro de la respuesta
+      if (respuesta.estatus === 'OK') {
 
-  openDialog(data: any): void {
-    const dialogRef = this.dialog.open(AlternaModalComponent, {
-  
-      data: { data: data, usuario: this.data.data.usuario },
-    });
+        this.dialogRef.close(this.newRol);
+        this.alertService.success("Clientes","información alterada completamente")
+      } else {
+        console.log(
+          'La respuesta no contiene una lista válida de areas de atención.'
+        );
+      }
+    },
+    error: (error: Error) => {
+      console.error(error);
+    },
+  });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-
-    });
   }
+
+
 
 }

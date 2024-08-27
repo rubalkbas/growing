@@ -126,7 +126,7 @@ onSubmit() {
       "correo": this.userForm.get('correo').value,
       "estatus": 1, 
       "nombre": this.userForm.get('nombre').value,
-      "idUsuario": 8,
+      "idUsuario": this.data.data.data,
       "pass": this.userForm.get('contrasena').value
     
     }
@@ -137,7 +137,7 @@ onSubmit() {
         if (data.estatus === 'OK') {
           
           this.alertService.success('Cliente','Modificación realizada correctamente.')
-
+          this.dialogRef.close();
         } else {
                     
           this.alertService.error('Cliente','Modificación no se ejecuto de manera correcta, contacta a sistemas.')

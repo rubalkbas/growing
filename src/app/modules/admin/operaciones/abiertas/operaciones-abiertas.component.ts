@@ -185,11 +185,12 @@ cerrar(request):void{
        
       // Accediendo a la lista de areas de atención dentro de la respuesta
       if (respuesta.estatus === 'OK') {
-        this.alertService.success('APUESTA CERRADA','La apuesta se cerro satisfactoriamente')
-        this.datasource.data = respuesta.lista;
+        this.alertService.success('Posición CERRADA','La Posición se cerro satisfactoriamente')
+ 
+
 
       } else {
-        this.alertService.error('APUESTA CERRADA','Hubo un problema para cerrar la apuesta, inetentelo de nuevo.')
+        this.alertService.error('Posición CERRADA','Hubo un problema para cerrar la Posición, inetentelo de nuevo.')
         console.log(
           'La respuesta no contiene una lista válida de areas de atención.'
         );

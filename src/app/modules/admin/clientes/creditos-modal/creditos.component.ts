@@ -1,17 +1,17 @@
 import { Component, CSP_NONCE, Inject, OnInit } from '@angular/core';
 import {
-    MAT_DIALOG_DATA,
-    MatDialogModule,
-    MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
 } from '@angular/material/dialog';
 import {
-    FormArray,
-    FormBuilder,
-    FormControl,
-    FormGroup,
-    FormsModule,
-    ReactiveFormsModule,
-    Validators,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { CommonModule, CurrencyPipe, DatePipe, NgClass } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -39,195 +39,193 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { ClienteService } from '../clientes.service';
 import Swal from 'sweetalert2';
 interface ViewValue {
-    value: number;
-    viewValue: string;
+  value: number;
+  viewValue: string;
 }
 
 @Component({
-    selector: 'app-creditos-modal',
-    templateUrl: './creditos.component.html',
-    styleUrls: ['./creditos.component.scss'],
-    standalone: true,
-    imports: [
-        CommonModule,
-        MatDialogModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        ReactiveFormsModule,
-        MatCheckboxModule,
-        MatIcon,
-        MatRadioModule,
-        MatPaginatorModule,
-        MatTableModule, 
-        MatSortModule,
-        FormsModule ,
-        MatButtonModule,   MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule,   NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule
-    ],
+  selector: 'app-creditos-modal',
+  templateUrl: './creditos.component.html',
+  styleUrls: ['./creditos.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatCheckboxModule,
+    MatIcon,
+    MatRadioModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSortModule,
+    FormsModule,
+    MatButtonModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule
+  ],
 })
- 
-export class  CreditosModalComponent implements OnInit {
-    displayedColumns: string[] = ['monto', 'fecha', 'creditos' ];
-    rolForm: FormGroup;
-    permisos = [];
-    newRol: any;
-    usuarioLoggeado: any;
-    private _unsubscribeAll: Subject<any> = new Subject<any>();
-    estados: ViewValue[] = [
-        { value: 1, viewValue: 'Activo' },
-        { value: 0, viewValue: 'Inactivo' },
-    ];
-    formCliente: FormGroup;
-    divi = 'USD'; // replace with your actual value
-    nocliente = '12345'; // replace with your actual value
-    montototal = 1000; // replace with your actual value
-    textCosto = '0.00'; // replace with your actual value
-    textVariacion = '0.00'; // replace with your actual value
-    showAlert = false;
-    total = 0;
-    datasource = new MatTableDataSource<any>();
-    idUser: string;
-    monto: any = 0;
-    constructor(
-        public dialogRef: MatDialogRef<CreditosModalComponent>,
-        private fb: FormBuilder,
-        private alertService:AlertService,
-        private clienteService:ClienteService,
-        private perfilamientoService: PerfilamientoService,
-        @Inject(MAT_DIALOG_DATA) public data: any
-    ) {
 
-        this.formCliente = this.fb.group({
-            tipom: ['venta', Validators.required],
-            porcentaje: [0, Validators.required],
-            valorA: ['', Validators.required],
-            cierreGanancia: [false],
-            porceganancia: [''],
-            cierrePerdida: [false],
-            porceperdida: ['']
-          });
-          this.idUser =  localStorage.getItem('idUserWrog');
+export class CreditosModalComponent implements OnInit {
+  displayedColumns: string[] = ['monto', 'fecha', 'creditos'];
+  rolForm: FormGroup;
+  permisos = [];
+  newRol: any;
+  usuarioLoggeado: any;
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  estados: ViewValue[] = [
+    { value: 1, viewValue: 'Activo' },
+    { value: 0, viewValue: 'Inactivo' },
+  ];
+  formCliente: FormGroup;
+  divi = 'USD'; // replace with your actual value
+  nocliente = '12345'; // replace with your actual value
+  montototal = 1000; // replace with your actual value
+  textCosto = '0.00'; // replace with your actual value
+  textVariacion = '0.00'; // replace with your actual value
+  showAlert = false;
+  total = 0;
+  datasource = new MatTableDataSource<any>();
+  idUser: string;
+  monto: any = 0;
+  constructor(
+    public dialogRef: MatDialogRef<CreditosModalComponent>,
+    private fb: FormBuilder,
+    private alertService: AlertService,
+    private clienteService: ClienteService,
+    private perfilamientoService: PerfilamientoService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
 
-    }
+    this.formCliente = this.fb.group({
+      tipom: ['venta', Validators.required],
+      porcentaje: [0, Validators.required],
+      valorA: ['', Validators.required],
+      cierreGanancia: [false],
+      porceganancia: [''],
+      cierrePerdida: [false],
+      porceperdida: ['']
+    });
+    this.idUser = localStorage.getItem('idUserWrog');
 
-    ngOnInit(): void {
-   console.log(this.data)
-        this.rolForm = this.fb.group({
-            nombre: ['', Validators.required],
-            estatus: ['', Validators.required],
-        });
-
-      this.cargaIngreso();
- 
-    }
-
-    cargaIngreso():void{
-
-      let request = {
-        "accion": "string",
-        "dinero": 0,
-        "estatusRetiro": 0,
-        "fechaCreacion": "2024-08-12T05:15:57.772Z",
-        "idDinero": 0,
-        "idUsuario": this.data.data.data,
-        "tipo": "string"
-      }
-      this.clienteService.getCredito(request).subscribe({
-        next: (respuesta: any) => {
-          this.datasource.data = [];
-          console.log('Respuesta completa: ', respuesta);
-          // Accediendo a la lista de areas de atención dentro de la respuesta
-          if (respuesta.estatus === 'OK') {
-     
-            this.datasource.data = respuesta.lista;
-            this.total = respuesta.sumaTotal
-          } else {
-            console.log(
-              'La respuesta no contiene una lista válida de areas de atención.'
-            );
-          }
-        },
-        error: (error: Error) => {
-          console.error(error);
-        },
-      });
-    
-    }
-
-    get descripcion() {
-        return this.rolForm.get('descripcion');
-    }
-
-    onClose(): void {
-        this.dialogRef.close(this.newRol);
-    }
- 
-    
-
-    onSubmit(): void {
-
-        let request = {
-            "accion": "string",
-            "dinero": this.monto,
-            "estatusRetiro": 0,
-            "fechaCreacion": "2024-08-12T05:15:57.772Z",
-            "idDinero": 0,
-            "idUsuario": this.data.data.data,
-            "tipo": "string"
-          }
-
-          this.clienteService.postCredito(request).subscribe({
-            next: (respuesta: any) => {
-              console.log('Respuesta completa: ', respuesta);
-              // Accediendo a la lista de areas de atención dentro de la respuesta
-              if (respuesta.estatus === 'OK') {
-                this.alertService.success('Credito','El monto del credito fue registrado correctamente.')
-                
-                this.cargaIngreso();
-              } else {
-                console.log(
-                  'La respuesta no contiene una lista válida de areas de atención.'
-                );
-                this.alertService.error('Credito','Ocurrio un error, contacte a sistemas.')
-              }
-            },
-            error: (error: Error) => {
-              console.error(error);
-            },
-          });
-
-        
-
-        
-    }
-
-    pagarCredito(element:any): void {
-
- 
-        this.clienteService.pagaCredito(element).subscribe({
-          next: (respuesta: any) => {
-            console.log('Respuesta completa: ', respuesta);
-            // Accediendo a la lista de areas de atención dentro de la respuesta
-            if (respuesta.estatus === 'OK') {
-              this.alertService.success('Credito','El monto del credito fue pagado correctamente.')
-              
-              this.cargaIngreso();
-            } else {
-              console.log(
-                'La respuesta no contiene una lista válida de areas de atención.'
-              );
-              this.alertService.error('Credito','Ocurrio un error, contacte a sistemas.')
-            }
-          },
-          error: (error: Error) => {
-            console.error(error);
-          },
-        });
-
-      
-
-      
   }
+
+  ngOnInit(): void {
+    console.log(this.data)
+    this.rolForm = this.fb.group({
+      nombre: ['', Validators.required],
+      estatus: ['', Validators.required],
+    });
+
+    this.cargaIngreso();
+
+  }
+
+  cargaIngreso(): void {
+
+    let request = {
+      "accion": "string",
+      "dinero": 0,
+      "estatusRetiro": 0,
+      "fechaCreacion": "2024-08-12T05:15:57.772Z",
+      "idDinero": 0,
+      "idUsuario": this.data.data.data,
+      "tipo": "string"
+    }
+    this.clienteService.getCredito(request).subscribe({
+      next: (respuesta: any) => {
+        this.datasource.data = [];
+        console.log('Respuesta completa: ', respuesta);
+        // Accediendo a la lista de areas de atención dentro de la respuesta
+        if (respuesta.estatus === 'OK') {
+
+          this.datasource.data = respuesta.lista;
+          this.total = respuesta.sumaTotal
+        } else {
+          console.log(
+            'La respuesta no contiene una lista válida de areas de atención.'
+          );
+        }
+      },
+      error: (error: Error) => {
+        console.error(error);
+      },
+    });
+
+  }
+
+  get descripcion() {
+    return this.rolForm.get('descripcion');
+  }
+
+  onClose(): void {
+    this.dialogRef.close(this.newRol);
+  }
+
+
+
  
+  pagarCredito(element: any): void {
+
+
+    this.clienteService.pagaCredito(element).subscribe({
+      next: (respuesta: any) => {
+        console.log('Respuesta completa: ', respuesta);
+        // Accediendo a la lista de areas de atención dentro de la respuesta
+        if (respuesta.estatus === 'OK') {
+          this.alertService.success('Credito', 'El monto del credito fue pagado correctamente.')
+
+          this.cargaIngreso();
+        } else {
+          console.log(
+            'La respuesta no contiene una lista válida de areas de atención.'
+          );
+          this.alertService.error('Credito', 'Ocurrio un error, contacte a sistemas.')
+        }
+      },
+      error: (error: Error) => {
+        console.error(error);
+      },
+    });
+
+
+
+
+  }
+  onSubmit() {
+
+    let request = {
+      "accion": "string",
+      "dinero": this.monto,
+      "estatusRetiro": 0,
+      "fechaCreacion": "2024-08-12T05:15:57.772Z",
+      "idDinero": 0,
+      "idUsuario": this.data.data.data,
+      "tipo": "string"
+    }
+
+    this.clienteService.postCredito(request).subscribe({
+      next: (respuesta: any) => {
+        console.log('Respuesta completa: ', respuesta);
+        // Accediendo a la lista de areas de atención dentro de la respuesta
+        if (respuesta.estatus === 'OK') {
+          this.alertService.success('Credito', 'El monto del credito fue registrado correctamente.')
+
+          this.dialogRef.close();
+        } else {
+          console.log(
+            'La respuesta no contiene una lista válida de areas de atención.'
+          );
+          this.alertService.error('Credito', 'Ocurrio un error, contacte a sistemas.')
+        }
+      },
+      error: (error: Error) => {
+        console.error(error);
+      },
+    });
+ 
+
+  }
+
 
 }

@@ -16,6 +16,7 @@ export interface ittivaNavigationItem
     active?: boolean;
     disabled?: boolean;
     tooltip?: string;
+    perfil?: string;
     link?: string;
     fragment?: string;
     preserveFragment?: boolean;
