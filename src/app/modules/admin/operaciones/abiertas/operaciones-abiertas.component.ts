@@ -186,8 +186,8 @@ cerrar(request):void{
       // Accediendo a la lista de areas de atención dentro de la respuesta
       if (respuesta.estatus === 'OK') {
         this.alertService.success('Posición CERRADA','La Posición se cerro satisfactoriamente')
- 
-
+        
+        this.cargaIngreso();
 
       } else {
         this.alertService.error('Posición CERRADA','Hubo un problema para cerrar la Posición, inetentelo de nuevo.')
