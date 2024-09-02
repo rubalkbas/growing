@@ -1,31 +1,64 @@
-<div class="flex flex-col items-center justify-center w-full h-full">
-    <div class="w-full max-w-3xl">
-        <div class="max-w-none mx-auto prose prose-sm">
-            <img
-                class="w-20"
-                src="assets/images/logo/logo.svg"
-                alt="Logo image">
-            <h1>Landing Module</h1>
-            <p>
-                This can be the landing or the welcome page of your application. If you have an SSR (Server Side Rendering) setup, or if you don't need to have Search engine
-                visibility and optimizations, you can even use this page as your primary landing page.
-            </p>
-            <p>
-                This is a separate "module", it has its own directory and routing setup and also it's completely separated from the actual application. This is also a simple example of
-                a multiple applications setup that uses the same codebase. You can have different entry points and essentially have different applications within the same codebase.
-            </p>
-        </div>
-        <div>
-            <a
-                class="mt-8"
-                mat-flat-button
-                [color]="'primary'"
-                [routerLink]="'/growing/project'">
-                <span>Launch the App</span>
-                <mat-icon
-                    class="ml-2 icon-size-5"
-                    [svgIcon]="'heroicons_mini:arrow-long-right'"></mat-icon>
-            </a>
-        </div>
+<header id="header" class="fixed-top header-inner-pages w-full">
+    <div class="container flex justify-between items-center">
+        <h1 class="logo">
+            <a routerLink="/">Growing Capital Maker</a>
+        </h1>
+
+        <nav id="navbar" class="navbar">
+            <ul class="flex space-x-4">
+                <li>
+                    <a class="nav-link scrollto active" routerLink="/#hero">Inicio</a>
+                </li>
+                <li><a class="nav-link scrollto" routerLink="/#about">Conócenos</a></li>
+                <li>
+                    <a class="nav-link scrollto" routerLink="/#services">Beneficios</a>
+                </li>
+                <li>
+                    <a class="nav-link scrollto" routerLink="/#markets">Mercados</a>
+                </li>
+                <li>
+                    <a class="nav-link scrollto" routerLink="/#tools">Herramientas</a>
+                </li>
+                <li>
+                    <a class="nav-link scrollto" routerLink="/#contact">Contacto</a>
+                </li>
+                <li class="dropdown">
+                    <a href="https://www.growingcapitalmaker.org/mgcm/index.html">Login</a>
+                </li>
+            </ul>
+            <button mat-icon-button class="bi bi-list mobile-nav-toggle"></button>
+        </nav>
     </div>
-</div>
+</header>
+
+<!-- Hero Section -->
+<section id="hero" class="relative bg-cover bg-center w-full"
+    style="background-image: url('assets/img/slide/slide-1.jpg')">
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="carousel-container">
+                    <div class="container text-center text-white">
+                        <h2 class="text-4xl font-bold">
+                            Bienvenido a <span>Growing Capital Maker</span>
+                        </h2>
+                        <p class="mt-4">
+                            Abre una cuenta hoy mismo y disfruta de todas las ventajas que te
+                            ofrece un Broker Maker.
+                        </p>
+                        <a href="#about" class="btn-get-started btn btn-primary mt-6">Continuar</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Repeat for other slides -->
+        </div>
+        <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bi bi-chevron-left"></span>
+        </a>
+        <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon bi bi-chevron-right"></span>
+        </a>
+    </div>
+</section>
+ 
+ 
