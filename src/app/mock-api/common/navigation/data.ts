@@ -75,12 +75,20 @@ export const defaultNavigation: ittivaNavigationItem[] = [
     {
         id: 'dashboards.fondo',
         perfil: 'Administrador',
-        title: 'Clientes',
-        type: 'basic',
+        title: 'Usuarios',
+        type: 'collapsable',
         icon: 'heroicons_outline:user-group',
-        link: '/growing/clientes',
-    },
-   
+        children: [
+            {
+                id: 'dashboards.project',
+                title: 'Clientes',
+                type: 'basic',
+                icon: 'heroicons_outline:user-group',
+                link: '/growing/clientes'
+            }
+        ]
+    } ,
+       
     {
         id: 'dashboards.fondo',
         perfil: 'Cliente',
