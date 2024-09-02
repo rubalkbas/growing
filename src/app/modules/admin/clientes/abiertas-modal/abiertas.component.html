@@ -60,9 +60,15 @@
           <th mat-header-cell *matHeaderCellDef>Modificar</th>
           <td mat-cell *matCellDef="let element">
             <div class="example-button-container  ">
-              <button mat-fab extended class="custom-fab-button" (click)="openDialog(element)">
+              <button mat-fab extended class="custom-fab-button" (click)="abrirDetalle(element.idApuestaCliente)">
                 <mat-icon>attach_money</mat-icon>
                 Detalle
+              </button>
+            </div>
+            <div class="example-button-container  ">
+              <button mat-fab extended class="custom-fab-button" (click)="openDialog(element)">
+                <mat-icon>attach_money</mat-icon>
+                Modificar
               </button>
             </div>
           </td>

@@ -70,7 +70,38 @@
 
 
     <hr>
+    <h1 mat-dialog-title>Creditos Pagados</h1>
+    <div class="overflow-auto ">
+      <table mat-table [dataSource]="datasource2" class="w-full">
+        <ng-container matColumnDef="monto">
+          <th mat-header-cell *matHeaderCellDef>Monto USD</th>
+          <td mat-cell *matCellDef="let element">{{element.dinero | currency:'USD'}}</td>
+        </ng-container>
 
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha de Ingreso</th>
+          <td mat-cell *matCellDef="let element">{{element.fechaCreacion | date:'short' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="creditos">
+          <th mat-header-cell *matHeaderCellDef>Pagar</th>
+          <td mat-cell *matCellDef="let element">
+            <div *ngIf="element.estatusRetiro === 0" class="example-button-container  ">
+              <button mat-fab extended class="custom-fab-button-blue" (click)="pagarCredito(element)">
+                <mat-icon>monetization_on</mat-icon>
+                Pagar Credito
+              </button>
+            </div>
+
+          </td>
+        </ng-container>
+
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
 
   </form>
 

@@ -34,6 +34,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ClienteService } from '../clientes.service';
 import { AlternaModalComponent } from './alternaInfo/alternaInfo.component';
+import { DetalleAbiertasModalComponent } from '../../operaciones/detalle-abiertas-modal/detalle-abiertas-modal.component';
  
 interface ViewValue {
   value: number;
@@ -177,5 +178,19 @@ export class AbiertasModalComponent implements OnInit {
 
     });
   }
+
+  abrirDetalle(idApuestaCliente: any): void {
+    
+    const dialogRef = this.dialog.open(DetalleAbiertasModalComponent, {
+      width: '70%',
+      data: { idApuestaCliente: idApuestaCliente}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+
+
+}
 
 }

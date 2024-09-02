@@ -210,6 +210,7 @@ export class CuentaComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
+          this.cargaRetiros();
           console.log('The dialog was closed');
         });
 

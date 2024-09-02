@@ -86,6 +86,7 @@ export class CreditosModalComponent implements OnInit {
   showAlert = false;
   total = 0;
   datasource = new MatTableDataSource<any>();
+  datasource2 = new MatTableDataSource<any>();
   idUser: string;
   monto: number = 0;
   constructor(
@@ -153,6 +154,26 @@ export class CreditosModalComponent implements OnInit {
       },
     });
 
+    this.clienteService.getCreditoPagados(request).subscribe({
+      next: (respuesta: any) => {
+        this.datasource2.data = [];
+        console.log('Respuesta completa: ', respuesta);
+        // Accediendo a la lista de areas de atención dentro de la respuesta
+        if (respuesta.estatus === 'OK') {
+
+          this.datasource2.data = respuesta.lista;
+          this.total = respuesta.sumaTotal
+        } else {
+          console.log(
+            'La respuesta no contiene una lista válida de areas de atención.'
+          );
+        }
+      },
+      error: (error: Error) => {
+        console.error(error);
+      },
+    });
+
   }
 
   get descripcion() {
@@ -172,6 +193,7 @@ export class CreditosModalComponent implements OnInit {
     this.clienteService.pagaCredito(element).subscribe({
       next: (respuesta: any) => {
         console.log('Respuesta completa: ', respuesta);
+        
         // Accediendo a la lista de areas de atención dentro de la respuesta
         if (respuesta.estatus === 'OK') {
           this.alertService.success('Credito', 'El monto del credito fue pagado correctamente.')
