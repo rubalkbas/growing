@@ -192,7 +192,7 @@ export class  RetirosModalComponent implements OnInit {
               console.log('Respuesta completa: ', respuesta);
               // Accediendo a la lista de areas de atención dentro de la respuesta
               if (respuesta.estatus === 'OK') {
-                this.alertService.success('Retiro','El monto del se retiro correctamente.')
+                this.alertService.success('Retiro','Se aprobo el retiro correctamente.')
                 
                 this.dialogRef.close();
               } else {

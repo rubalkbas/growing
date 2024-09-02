@@ -124,14 +124,14 @@ export class CuentaModalComponent implements OnInit {
                 if (respuesta.estatus === 'OK') {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Retiro exitoso',
+                        title: 'Retiro Solicitado',
                         text: 'Se ha realizado la solicitud del retiro de forma exitosa.',
                     });
                     this.dialogRef.close();
-                } else {
+                } else  if (respuesta.estatus === 'PASA'){
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
+                        title: 'Retiro Solicitado',
                         text: respuesta.mensaje
                     });
                 }
