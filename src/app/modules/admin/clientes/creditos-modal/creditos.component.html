@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>Credito</h1>
 <div mat-dialog-content>
-  <form [formGroup]="formCliente" (ngSubmit)="onSubmit()">
+  <form [formGroup]="formCliente">
 
     <div class="form-group">
       <label for="nocliente">NOMBRE CLIENTE: <b>{{ data.data.usuario }}</b></label>
@@ -58,8 +58,8 @@
       </mat-form-field>
 
 
-      <div class="example-button-container  ">
-        <button mat-fab extended (Click)="onSubmit()">
+      <div class="example-button-container">
+        <button mat-fab extended (click)="carga()">
           <mat-icon>monetization_on</mat-icon>
           Cargar Credito
         </button>

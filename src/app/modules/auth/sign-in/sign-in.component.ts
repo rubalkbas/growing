@@ -86,6 +86,7 @@ export class AuthSignInComponent implements OnInit
             // Check if verificacion is false
             localStorage.setItem('user', JSON.stringify(respuesta.dto.usuario));
             localStorage.setItem('idUserWrog',  respuesta.dto.usuario.id);
+            localStorage.setItem('rol',  respuesta.dto.usuario.idRol.nombreRol);
             if (respuesta.dto.usuario.verificacion === false) {
                 
                 this._router.navigate(['/first-pass']);

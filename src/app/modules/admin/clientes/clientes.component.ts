@@ -153,6 +153,7 @@ export class ClientesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      this.traeUsuarios();
       console.log('The dialog was closed');
 
     });
@@ -169,7 +170,9 @@ export class ClientesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      this.traeUsuarios();
       if (result) {
+   
         console.log('The dialog was closed');
       }
     });
@@ -186,7 +189,9 @@ export class ClientesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      this.traeUsuarios();
       if (result) {
+
         console.log('The dialog was closed');
       }
     });
@@ -204,8 +209,10 @@ export class ClientesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      this.traeUsuarios();
       if (result) {
-        this.traeUsuarios();
+        
+      
         console.log('The dialog was closed');
       }
     });
@@ -223,7 +230,9 @@ export class ClientesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      this.traeUsuarios();
       if (result) {
+
         console.log('The dialog was closed');
       }
     });
@@ -240,6 +249,7 @@ export class ClientesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      this.traeUsuarios();
       if (result) {
         console.log('The dialog was closed');
       }
@@ -255,8 +265,8 @@ export class ClientesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.traeUsuarios();
+      this.traeUsuarios();
+      if (result) { 
         console.log('The dialog was closed');
       }
     });

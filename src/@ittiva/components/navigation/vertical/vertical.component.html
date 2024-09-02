@@ -24,7 +24,7 @@
             <ng-container *ngIf="(item.hidden && !item.hidden(item)) || !item.hidden">
 
                 <!-- Aside -->
-                <ng-container *ngIf="item.type === 'aside'">
+                <ng-container *ngIf="item.type === 'aside'  && item.perfil === rol">
                     <ittiva-vertical-navigation-aside-item
                         [item]="item"
                         [name]="name"
@@ -35,29 +35,29 @@
                 </ng-container>
 
                 <!-- Basic -->
-                <ng-container *ngIf="item.type === 'basic'">
+                <ng-container *ngIf="item.type === 'basic' && item.perfil === rol">
                     <ittiva-vertical-navigation-basic-item
                         [item]="item"
                         [name]="name"></ittiva-vertical-navigation-basic-item>
                 </ng-container>
 
                 <!-- Collapsable -->
-                <ng-container *ngIf="item.type === 'collapsable'">
+                <ng-container *ngIf="item.type === 'collapsable'  && item.perfil === rol">
                     <ittiva-vertical-navigation-collapsable-item
                         [item]="item"
                         [name]="name"
-                        [autoCollapse]="autoCollapse"> hola</ittiva-vertical-navigation-collapsable-item>
+                        [autoCollapse]="autoCollapse"> </ittiva-vertical-navigation-collapsable-item>
                 </ng-container>
 
                 <!-- Divider -->
-                <ng-container *ngIf="item.type === 'divider'">
+                <ng-container *ngIf="item.type === 'divider'  && item.perfil === rol">
                     <ittiva-vertical-navigation-divider-item
                         [item]="item"
                         [name]="name"></ittiva-vertical-navigation-divider-item>
                 </ng-container>
 
                 <!-- Group -->
-                <ng-container *ngIf="item.type === 'group'">
+                <ng-container *ngIf="item.type === 'group'  && item.perfil === rol">
                     <ittiva-vertical-navigation-group-item
                         [item]="item"
                         [name]="name"
@@ -65,7 +65,7 @@
                 </ng-container>
 
                 <!-- Spacer -->
-                <ng-container *ngIf="item.type === 'spacer'">
+                <ng-container *ngIf="item.type === 'spacer'  && item.perfil === rol">
                     <ittiva-vertical-navigation-spacer-item
                         [item]="item"
                         [name]="name"></ittiva-vertical-navigation-spacer-item>

@@ -5,7 +5,7 @@ export const defaultNavigation: ittivaNavigationItem[] = [
  
     {
         id: 'usuarios',
-        perfil: 'usuarios',
+        perfil: 'Cliente',
         title: 'Simbolos',
         type: 'collapsable',
         icon: 'heroicons_outline:currency-dollar',
@@ -51,7 +51,7 @@ export const defaultNavigation: ittivaNavigationItem[] = [
    
     {
         id: 'dashboards.fondo',
-        perfil: 'usuarios',
+        perfil: 'Cliente',
         title: 'Mis Operaciones',
         type: 'collapsable',
         icon: 'heroicons_outline:banknotes',
@@ -74,7 +74,7 @@ export const defaultNavigation: ittivaNavigationItem[] = [
     } ,
     {
         id: 'dashboards.fondo',
-        perfil: 'administrador',
+        perfil: 'Administrador',
         title: 'Clientes',
         type: 'basic',
         icon: 'heroicons_outline:user-group',
@@ -83,7 +83,7 @@ export const defaultNavigation: ittivaNavigationItem[] = [
    
     {
         id: 'dashboards.fondo',
-        perfil: 'usuarios',
+        perfil: 'Cliente',
         title: 'Calendario Economico',
         type: 'basic',
         icon: 'heroicons_outline:calendar-days',
@@ -92,7 +92,7 @@ export const defaultNavigation: ittivaNavigationItem[] = [
    
     {
         id: 'dashboards.fondo',
-        perfil: 'usuarios',
+        perfil: 'Cliente',
         title: 'Mi Cuenta',
         type: 'basic',
         icon: 'heroicons_outline:user',

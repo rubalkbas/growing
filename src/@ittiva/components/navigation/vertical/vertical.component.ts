@@ -129,6 +129,7 @@ export class ittivaVerticalNavigationComponent
     private _ittivaScrollbarDirectivesSubscription: Subscription;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     private _unsubscribeAllUsuario: Subject<any> = new Subject<any>();
+    rol: string = '';
 
     /**
      * Constructor
@@ -352,7 +353,8 @@ export class ittivaVerticalNavigationComponent
      */
     ngOnInit(): void {
     
-
+        this.rol = localStorage.getItem('rol');
+        
         // Make sure the name input is not an empty string
         if (this.name === '') {
             this.name = this._ittivaUtilsService.randomId();

@@ -86,11 +86,11 @@
             <!-- Ajusta la altura del contenedor principal -->
             <div class="flex-auto p-6 sm:p-10 h-full overflow-auto">
                 <!-- Ajusta la altura del contenedor principal de la tabla -->
-                <menu-margen></menu-margen>
+                <menu-margen *ngIf="rol !== 'Administrador'"></menu-margen>
                 <router-outlet *ngIf="true"></router-outlet>
 
-                <trading-view-widget>
-                </trading-view-widget>
+                <trading-view-widget *ngIf="rol !== 'Administrador'">
+                </trading-view-widget >
 
             </div>
         </div>

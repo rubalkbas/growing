@@ -35,6 +35,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
     navigation: Navigation;
     user: User;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    rol: string = '';
 
     /**
      * Constructor
@@ -71,6 +72,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+        this.rol = localStorage.getItem('rol');
         // Subscribe to navigation data
         this._navigationService.navigation$
             .pipe(takeUntil(this._unsubscribeAll))

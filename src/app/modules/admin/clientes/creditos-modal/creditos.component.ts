@@ -87,7 +87,7 @@ export class CreditosModalComponent implements OnInit {
   total = 0;
   datasource = new MatTableDataSource<any>();
   idUser: string;
-  monto: any = 0;
+  monto: number = 0;
   constructor(
     public dialogRef: MatDialogRef<CreditosModalComponent>,
     private fb: FormBuilder,
@@ -111,6 +111,7 @@ export class CreditosModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
     console.log(this.data)
     this.rolForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -174,8 +175,7 @@ export class CreditosModalComponent implements OnInit {
         // Accediendo a la lista de areas de atención dentro de la respuesta
         if (respuesta.estatus === 'OK') {
           this.alertService.success('Credito', 'El monto del credito fue pagado correctamente.')
-
-          this.cargaIngreso();
+          this.dialogRef.close( );
         } else {
           console.log(
             'La respuesta no contiene una lista válida de areas de atención.'
@@ -192,7 +192,7 @@ export class CreditosModalComponent implements OnInit {
 
 
   }
-  onSubmit() {
+  carga() {
 
     let request = {
       "accion": "string",

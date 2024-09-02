@@ -17,7 +17,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "serviceWorker": true,
+                   
                         "ngswConfigPath": "src/ngsw-config.json",
                         "aot": true,
                         "outputPath": "dist",
@@ -94,7 +94,8 @@
                             "vendorChunk": true,
                             "extractLicenses": false,
                             "sourceMap": true,
-                            "namedChunks": true
+                            "namedChunks": true,
+                            "serviceWorker": false
                         }
                     },
                     "defaultConfiguration": "production"
