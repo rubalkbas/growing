@@ -120,11 +120,7 @@ export class ComprarModalComponent implements OnInit {
 
 
     generaApuesta():void{
-        if(this.formCliente.get('porcentaje')?.value > this.data.dinero){
-            this.alertService.error('Apuesta Inclompleta!','No tienes el suficiente efectivo para realizar la apuesta.')
-            return;
-        }
-        
+                
         this.apuesta.bloqueCompra = 'DIVISA';
         this.apuesta.compra = this.data.data.instrumento;
         this.apuesta.idUsuario = localStorage.getItem('idUserWrog');
@@ -145,13 +141,17 @@ export class ComprarModalComponent implements OnInit {
            
               console.log('Respuesta completa: ', respuesta);
               // Accediendo a la lista de areas de atención dentro de la respuesta
-              this.alertService.success('Posición Generada!','La Posición a sido registrada correctamente.')
+             
               if (respuesta.estatus === 'OK') {
+
+                this.alertService.success('Posición Generada!','La Posición a sido registrada correctamente.')
                 this.dialogRef.close();
-              } else {
-                console.log(
-                  'La Posición no se pudo generar.'
-                );
+
+              } else if (respuesta.estatus === 'FALTA'){
+
+                this.alertService.success('Posición No Generada!','No tienes el suficiente margen requerido.')
+                this.dialogRef.close();                
+
               }
             },
             error: (error: Error) => {

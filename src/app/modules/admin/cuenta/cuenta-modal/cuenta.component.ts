@@ -71,6 +71,8 @@ export class CuentaModalComponent implements OnInit {
     idUser: string;
     retirarForm: FormGroup;
 
+    selectedTipo = 'TRANSFERENCIA';
+
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<CreditosModalComponent>,
@@ -82,6 +84,7 @@ export class CuentaModalComponent implements OnInit {
         this.idUser = localStorage.getItem('idUserWrog');
         this.retirarForm = this.fb.group({
             monto: ['', [Validators.required, Validators.min(1)]],
+            tipo: ['', [Validators.required]]
         });
 
     }
@@ -97,20 +100,18 @@ export class CuentaModalComponent implements OnInit {
 
     onSubmit() {
         if (this.retirarForm.valid) {
-            const monto = Number(this.retirarForm.value.monto);
-            if (this.data.balance < monto) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'El monto a retirar es mayor al balance.'
-                });
-                return;
-            }
+
+            const monto = Number(this.retirarForm.value.monto);  
+            const tipo = this.retirarForm.value.tipo;   
+             
             
             const request = {
                 idUsuario: this.data.idUser,
-                dinero: monto
+                dinero: monto,
+                tipo:tipo
+
             };
+
             this.cargarRetiro(request);
         }
     }
@@ -124,14 +125,14 @@ export class CuentaModalComponent implements OnInit {
                 if (respuesta.estatus === 'OK') {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Retiro exitoso',
+                        title: 'Retiro Solicitado',
                         text: 'Se ha realizado la solicitud del retiro de forma exitosa.',
                     });
                     this.dialogRef.close();
-                } else {
+                } else  if (respuesta.estatus === 'PASA'){
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
+                        title: 'Retiro Solicitado',
                         text: respuesta.mensaje
                     });
                 }

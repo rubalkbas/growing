@@ -14,6 +14,15 @@
     <form
     class="p-6"
     [formGroup]="retirarForm">
+
+    <mat-form-field class="w-full">
+      <mat-label>Tipo Retiro </mat-label>
+      <mat-select  name="tipo"  [(ngModel)]="selectedTipo" [formControlName]="'tipo'">
+          <mat-option value="TRANSFERENCIA">TRANSFERENCIA</mat-option>
+          <mat-option value="CRIPTOMONEDA">CRIPTOMONEDA</mat-option>
+      </mat-select>
+  </mat-form-field>
+
     <mat-form-field class="w-full">
       <mat-label>Monto a retirar</mat-label>
       <input
