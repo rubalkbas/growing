@@ -148,7 +148,7 @@ export class UserComponent implements OnInit, OnDestroy
           height: '550px',
           // height: '700px'
           data: {
-            data: { data: this.usuario, usuario: this.usuario.dto.nombre },
+            data: { data: this.usuario, usuario: this.usuario },
           }
         });
     
