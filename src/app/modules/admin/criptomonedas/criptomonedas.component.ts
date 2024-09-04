@@ -258,7 +258,7 @@ export class CriptomonedasComponent implements OnInit {
    
   openDialog(data:any): void {
     const dialogRef = this.dialog.open(ComprarModalComponent, {
-      width: '22%',
+      width: '80%',
       height: '80%',
         data: { data: data, usuario: this.dinero.nombre, dinero:this.dinero.totalDinero},
     });
