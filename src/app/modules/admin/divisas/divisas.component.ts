@@ -162,7 +162,7 @@ export class DivisasComponent implements OnInit, OnDestroy {
   }
 
   sendMessage( ): void {
-    this.websocketService.sendMessage( {"action": "subscribe", "symbols": "EURUSD,EURJPY,EURMXN,GBPUSD,EURCAD,EURAUD,CHFAUD,CHFCAD,CHFGBP,EURSGD,GBPPLN,GBPNZD,CHFNOK,CHFMXN,ZAREUR,EURCHF,GBPJPY,GBPCHF,AUDUSD,NZDUSD,USDCAD,XAUUSD,EUREUR,EURNZD,EURPLN,GBPEUR,GBPAUD,GBPNOK,GBPNOK,GBPMXN,CHFGBP,USDMXN"} );
+    this.websocketService.sendMessage( {"action": "subscribe", "symbols": "EURUSD,USDJPY,GBPUSD,USDTRY,USDCHF,USDCAD,AUDUSD,NZDUSD,USDINR,USDCNY,USDSGD,USDHKD,USDDKK,USDSEK,USDRUB,USDILS,USDMXN,USDZAR,BTCUSD,ETHUSD"} );
   }
 
   updateCurrencyData(currencyCode: string, newValue: number, lodemas :any, newValueVender :any): void {
