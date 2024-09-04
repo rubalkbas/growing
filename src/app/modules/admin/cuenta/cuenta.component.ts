@@ -1,5 +1,5 @@
 import { CommonModule, CurrencyPipe, DatePipe, NgClass, NgFor, getCurrencySymbol } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
@@ -88,7 +88,12 @@ export class CuentaComponent implements OnInit {
   totalRetirosSolicitados = 0;
   totalRetirosEfectuados = 0;
   retiroBool = false;
+  isMobile: boolean = window.innerWidth < 768;
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.isMobile = window.innerWidth < 768;
+  }
   /**
    * Constructor
    */
