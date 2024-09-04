@@ -147,7 +147,7 @@ export class ClientesComponent implements OnInit {
 
   openDialog(data: any): void {
     const dialogRef = this.dialog.open(BalanceModalComponent, {
-      width: '30%',
+      width: '80%',
       height: '80%',
       data: { data: data.idUsuario, usuario: data.nombre },
     });
@@ -161,7 +161,7 @@ export class ClientesComponent implements OnInit {
   
   opencDialogCredito(data: any ): void {
     const dialogRef = this.dialog.open(CreditosModalComponent, {
-      width: '30%',
+      width: '80%',
       height: '80%',
       // height: '700px'
       data: {
@@ -180,7 +180,7 @@ export class ClientesComponent implements OnInit {
 
   opencDialogRetiro( data: any): void {
     const dialogRef = this.dialog.open(RetirosModalComponent , {
-      width: '60%',
+      width: '80%',
       height: '80%',
       // height: '700px'
       data: {
@@ -221,7 +221,7 @@ export class ClientesComponent implements OnInit {
     
   opencDialogAbiertas( data: any): void {
     const dialogRef = this.dialog.open(AbiertasModalComponent , {
-      width: '60%',
+      width: '80%',
       height: '80%',
       // height: '700px'
       data: {
@@ -240,7 +240,7 @@ export class ClientesComponent implements OnInit {
 
   opencDialogCerradas( data: any): void {
     const dialogRef = this.dialog.open(CerradasModalComponent , {
-      width: '60%',
+      width: '80%',
       height: '80%',
       // height: '700px'
       data: {

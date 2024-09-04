@@ -247,7 +247,7 @@ export class FondosComponent implements OnInit {
   
 openDialogVender(data:any): void {
   const dialogRef = this.dialog.open(VenderModalComponent, {
-    width: '22%',
+    width: '80%',
     height: '80%',
       data: { data: data, usuario: this.dinero.nombre, dinero:this.dinero.totalDinero},
   });
@@ -261,7 +261,7 @@ openDialogVender(data:any): void {
    
   openDialog(data:any): void {
     const dialogRef = this.dialog.open(ComprarModalComponent, {
-      width: '20%',
+      width: '80%',
       height: '80%',
       data: { data: data, usuario: this.dinero.nombre, dinero:this.dinero.totalDinero},
     });
