@@ -1,4 +1,4 @@
-<div class="xl:col-span-3 flex flex-col flex-auto bg-card shadow rounded-2xl  overflow-hidden">
+<div *ngIf="!isMobile"  class="xl:col-span-3 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
     <div class="container p-6">
         <div class="flex space-x-4 mb-6">
             <div class="flex-1 flex">
@@ -10,16 +10,17 @@
                     </div>
                     <div class="flex items-center">
                         <div class="flex flex-col">
-                            <div class="text-xl font-medium tracking-tight leading-6 truncate">BALANCE</div>
-                            <div class="text-green-600 font-medium text-sm">
-                                USD
+                            <div class="text-xl font-medium tracking-tight leading-6 truncate">
+                                BALANCE
                             </div>
+                            <div class="text-green-600 font-medium text-sm">USD</div>
                         </div>
                     </div>
                     <div class="flex flex-row flex-wrap mt-4 -mx-6">
                         <div class="flex flex-col mx-6 my-3">
-                            <div class="mt-2 font-medium text-5xl leading-none">{{ margenesUsuario.totalDinero |
-                                currency:'USD'}}</div>
+                            <div class="mt-2 font-medium text-5xl leading-none">
+                                {{ margenesUsuario.totalDinero | currency : "USD" }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -33,19 +34,17 @@
                     </div>
                     <div class="flex items-center">
                         <div class="flex flex-col">
-                            <div class="text-xl font-medium tracking-tight leading-6 truncate">MARGEN LIBRE
+                            <div class="text-xl font-medium tracking-tight leading-6 truncate">
+                                MARGEN LIBRE
                             </div>
-                            <div class="text-green-600 font-medium text-sm">
-                                USD
-                            </div>
+                            <div class="text-green-600 font-medium text-sm">USD</div>
                         </div>
                     </div>
                     <div class="flex flex-row flex-wrap mt-4 -mx-6">
                         <div class="flex flex-col mx-6 my-3">
-                            <div class="mt-2 font-medium text-5xl leading-none">{{ margenesUsuario.margenLibre |
-                                currency:'USD'}}</div>
-                            
-                            
+                            <div class="mt-2 font-medium text-5xl leading-none">
+                                {{ margenesUsuario.margenLibre | currency : "USD" }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -59,16 +58,96 @@
                     </div>
                     <div class="flex items-center">
                         <div class="flex flex-col">
-                            <div class="text-xl font-medium tracking-tight leading-6 truncate">MARGEN</div>
-                            <div class="text-green-600 font-medium text-sm">
-                                USD
+                            <div class="text-xl font-medium tracking-tight leading-6 truncate">
+                                MARGEN
                             </div>
+                            <div class="text-green-600 font-medium text-sm">USD</div>
                         </div>
                     </div>
                     <div class="flex flex-row flex-wrap mt-4 -mx-6">
                         <div class="flex flex-col mx-6 my-3">
                             <!-- <div class="text-sm font-medium leading-none text-secondary">Card Limit</div> -->
-                            <div class="mt-2 font-medium text-5xl leading-none">{{ margenesUsuario.margen | currency:'USD'}}
+                            <div class="mt-2 font-medium text-5xl leading-none">
+                                {{ margenesUsuario.margen | currency : "USD" }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isMobile" class="flex flex-col xl:flex-row xl:col-span-3 flex-auto bg-card shadow rounded-2xl overflow-hidden">
+    <div class="container p-6">
+        <div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-6">
+            <div class="flex-1 flex">
+                <div
+                    class="relative flex flex-col flex-auto p-6 pr-3 pb-3 bg-card rounded-2xl shadow overflow-hidden h-full">
+                    <div class="absolute bottom-0 right-0 w-27 h-27 -m-6">
+                        <mat-icon class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                            [svgIcon]="'heroicons_outline:currency-dollar'"></mat-icon>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="flex flex-col">
+                            <div class="text-xl font-medium tracking-tight leading-6 truncate">
+                                BALANCE
+                            </div>
+                            <div class="text-green-600 font-medium text-sm">USD</div>
+                        </div>
+                    </div>
+                    <div class="flex flex-row flex-wrap mt-4 -mx-6">
+                        <div class="flex flex-col mx-6 my-3">
+                            <div class="mt-2 font-medium text-5xl leading-none">
+                                {{ margenesUsuario.totalDinero | currency : "USD" }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1 flex">
+                <div
+                    class="relative flex flex-col flex-auto p-6 pr-3 pb-3 bg-card rounded-2xl shadow overflow-hidden h-full">
+                    <div class="absolute bottom-0 right-0 w-27 h-27 -m-6">
+                        <mat-icon class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                            [svgIcon]="'heroicons_outline:currency-dollar'"></mat-icon>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="flex flex-col">
+                            <div class="text-xl font-medium tracking-tight leading-6 truncate">
+                                MARGEN LIBRE
+                            </div>
+                            <div class="text-green-600 font-medium text-sm">USD</div>
+                        </div>
+                    </div>
+                    <div class="flex flex-row flex-wrap mt-4 -mx-6">
+                        <div class="flex flex-col mx-6 my-3">
+                            <div class="mt-2 font-medium text-5xl leading-none">
+                                {{ margenesUsuario.margenLibre | currency : "USD" }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1 flex">
+                <div
+                    class="relative flex flex-col flex-auto p-6 pr-3 pb-3 bg-card rounded-2xl shadow overflow-hidden h-full">
+                    <div class="absolute bottom-0 right-0 w-27 h-27 -m-6">
+                        <mat-icon class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                            [svgIcon]="'heroicons_outline:currency-dollar'"></mat-icon>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="flex flex-col">
+                            <div class="text-xl font-medium tracking-tight leading-6 truncate">
+                                MARGEN
+                            </div>
+                            <div class="text-green-600 font-medium text-sm">USD</div>
+                        </div>
+                    </div>
+                    <div class="flex flex-row flex-wrap mt-4 -mx-6">
+                        <div class="flex flex-col mx-6 my-3">
+                            <div class="mt-2 font-medium text-5xl leading-none">
+                                {{ margenesUsuario.margen | currency : "USD" }}
                             </div>
                         </div>
                     </div>
