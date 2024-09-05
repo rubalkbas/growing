@@ -252,36 +252,38 @@ updateCurrencyData(  margenes :any): void {
  
   const dataArray = this.listaDatos;
 
-  this.datasource.data.forEach(item => {
-    console.log(item);
+  this.datasource.data.forEach(item2 => {
+      console.log(item2);
+        const index = margenes.findIndex(item => item.idUsuario.toString() === item2.idApuestaCliente
+      );
+
+        if (index >= 0) {
+          dataArray[index] = datos;
+        } else {
+          dataArray.push(datos);
+        } 
+    
+
+    
+
+        datos.idUsuario = margenes[index].idUsuario;
+        datos.montoGanPer =  margenes[index].montoGanPer ;
+
+      this.margenesUsuario = datos;
+      this.currencies2[datos.idUsuario] = {
+    
+        position: datos.position,
+        idUsuario: datos.idUsuario,
+        montoGanPer: datos.montoGanPer
+
+      };
+
+      // Emitir la actualización a los suscriptores
+      this.currenciesSubject2.next(this.currencies2);
     
   });
 
-    const index = margenes.findIndex(item => item.idUsuario.toString() === localStorage.getItem('idUserWrog'));
-
-    if (index >= 0) {
-      dataArray[index] = datos;
-    } else {
-      dataArray.push(datos);
-    } 
- 
-
- 
-
-    datos.idUsuario = margenes[index].idUsuario;
-    datos.montoGanPer =  margenes[index].montoGanPer ;
-
-  this.margenesUsuario = datos;
-  this.currencies2[datos.idUsuario] = {
- 
-    position: datos.position,
-    idUsuario: datos.idUsuario,
-    montoGanPer: datos.montoGanPer
-
-  };
-
-  // Emitir la actualización a los suscriptores
-  this.currenciesSubject2.next(this.currencies2);
+    
 }
 
 }
