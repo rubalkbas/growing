@@ -44,9 +44,9 @@ interface ViewValue {
 }
 
 @Component({
-  selector: 'app-alternaInfo-modal',
-  templateUrl: './alternaInfo.component.html',
-  styleUrls: ['./alternaInfo.component.scss'],
+  selector: 'app-apalancamiento-modal',
+  templateUrl: './apalancamiento.component.html',
+  styleUrls: ['./apalancamiento.component.scss'],
   standalone: true,
   imports: [
     CommonModule,
@@ -101,9 +101,9 @@ export class ApalancamientoModalComponent implements OnInit {
     });
 
     this.userForm.get('apalancamiento1gana').patchValue(this.data.data.unidades);
-    this.userForm.get('valorUnidad').patchValue(this.data.data.valorUnidad);
-    this.userForm.get('unidades').patchValue(this.data.data.unidades);
-    this.userForm.get('valorUnidad').patchValue(this.data.data.valorUnidad);
+    this.userForm.get('apalancamiento2gana').patchValue(this.data.data.valorUnidad);
+    this.userForm.get('apalancamiento1pierde').patchValue(this.data.data.unidades);
+    this.userForm.get('apalancamiento2pierde').patchValue(this.data.data.valorUnidad);
 
     this.idUser = localStorage.getItem('idUserWrog');
 
@@ -122,8 +122,10 @@ export class ApalancamientoModalComponent implements OnInit {
 
   onSubmit(): void {
 
-   this.data.data.unidades = this.userForm.get('unidades').value
-   this.data.data.valorUnidad = this.userForm.get('valorUnidad').value
+   this.data.data.apalancamiento1gana   = this.userForm.get('apalancamiento1gana').value
+   this.data.data.apalancamiento2gana   = this.userForm.get('apalancamiento2gana').value
+   this.data.data.apalancamiento1pierde = this.userForm.get('apalancamiento1pierde').value
+   this.data.data.apalancamiento2pierde = this.userForm.get('apalancamiento2pierde').value
 
    this.clienteService.actualizaApuesta(this.data.data).subscribe({
     next: (respuesta: any) => {
@@ -133,7 +135,7 @@ export class ApalancamientoModalComponent implements OnInit {
       if (respuesta.estatus === 'OK') {
 
         this.dialogRef.close(this.newRol);
-        this.alertService.success("Clientes","información alterada completamente")
+        this.alertService.success("Apalancamiento","información alterada completamente")
       } else {
         console.log(
           'La respuesta no contiene una lista válida de areas de atención.'
