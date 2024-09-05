@@ -140,7 +140,13 @@ export class ComprarModalComponent implements OnInit {
         this.clienteService.crearApuesta(this.apuesta).subscribe({
             next: (respuesta: any) => {
            
-        
+                respuesta
+                this.clienteService.crearApuestaWebSocket(respuesta).subscribe({
+                    next: (respuesta: any) => {
+ 
+                    } 
+                  });
+
               if (respuesta.estatus === 'OK') {
                               
                 this.alertService.success('Posición Generada!','La Posición a sido registrada correctamente.')

@@ -69,7 +69,7 @@ interface ViewValue {
 })
 
 export class OperacionesAbiertasComponent implements OnInit {
-  displayedColumns: string[] = ['tipoCompra', 'compra','valorUnidad', 'unidades','montoApuesta', 'variacion',  'bloqueCompra',  'fechaCreacion','accion' ];
+  displayedColumns: string[] = ['tipoCompra', 'compra', 'valorUnidad', 'unidades', 'montoApuesta', 'variacion', 'bloqueCompra', 'fechaCreacion', 'accion'];
   rolForm: FormGroup;
   permisos = [];
   newRol: any;
@@ -80,7 +80,7 @@ export class OperacionesAbiertasComponent implements OnInit {
     { value: 0, viewValue: 'Inactivo' },
   ];
   formCliente: FormGroup;
- 
+
   showAlert = false;
   total = 0;
   datasource = new MatTableDataSource<any>();
@@ -135,7 +135,7 @@ export class OperacionesAbiertasComponent implements OnInit {
       "unidades": 0,
       "valorUnidad": 0,
       "variacion": 0
-    } 
+    }
 
     this.clienteService.consultaAbiertas(request).subscribe({
       next: (respuesta: any) => {
@@ -145,7 +145,7 @@ export class OperacionesAbiertasComponent implements OnInit {
         if (respuesta.estatus === 'OK') {
 
           this.datasource.data = respuesta.lista;
- 
+
         } else {
           console.log(
             'La respuesta no contiene una lista válida de areas de atención.'
@@ -165,10 +165,10 @@ export class OperacionesAbiertasComponent implements OnInit {
 
 
   abrirDetalle(idApuestaCliente: any): void {
-    
+
     const dialogRef = this.dialog.open(DetalleAbiertasModalComponent, {
       width: '70%',
-      data: { idApuestaCliente: idApuestaCliente}
+      data: { idApuestaCliente: idApuestaCliente }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -176,29 +176,37 @@ export class OperacionesAbiertasComponent implements OnInit {
     });
 
 
-}
+  }
 
-cerrar(request):void{
+  cerrar(request): void {
 
-  this.clienteService.cerrarApuesta(request).subscribe({
-    next: (respuesta: any) => {
-       
-      // Accediendo a la lista de areas de atención dentro de la respuesta
-      if (respuesta.estatus === 'OK') {
-        this.alertService.success('Posición CERRADA','La Posición se cerro satisfactoriamente')
-        
-        this.cargaIngreso();
 
-      } else {
-        this.alertService.error('Posición CERRADA','Hubo un problema para cerrar la Posición, inetentelo de nuevo.')
-        console.log(
-          'La respuesta no contiene una lista válida de areas de atención.'
-        );
+    this.clienteService.cerrarApuestaWs(request.idApuestaCliente).subscribe({
+      next: (respuesta: any) => {
+        this.clienteService.cerrarApuesta(request).subscribe({
+          next: (respuesta: any) => {
+
+            // Accediendo a la lista de areas de atención dentro de la respuesta
+            if (respuesta.estatus === 'OK') {
+              this.alertService.success('Posición CERRADA', 'La Posición se cerro satisfactoriamente')
+
+              this.cargaIngreso();
+
+            } else {
+              this.alertService.error('Posición CERRADA', 'Hubo un problema para cerrar la Posición, inetentelo de nuevo.')
+              console.log(
+                'La respuesta no contiene una lista válida de areas de atención.'
+              );
+            }
+          },
+          error: (error: Error) => {
+            console.error(error);
+          },
+        });
+
       }
-    },
-    error: (error: Error) => {
-      console.error(error);
-    },
-  });
-}
+    });
+
+
+  }
 }

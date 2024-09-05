@@ -9,6 +9,7 @@ export class ClienteService
 {
     private _data: BehaviorSubject<any> = new BehaviorSubject(null);
     baseUrl = environment.basePathUrl;
+    baseUrlWs = environment.basePathUrlWebsocket;
     /**
      * Constructor
      */
@@ -113,8 +114,16 @@ export class ClienteService
         return this._httpClient.post<any>(`${this.baseUrl}/apuestaCliente/crearApuestas`,request);
     }
 
+    crearApuestaWebSocket(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrlWs}/websocket/start`,request);
+    }
+
     cerrarApuesta(request: any): Observable<any> {
         return this._httpClient.post<any>(`${this.baseUrl}/apuestaCliente/cerrarApuesta`,request);
+    }
+
+    cerrarApuestaWs(idApuestaCliente: any): Observable<any> {
+        return this._httpClient.get<any>(`${this.baseUrlWs}/websocket/stopClient?clientId=${idApuestaCliente}`);
     }
 
     actualizaApuesta(request: any): Observable<any> {
