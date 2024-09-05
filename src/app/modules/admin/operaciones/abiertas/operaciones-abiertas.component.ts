@@ -206,6 +206,7 @@ export class OperacionesAbiertasComponent implements OnInit {
 
   }
 
+   
   async cerrar(request): Promise<void> {
 
 
@@ -213,7 +214,7 @@ export class OperacionesAbiertasComponent implements OnInit {
       next: (respuesta: any) => {
       }
     });
-    
+
     this.clienteService.cerrarApuesta(request).subscribe({
       next: (respuesta: any) => {
 
@@ -260,7 +261,9 @@ updateCurrencyData(  margenes :any): void {
 
   this.datasource.data.forEach(item2 => {
       console.log(item2);
-        const index = margenes.findIndex(item => item.idUsuario.toString() === item2.idApuestaCliente
+        const index = margenes.findIndex(item => 
+          
+          item.idUsuario.toString() === item2.idApuestaCliente
       );
 
         if (index >= 0) {
