@@ -130,6 +130,11 @@ export class ClienteService
         return this._httpClient.post<any>(`${this.baseUrl}/apuestaCliente/actualizarApuesta`,request);
     }
     
-    
+    apalancamientoId(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/apuestaCliente/consultaApalancamientoClienteID`,request);
+    }
 
+    actualizaApalancamientoId(request: any): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseUrl}/apuestaCliente/actualizarApalancamiento`,request);
+    }
 }

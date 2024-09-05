@@ -23,6 +23,7 @@ import { ClienteModalComponent } from './clientes-modal/cliente.component';
 import { AbiertasModalComponent } from './abiertas-modal/abiertas.component';
 import { CerradasModalComponent } from './cerradas-modal/cerradas.component';
 import { ClienteGuardarModalComponent } from './clientes-guardar-modal/cliente-guardar.component';
+import { ApalancamientoModalComponent } from './apalancamiento/apalancamiento.component';
 export class CustomPaginatorIntl extends MatPaginatorIntl {
   itemsPerPageLabel = 'Elementos por página';
   nextPageLabel = 'Página siguiente';
@@ -271,7 +272,18 @@ export class ClientesComponent implements OnInit {
       }
     });
   }
+  openApalancamiento(data: any): void {
+    const dialogRef = this.dialog.open(ApalancamientoModalComponent, {
+  
+      data:  data  ,
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+
+    });
+  }
+ 
   
 
 }

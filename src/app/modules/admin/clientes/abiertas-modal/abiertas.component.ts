@@ -35,7 +35,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { ClienteService } from '../clientes.service';
 import { AlternaModalComponent } from './alternaInfo/alternaInfo.component';
 import { DetalleAbiertasModalComponent } from '../../operaciones/detalle-abiertas-modal/detalle-abiertas-modal.component';
-import { ApalancamientoModalComponent } from './apalancamiento/apalancamiento.component';
+import { ApalancamientoModalComponent } from '../apalancamiento/apalancamiento.component';
  
 interface ViewValue {
   value: number;
@@ -166,18 +166,7 @@ export class AbiertasModalComponent implements OnInit {
   }
 
 
-  openApalancamiento(data: any): void {
-    const dialogRef = this.dialog.open(ApalancamientoModalComponent, {
-  
-      data: { data: data, usuario: this.data.data.usuario },
-    });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-
-    });
-  }
- 
 
   openDialog(data: any): void {
     const dialogRef = this.dialog.open(AlternaModalComponent, {

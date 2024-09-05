@@ -36,7 +36,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { ClienteService } from '../../clientes.service';
+import { ClienteService } from '../clientes.service';
 import Swal from 'sweetalert2';
 interface ViewValue {
   value: number;
@@ -111,6 +111,16 @@ export class ApalancamientoModalComponent implements OnInit {
 
   ngOnInit(): void {
   
+    this.clienteService.apalancamientoId(this.data.idUsuario).subscribe({
+      next: (respuesta: any) => {
+  
+        
+      },
+      error: (error: Error) => {
+        console.error(error);
+        this.alertService.error("Apalancamiento","Error al consultar información")
+      },
+    });
 
   } 
 
@@ -122,12 +132,17 @@ export class ApalancamientoModalComponent implements OnInit {
 
   onSubmit(): void {
 
-   this.data.data.apalancamiento1gana   = this.userForm.get('apalancamiento1gana').value
-   this.data.data.apalancamiento2gana   = this.userForm.get('apalancamiento2gana').value
-   this.data.data.apalancamiento1pierde = this.userForm.get('apalancamiento1pierde').value
-   this.data.data.apalancamiento2pierde = this.userForm.get('apalancamiento2pierde').value
+    let request = {
+      "apalancamiento1Gana": this.userForm.get('apalancamiento1gana').value,
+      "apalancamiento1pierde": this.userForm.get('apalancamiento1pierde').value,
+      "apalancamiento2Gana": this.userForm.get('apalancamiento2gana').value,
+      "apalancamiento2pierde": this.userForm.get('apalancamiento2pierde').value,
+      "idApalancamiento": 0,
+      "idUsuario": 0,
+      "simbolo": "string"
+    } 
 
-   this.clienteService.actualizaApuesta(this.data.data).subscribe({
+   this.clienteService.actualizaApalancamientoId(this.data.data).subscribe({
     next: (respuesta: any) => {
  
       console.log('Respuesta completa: ', respuesta);
