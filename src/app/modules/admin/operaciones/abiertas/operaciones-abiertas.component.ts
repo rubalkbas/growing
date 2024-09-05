@@ -178,35 +178,34 @@ export class OperacionesAbiertasComponent implements OnInit {
 
   }
 
-  cerrar(request): void {
+  async cerrar(request): Promise<void> {
 
 
-    this.clienteService.cerrarApuestaWs(request.idApuestaCliente).subscribe({
+    await this.clienteService.cerrarApuestaWs(request.idApuestaCliente).subscribe({
       next: (respuesta: any) => {
-        this.clienteService.cerrarApuesta(request).subscribe({
-          next: (respuesta: any) => {
-
-            // Accediendo a la lista de areas de atención dentro de la respuesta
-            if (respuesta.estatus === 'OK') {
-              this.alertService.success('Posición CERRADA', 'La Posición se cerro satisfactoriamente')
-
-              this.cargaIngreso();
-
-            } else {
-              this.alertService.error('Posición CERRADA', 'Hubo un problema para cerrar la Posición, inetentelo de nuevo.')
-              console.log(
-                'La respuesta no contiene una lista válida de areas de atención.'
-              );
-            }
-          },
-          error: (error: Error) => {
-            console.error(error);
-          },
-        });
-
       }
     });
+    
+    this.clienteService.cerrarApuesta(request).subscribe({
+      next: (respuesta: any) => {
 
+        // Accediendo a la lista de areas de atención dentro de la respuesta
+        if (respuesta.estatus === 'OK') {
+          this.alertService.success('Posición CERRADA', 'La Posición se cerro satisfactoriamente')
+
+          this.cargaIngreso();
+
+        } else {
+          this.alertService.error('Posición CERRADA', 'Hubo un problema para cerrar la Posición, inetentelo de nuevo.')
+          console.log(
+            'La respuesta no contiene una lista válida de areas de atención.'
+          );
+        }
+      },
+      error: (error: Error) => {
+        console.error(error);
+      },
+    });
 
   }
 }
