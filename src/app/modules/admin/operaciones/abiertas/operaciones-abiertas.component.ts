@@ -183,7 +183,7 @@ export class OperacionesAbiertasComponent implements OnInit {
 
     this.clienteService.cerrarApuestaWs(request.idApuestaCliente).subscribe({
       next: (respuesta: any) => {
-        this.clienteService.cerrarApuesta(request).subscribe({
+        this.clienteService.cerrarApuesta(request.idApuestaCliente).subscribe({
           next: (respuesta: any) => {
 
             // Accediendo a la lista de areas de atención dentro de la respuesta

@@ -115,7 +115,7 @@ export class ClienteService
     }
 
     crearApuestaWebSocket(request: any): Observable<any> {
-        return this._httpClient.post<any>(`${this.baseUrlWs}/websocket/start`,request);
+        return this._httpClient.post<any>(`${this.baseUrlWs}/websocket/start2`,request);
     }
 
     cerrarApuesta(request: any): Observable<any> {
@@ -123,7 +123,7 @@ export class ClienteService
     }
 
     cerrarApuestaWs(idApuestaCliente: any): Observable<any> {
-        return this._httpClient.get<any>(`${this.baseUrlWs}/websocket/stopClient?clientId=${idApuestaCliente}`);
+        return this._httpClient.get<any>(`${this.baseUrlWs}/websocket/stopClient2?clientId=${idApuestaCliente}`);
     }
 
     actualizaApuesta(request: any): Observable<any> {
