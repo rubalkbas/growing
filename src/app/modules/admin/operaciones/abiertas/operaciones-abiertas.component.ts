@@ -20,7 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { AlertService } from 'app/modules/services/alerts.service';
 import { User } from 'app/core/user/user.types';
-import { Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription, takeUntil } from 'rxjs';
 import { UserService } from 'app/core/user/user.service';
 import { Rol } from 'app/mock-api/common/interfaces/rol.interface';
 import { RolesService } from 'app/modules/services/roles.service';
@@ -40,6 +40,9 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import Swal from 'sweetalert2';
 import { ClienteService } from '../../clientes/clientes.service';
 import { DetalleAbiertasModalComponent } from '../detalle-abiertas-modal/detalle-abiertas-modal.component';
+import { WebSocketService } from '@ittiva/services/webSockete';
+import { WebSocketService2 } from '@ittiva/services/webSockete2';
+
 interface ViewValue {
   value: number;
   viewValue: string;
@@ -69,7 +72,7 @@ interface ViewValue {
 })
 
 export class OperacionesAbiertasComponent implements OnInit {
-  displayedColumns: string[] = ['tipoCompra', 'compra', 'valorUnidad', 'unidades', 'montoApuesta', 'variacion', 'bloqueCompra', 'fechaCreacion', 'accion'];
+  displayedColumns: string[] = ['tipoCompra', 'compra', 'valorUnidad', 'unidades', 'montoApuesta', 'variacion', 'bloqueCompra', 'fechaCreacion', 'ganper', 'accion'];
   rolForm: FormGroup;
   permisos = [];
   newRol: any;
@@ -86,11 +89,20 @@ export class OperacionesAbiertasComponent implements OnInit {
   datasource = new MatTableDataSource<any>();
   idUser: string;
   monto: any = 0;
+
+  margenesUsuario: any;
+  listaDatos: any;
+  posicion = 0;
+  private currenciesSubject2 = new BehaviorSubject<{ [key: string]: any }>({});
+  private currencies2: { [key: string]: any } = {};
+  private subscription2: Subscription;
+
   constructor(
     private fb: FormBuilder,
     private alertService: AlertService,
     private clienteService: ClienteService,
     public dialog: MatDialog,
+    private webSocketService:WebSocketService2
 
   ) {
 
@@ -108,6 +120,22 @@ export class OperacionesAbiertasComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.margenesUsuario = [];
+
+    this.listaDatos = {
+      position: 0,
+      idUsuario: 0,
+      montoGanPer: ''
+  
+    };
+
+    this.subscription2 = this.webSocketService.messages$.subscribe(
+      message => {
+        this.updateCurrencyData(message);
+      }
+    );
+
     // console.log(this.data)
     this.rolForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -208,4 +236,58 @@ export class OperacionesAbiertasComponent implements OnInit {
     });
 
   }
+
+
+
+  
+updateCurrencyData(  margenes :any): void {
+ 
+ 
+  let datos: any = {
+    position: 0,
+    idUsuario: 0,
+    montoGanPer: ''
+
+  }
+
+  datos.position = this.posicion + 1;
+  this.posicion = this.posicion +1;
+
+
+
+ 
+  const dataArray = this.listaDatos;
+
+  this.datasource.data.forEach(item => {
+    console.log(item);
+    
+  });
+
+    const index = margenes.findIndex(item => item.idUsuario.toString() === localStorage.getItem('idUserWrog'));
+
+    if (index >= 0) {
+      dataArray[index] = datos;
+    } else {
+      dataArray.push(datos);
+    } 
+ 
+
+ 
+
+    datos.idUsuario = margenes[index].idUsuario;
+    datos.montoGanPer =  margenes[index].montoGanPer ;
+
+  this.margenesUsuario = datos;
+  this.currencies2[datos.idUsuario] = {
+ 
+    position: datos.position,
+    idUsuario: datos.idUsuario,
+    montoGanPer: datos.montoGanPer
+
+  };
+
+  // Emitir la actualización a los suscriptores
+  this.currenciesSubject2.next(this.currencies2);
+}
+
 }
