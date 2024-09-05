@@ -206,14 +206,8 @@ export class OperacionesAbiertasComponent implements OnInit {
 
   }
 
-  async cerrar(request): Promise<void> {
+    cerrar(request) {
 
-
-    await this.clienteService.cerrarApuestaWs(request.idApuestaCliente).subscribe({
-      next: (respuesta: any) => {
-      }
-    });
-    
     this.clienteService.cerrarApuesta(request).subscribe({
       next: (respuesta: any) => {
 

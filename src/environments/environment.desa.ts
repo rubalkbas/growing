@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    // basePathUrl: 'https://www.growingcapitalmaker.org:8091',
+    basePathUrl: 'https://www.growingcapitalmaker.org:8091',
     socket: 'wss://www.growingcapitalmaker.org:8092/websocket',
     socket2: 'wss://www.growingcapitalmaker.org:8092/websocket-ganper',
     basePathUrlWebsocket: 'https://www.growingcapitalmaker.org:8093',
@@ -13,5 +13,5 @@ export const environment = {
         basePathUrl: 'http://localhost:8091',
         basePathUrlWebsocket: 'http://localhost:8093',
         socket: 'ws://localhost:8092/websocket' */
-          basePathUrl: 'http://localhost:8091'
+      //    basePathUrl: 'http://localhost:8091'
 };

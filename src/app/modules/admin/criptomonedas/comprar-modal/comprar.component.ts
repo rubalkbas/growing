@@ -145,29 +145,7 @@ export class ComprarModalComponent implements OnInit {
                 
 
               if (respuesta.estatus === 'OK') {
-
-                this.apuesta2.bloqueCompra = respuesta.dto.bloqueCompra;
-                this.apuesta2.compra = respuesta.dto.compra;
-                this.apuesta2.idUsuario = respuesta.dto.idUsuario;
-                this.apuesta2.montoApuesta = respuesta.dto.montoApuesta;
-                this.apuesta2.tipoCompra = respuesta.dto.tipoCompra;
-                this.apuesta2.unidades = respuesta.dto.unidades;
-                this.apuesta2.valorUnidad = respuesta.dto.valorUnidad;
-                this.apuesta2.variacion = respuesta.dto.variacion;
-                this.apuesta2.estatusCompra = respuesta.dto.estatusCompra;
-                this.apuesta2.fechaCierre = respuesta.dto.fechaCierre;
-                this.apuesta2.fechaCreacion = respuesta.dto.fechaCreacion;
-                this.apuesta2.gananciaPerdida = respuesta.dto.gananciaPerdida;
-                this.apuesta2.idApuestaCliente = respuesta.dto.idApuestaCliente;
-
-                this.clienteService.crearApuestaWebSocket( this.apuesta2).subscribe({
-                    next: (respuesta2: any) => {
-
-                        console.error(respuesta2);
- 
-                    } 
-                  });
-                              
+              
                 this.alertService.success('Posición Generada!','La Posición a sido registrada correctamente.')
                 this.dialogRef.close();
 
