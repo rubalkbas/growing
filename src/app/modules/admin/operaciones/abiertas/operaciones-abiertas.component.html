@@ -52,7 +52,13 @@
 
           <ng-container matColumnDef="ganper">
             <th mat-header-cell *matHeaderCellDef>Gan/Per</th>
-            <td mat-cell *matCellDef="let element"> {{ margenesUsuario.montoGanPer | currency : "USD" }}</td>
+            <td mat-cell *matCellDef="let element">  
+              
+              <ng-container *ngIf="currencies2[element.idApuestaCliente]">
+                {{ currencies2[element.idApuestaCliente].montoGanPer | currency : "USD" }}
+              </ng-container>
+
+          </td>
           </ng-container>
 
 

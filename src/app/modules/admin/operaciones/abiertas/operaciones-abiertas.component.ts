@@ -238,9 +238,42 @@ export class OperacionesAbiertasComponent implements OnInit {
 
   }
 
-
-
+  updateCurrencyData(margenes: any): void {
+    this.datasource.data.forEach(item2 => {
+      // Encuentra el índice del idUsuario en margenes
+      const index = margenes.findIndex(item => {
+        console.log('Revisando item en margenes:', item);
+        if (item.idUsuario) {
+          return item.idUsuario.toString() === item2.idApuestaCliente.toString();
+        }
+        return false;
+      });
   
+      // Si se encuentra un item con el mismo idUsuario
+      if (index >= 0) {
+        const datos = {
+          position: this.posicion + 1,  // Incrementar posición
+          idUsuario: margenes[index].idUsuario,
+          montoGanPer: margenes[index].montoGanPer
+        };
+  
+        this.posicion += 1;  // Actualizar posición
+  
+        // Actualizar currencies2 para el idUsuario correspondiente
+        this.currencies2[datos.idUsuario] = {
+          position: datos.position,
+          idUsuario: datos.idUsuario,
+          montoGanPer: datos.montoGanPer
+        };
+  
+        // Emitir la actualización a los suscriptores
+        this.currenciesSubject2.next(this.currencies2);
+      }
+    });
+  }
+  
+
+  /*
 updateCurrencyData(  margenes :any): void {
  
  
@@ -261,10 +294,17 @@ updateCurrencyData(  margenes :any): void {
 
   this.datasource.data.forEach(item2 => {
       console.log(item2);
-        const index = margenes.findIndex(item => 
+        const index = margenes.findIndex(item => {
+
+          console.log('Revisando item en margenes:', item);
+          if (item.idUsuario) {
+            return item.idUsuario.toString() === item2.idApuestaCliente.toString();
+          }
+          return false;
+        
           
-          item.idUsuario.toString() === item2.idApuestaCliente
-      );
+         
+      });
 
         if (index >= 0) {
           dataArray[index] = datos;
@@ -293,6 +333,6 @@ updateCurrencyData(  margenes :any): void {
   });
 
     
-}
+}*/
 
 }
