@@ -139,17 +139,17 @@ export class ClienteGuardarModalComponent implements OnInit {
           
           this.alertService.success('Cliente','Cliente creado correctamente.')
           this.dialogRef.close();
-        } else {
+        } else  if (data.estatus === 'EXISTE'){
                     
-          this.alertService.error('Cliente','Cliente nbuevo no se ejecuto de manera correcta, contacta a sistemas.')
+          this.alertService.error('Alta Cliente', data.mensaje)
           console.log(
-            'La respuesta no contiene una lista válida de areas de atención.'
+            data.mensaje
           );
         }
         this.clienteForm.reset();
       },
       error: (error: Error) => {
-        this.alertService.error('Cliente','Cliente nbuevo no se ejecuto de manera correcta, contacta a sistemas.')
+        this.alertService.error('Cliente','Cliente nuevo no se ejecuto de manera correcta, contacta a sistemas.')
         console.error(error);
       },
     });
