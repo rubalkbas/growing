@@ -275,7 +275,8 @@ export class ClientesComponent implements OnInit {
   openApalancamiento(data: any): void {
     const dialogRef = this.dialog.open(ApalancamientoModalComponent, {
   
-      data:  data  ,
+      data: { data: data.idUsuario, usuario: data.nombre },
+
     });
 
     dialogRef.afterClosed().subscribe((result) => {

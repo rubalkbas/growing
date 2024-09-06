@@ -7,10 +7,20 @@
   <div class="mx-auto p-6 bg-white shadow-lg rounded-lg max-w-md">
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
 
+
+      <mat-form-field class="w-full">
+          <mat-label>Simbolo </mat-label>
+          <mat-select  name="tipo"  formControlName="simbolo" (selectionChange)="onSimboloChange($event.value)">''
+            <mat-option *ngFor="let tipo of this.lista" [value]="tipo.simbolo">
+              {{ tipo.simbolo }}
+            </mat-option>
+          </mat-select>
+      </mat-form-field>
+
       <div class="mb-6">
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>apalancamiento1gana</mat-label>
-          <input matInput placeholder="Ingresa tu valor" formControlName="apalancamiento1gana">
+          <input matInput placeholder="Ingresa tu valor" formControlName="apalancamiento1gana" type="number" step="0.001">
  
         </mat-form-field>
       </div>
@@ -18,7 +28,7 @@
       <div class="mb-6">
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>apalancamiento2gana</mat-label>
-          <input matInput placeholder="Ingresa tu valor" formControlName="apalancamiento2gana">
+          <input matInput placeholder="Ingresa tu valor" formControlName="apalancamiento2gana" type="number" step="0.001">
  
         </mat-form-field>
       </div>
@@ -26,7 +36,7 @@
       <div class="mb-6">
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>apalancamiento1pierde</mat-label>
-          <input matInput placeholder="Ingresa tu valor" formControlName="apalancamiento1pierde">
+          <input matInput placeholder="Ingresa tu valor" formControlName="apalancamiento1pierde" type="number" step="0.001">
  
         </mat-form-field>
       </div>
@@ -34,7 +44,7 @@
       <div class="mb-6">
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>apalancamiento2pierde</mat-label>
-          <input matInput placeholder="Ingresa tu valor" formControlName="apalancamiento2pierde">
+          <input matInput placeholder="Ingresa tu valor" formControlName="apalancamiento2pierde" type="number" step="0.001">
  
         </mat-form-field>
       </div>
