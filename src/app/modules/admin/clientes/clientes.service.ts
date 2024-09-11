@@ -137,4 +137,11 @@ export class ClienteService
     actualizaApalancamientoId(request: any): Observable<any> {
         return this._httpClient.post<any>(`${this.baseUrl}/apuestaCliente/actualizarApalancamiento`,request);
     }
+
+    
+    eliminar(id: any): Observable<any> {
+        return this._httpClient.delete<any>(`${this.baseUrl}/usuarios/deleteUsuario/` + id);
+    }
+
+
 }

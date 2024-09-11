@@ -82,3 +82,9 @@
 .custom-fab-button-red mat-icon {
   color: rgb(255, 0, 0) !important; /* Cambia el color del icono a azul */
 }
+
+button, [type='button'], [type='reset'], [type='submit'] {
+  -webkit-appearance: button;
+  background-color: cornflowerblue !important;
+  background-image: none;
+}

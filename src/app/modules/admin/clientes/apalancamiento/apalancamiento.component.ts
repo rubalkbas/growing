@@ -98,14 +98,7 @@ export class ApalancamientoModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
-    this.userForm = this.fb.group({
-      apalancamiento1gana: ['', Validators.required],
-      apalancamiento2gana: ['', Validators.required],
-      apalancamiento1pierde: ['', Validators.required],
-      apalancamiento2pierde: ['', Validators.required],
-      simbolo: ['', Validators.required],
     
-    });
 
 
     this.idUser = localStorage.getItem('idUserWrog');
@@ -113,7 +106,15 @@ export class ApalancamientoModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.userForm = this.fb.group({ 
+      apalancamiento1Gana: [0, Validators.required],
+      apalancamiento2Gana: [0, Validators.required],
+      apalancamiento1pierde: [0, Validators.required],
+      apalancamiento2pierde: [0, Validators.required],
+      idApalancamiento: [0, Validators.required],
+      simbolo: ['', Validators.required],
+    
+    });
     let request = {
       "idUsuario": this.data.data
     } 
@@ -133,7 +134,7 @@ export class ApalancamientoModalComponent implements OnInit {
       },
     });
 
-    console.log(  'ID USUARIO: ' +this.data.data  );
+    console.log(  'ID USUARIO: ' ,this.data  );
 
   } 
 
@@ -141,18 +142,22 @@ export class ApalancamientoModalComponent implements OnInit {
     this.dialogRef.close(this.newRol);
   }
 
+
+
   onSimboloChange(simbolo: string | null) {
     if (simbolo) {
-      const selectedData = this.lista.find(item => item.simbolo === simbolo);
+      let index = this.lista.findIndex(item => item.simbolo === simbolo);
 
-      if (selectedData) {
+      if (this.lista[index]) {
         // Actualizar los valores del formulario
         this.userForm.patchValue({
-          apalancamiento1gana: selectedData.apalancamiento1gana,
-          apalancamiento2gana: selectedData.apalancamiento2gana,
-          apalancamiento1pierde: selectedData.apalancamiento1pierde,
-          apalancamiento2pierde: selectedData.apalancamiento2pierde
+          idApalancamiento: this.lista[index].idApalancamiento,
+          apalancamiento1Gana: this.lista[index].apalancamiento1Gana,
+          apalancamiento2Gana: this.lista[index].apalancamiento2Gana,
+          apalancamiento1pierde: this.lista[index].apalancamiento1pierde,
+          apalancamiento2pierde: this.lista[index].apalancamiento2pierde
         });
+ 
       }
     } else {
       // Resetear el formulario si no hay selección
@@ -164,15 +169,16 @@ export class ApalancamientoModalComponent implements OnInit {
   onSubmit(): void {
 
     let request = {
-      "apalancamiento1Gana": this.userForm.get('apalancamiento1gana').value,
+      "idApalancamiento":  this.userForm.get('idApalancamiento').value,
+      "apalancamiento1Gana": this.userForm.get('apalancamiento1Gana').value,
       "apalancamiento1pierde": this.userForm.get('apalancamiento1pierde').value,
-      "apalancamiento2Gana": this.userForm.get('apalancamiento2gana').value,
+      "apalancamiento2Gana": this.userForm.get('apalancamiento2Gana').value,
       "apalancamiento2pierde": this.userForm.get('apalancamiento2pierde').value,
-      "idUsuario": 0,
+      "idUsuario": this.data.data,
       "simbolo": this.userForm.get('simbolo').value
     } 
 
-   this.clienteService.actualizaApalancamientoId(this.data.data).subscribe({
+   this.clienteService.actualizaApalancamientoId(request).subscribe({
     next: (respuesta: any) => {
  
       console.log('Respuesta completa: ', respuesta);

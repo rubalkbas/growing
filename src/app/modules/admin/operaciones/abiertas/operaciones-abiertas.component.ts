@@ -96,6 +96,7 @@ export class OperacionesAbiertasComponent implements OnInit {
   private currenciesSubject2 = new BehaviorSubject<{ [key: string]: any }>({});
   private currencies2: { [key: string]: any } = {};
   private subscription2: Subscription;
+  totalGanPer: any;
 
   constructor(
     private fb: FormBuilder,
@@ -209,8 +210,20 @@ export class OperacionesAbiertasComponent implements OnInit {
    
   async cerrar(request): Promise<void> {
 
-
-    await this.clienteService.cerrarApuestaWs(request.idApuestaCliente).subscribe({
+ 
+Swal.fire({
+  title: "Esta seguro que desea cerrar esta posición?",
+ 
+  showCancelButton: true,
+  confirmButtonText: "Cerrar",
+  icon: "warning", 
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    request.gananciaPerdida = this.currencies2[request.idApuestaCliente].montoGanPer;
+      this.clienteService.cerrarApuestaWs(request.idApuestaCliente).subscribe({
       next: (respuesta: any) => {
       }
     });
@@ -235,6 +248,16 @@ export class OperacionesAbiertasComponent implements OnInit {
         console.error(error);
       },
     });
+    
+    Swal.fire("Saved!", "", "success");
+  } else if (result.isDenied) {
+    Swal.fire("Changes are not saved", "", "info");
+  }
+});
+
+
+
+  
 
   }
 
@@ -265,13 +288,29 @@ export class OperacionesAbiertasComponent implements OnInit {
           idUsuario: datos.idUsuario,
           montoGanPer: datos.montoGanPer
         };
-  
+
+
+        this.totalGanPer = this.sumarMontoGanPer();
+
+        
         // Emitir la actualización a los suscriptores
         this.currenciesSubject2.next(this.currencies2);
       }
     });
   }
-  
+  sumarMontoGanPer() {
+    // Verifica que currencies2 no sea nulo o indefinido
+    if (!this.currencies2 || Object.keys(this.currencies2).length === 0) {
+        return 0;
+    }
+
+    // Usamos Object.values para obtener un array de los valores en currencies2 y luego sumamos el campo montoGanPer
+    const total = Object.values(this.currencies2).reduce((sum, item) => {
+        return sum + (item.montoGanPer || 0); // Aseguramos que montoGanPer sea un número
+    }, 0);
+
+    return total;
+}
 
   /*
 updateCurrencyData(  margenes :any): void {

@@ -12,15 +12,11 @@ import { FirstPassGuard } from './core/auth/guards/firstPass.guard';
 export const appRoutes: Route[] = [
 
     // Redirect empty path to '/example'
-    {path: '', pathMatch : 'full', redirectTo: 'growing'},
-
-    // Redirect signed-in user to the '/example'
-    //
-    // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
-    // path. Below is another redirection for that path to redirect the user to the desired
-    // location. This is a small convenience to keep all main routes together here on this file.
+    {path: '', pathMatch : 'full', redirectTo: 'sign-in'},
     {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'growing'},
-
+    
+  // Redirigir a 404 si la ruta no existe
+ 
     // Auth routes for guests
     {
         path: '',
@@ -84,40 +80,7 @@ export const appRoutes: Route[] = [
 
         ]
     },
-    {
-        path: '',
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard, PermissionGuard, FirstPassGuard],
-        component: LayoutComponent,
-        data: {
-            permission: 'usuarios'
-        },
-        resolve: {
-            initialData: initialDataResolver
-        },
-        children: [
-            //{path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
-            {path: 'proyectos', loadChildren: () => import('app/modules/admin/proyectos/proyectos.routes')},
-
-        ]
-    },
-    {
-        path: '',
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard, PermissionGuard, FirstPassGuard],
-        component: LayoutComponent,
-        data: {
-            permission: 'usuarios'
-        },
-        resolve: {
-            initialData: initialDataResolver
-        },
-        children: [
-            //{path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
-            {path: 'roles', loadChildren: () => import('app/modules/admin/roles/roles.routes')},
-
-        ]
-    },
+  
     {
         path: '',
         canActivate: [AuthGuard],
@@ -135,85 +98,8 @@ export const appRoutes: Route[] = [
 
         ]
     },
-    {
-        path: '',
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard, PermissionGuard, FirstPassGuard],
-        component: LayoutComponent,
-        data: {
-            permission: 'usuarios'
-        },
-        resolve: {
-            initialData: initialDataResolver
-        },
-        children: [
-            //{path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
-            {path: 'usuarios', loadChildren: () => import('app/modules/admin/users/users.routes')},
-
-        ]
-    },
-    {
-        path: '',
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard, PermissionGuard],
-        component: LayoutComponent,
-        data: {
-            layout: 'empty'
-        },
-        resolve: {
-            initialData: initialDataResolver
-        },
-        children: [
-            //{path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
-            {path: 'first-pass', loadChildren: () => import('app/modules/auth/first-pass/first-pass.routes')}
-
-        ]
-    },
-    {
-        path: '',
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard, PermissionGuard, FirstPassGuard],
-        component: LayoutComponent,
-        resolve: {
-            initialData: initialDataResolver
-        },
-        children: [
-            //{path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
-            {path: 'area-atencion', loadChildren: () => import('app/modules/admin/area-atencion/area-atencion.routes')},
-
-        ]
-    },
-    {
-        path: '',
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard, PermissionGuard, FirstPassGuard],
-        component: LayoutComponent,
-        resolve: {
-            initialData: initialDataResolver
-        },
-        children: [
-            //{path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
-            {path: 'modal', loadChildren: () => import('app/modules/admin/modales/modal.routes')},
-
-        ]
-    },
-
-
-    {
-        path: '',
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard, PermissionGuard, FirstPassGuard],
-        component: LayoutComponent,
-        resolve: {
-            initialData: initialDataResolver
-        },
-        children: [
-            //{path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
-            {path: 'scrumboard', loadChildren: () => import('app/modules/admin/scrumboard/scrumboard.routes')},
-
-        ]
-    },
-
+  
+  
 
 
 ];

@@ -129,7 +129,7 @@ export class VenderModalComponent implements OnInit {
         this.apuesta.compra = this.data.data.instrumento;
         this.apuesta.idUsuario = localStorage.getItem('idUserWrog');
         this.apuesta.montoApuesta = this.formCliente.get('valorA')?.value;
-        this.apuesta.tipoCompra = 'VENDER';
+        this.apuesta.tipoCompra = 'VENTA';
         this.apuesta.unidades =  this.formCliente.get('porcentaje')?.value;
         this.apuesta.valorUnidad = this.data.data.comprar;
         this.apuesta.variacion = this.data.data.variacion;

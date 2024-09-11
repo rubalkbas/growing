@@ -14,11 +14,17 @@ import { mockApiServices } from 'app/mock-api';
 import { TranslocoHttpLoader } from './core/transloco/transloco.http-loader';
 import { provideittiva } from '@ittiva/itv.provider'; 
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
     providers: [
      
         provideAnimations(),
+        provideServiceWorker('ngsw-worker.js', {
+            enabled: true,
+            // Puedes configurar la estrategia de registro
+            registrationStrategy: 'registerWhenStable:30000',
+          }),
         provideHttpClient(),
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         provideRouter(appRoutes,

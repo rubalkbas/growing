@@ -3,7 +3,13 @@
   <div class="xl:col-span-3 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
     <div class="container p-6">
 
-      <h1 mat-dialog-title class="text-3xl text-center font-bold mb-6">Posiciones Abiertas</h1>
+      <div class="flex justify-between items-center mb-6">
+        <h1 mat-dialog-title class="text-3xl text-center font-bold">Posiciones Abiertas</h1>
+        <!-- Mostrar totalGanPer con estilo de moneda USD -->
+        <div class="text-right font-bold text-lg">
+          <span>Equidad: {{ totalGanPer | currency:'USD' }}  </span>
+        </div>
+      </div>
 
       <div class="overflow-auto mat-elevation-z8" #scrollable>
         <table mat-table [dataSource]="datasource" cdkScrollable>

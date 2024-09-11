@@ -1,4 +1,3 @@
- 
 <h1 mat-dialog-title class="text-2xl text-center font-bold">Apalancamiento</h1>
 <div class="form-group">
   <label for="nocliente">NOMBRE CLIENTE: <b>{{ data.data.usuario }}</b></label>
@@ -6,46 +5,40 @@
 <div mat-dialog-content class="p-4">
   <div class="mx-auto p-6 bg-white shadow-lg rounded-lg max-w-md">
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-
-
       <mat-form-field class="w-full">
-          <mat-label>Simbolo </mat-label>
-          <mat-select  name="tipo"  formControlName="simbolo" (selectionChange)="onSimboloChange($event.value)">''
-            <mat-option *ngFor="let tipo of this.lista" [value]="tipo.simbolo">
-              {{ tipo.simbolo }}
-            </mat-option>
-          </mat-select>
+        <mat-label>Simbolo</mat-label>
+        <mat-select name="tipo" formControlName="simbolo" (selectionChange)="onSimboloChange($event.value)">
+          <mat-option *ngFor="let tipo of lista" [value]="tipo.simbolo">
+            {{ tipo.simbolo }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
-
+ 
       <div class="mb-6">
         <mat-form-field appearance="outline" class="w-full">
-          <mat-label>apalancamiento1gana</mat-label>
-          <input matInput placeholder="Ingresa tu valor" formControlName="apalancamiento1gana" type="number" step="0.001">
- 
+          <mat-label>Apalancamiento 1 Gana</mat-label>
+          <input matInput placeholder="Ingresa tu valor" formControlName="apalancamiento1Gana" type="number" step="0.001">
         </mat-form-field>
       </div>
 
       <div class="mb-6">
         <mat-form-field appearance="outline" class="w-full">
-          <mat-label>apalancamiento2gana</mat-label>
-          <input matInput placeholder="Ingresa tu valor" formControlName="apalancamiento2gana" type="number" step="0.001">
- 
+          <mat-label>Apalancamiento 2 Gana</mat-label>
+          <input matInput placeholder="Ingresa tu valor" formControlName="apalancamiento2Gana" type="number" step="0.001">
         </mat-form-field>
       </div>
 
       <div class="mb-6">
         <mat-form-field appearance="outline" class="w-full">
-          <mat-label>apalancamiento1pierde</mat-label>
+          <mat-label>Apalancamiento 1 Pierde</mat-label>
           <input matInput placeholder="Ingresa tu valor" formControlName="apalancamiento1pierde" type="number" step="0.001">
- 
         </mat-form-field>
       </div>
 
       <div class="mb-6">
         <mat-form-field appearance="outline" class="w-full">
-          <mat-label>apalancamiento2pierde</mat-label>
+          <mat-label>Apalancamiento 2 Pierde</mat-label>
           <input matInput placeholder="Ingresa tu valor" formControlName="apalancamiento2pierde" type="number" step="0.001">
- 
         </mat-form-field>
       </div>
 

@@ -7,14 +7,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table'; 
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
 import { BehaviorSubject, Subject, Subscription, takeUntil } from 'rxjs';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 
 import { MatCardModule } from '@angular/material/card';
 import { ITradingViewWidget, TradingviewWidgetModule } from 'angular-tradingview-widget';
-import { WebSocketRxjsService } from '@ittiva/services/websoctekt.service'; 
+import { WebSocketRxjsService } from '@ittiva/services/websoctekt.service';
 import { ClienteService } from './clientes.service';
 import { BalanceModalComponent } from './balance/balance.component';
 import { CreditosModalComponent } from './creditos-modal/creditos.component';
@@ -24,6 +24,10 @@ import { AbiertasModalComponent } from './abiertas-modal/abiertas.component';
 import { CerradasModalComponent } from './cerradas-modal/cerradas.component';
 import { ClienteGuardarModalComponent } from './clientes-guardar-modal/cliente-guardar.component';
 import { ApalancamientoModalComponent } from './apalancamiento/apalancamiento.component';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import Swal from 'sweetalert2';
 export class CustomPaginatorIntl extends MatPaginatorIntl {
   itemsPerPageLabel = 'Elementos por página';
   nextPageLabel = 'Página siguiente';
@@ -70,7 +74,7 @@ interface CurrencyData {
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomPaginatorIntl }
   ],
-  imports: [CommonModule, MatButtonModule, MatPaginatorModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, MatTableModule, MatSortModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule, TradingviewWidgetModule, NgFor],
+  imports: [CommonModule, MatButtonModule, MatPaginatorModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, MatTableModule, MatSortModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe, MatCardModule, TradingviewWidgetModule, NgFor, MatFormFieldModule, MatInputModule],
 })
 export class ClientesComponent implements OnInit {
   displayedColumns: string[] = ['noCliente', 'nombre', 'correo', 'monto', 'pass', 'edita', 'posiciones', 'accion'];
@@ -119,7 +123,7 @@ export class ClientesComponent implements OnInit {
     let miArreglo = ["btc", "eth", "ltc", "alpha", "ada", "bnb", "doge", "avax", "shib", "bch", "dot", "trx", "link", "matic", "icp", "near", "uni", "dai", "apt", "stx", "fil", "atom", "arb", "wif", "mkr", "inj", "grt", "op", "jup", "flow", "pepe"];
 
     this.traeUsuarios();
-    
+
   }
 
   traeUsuarios(): void {
@@ -159,8 +163,8 @@ export class ClientesComponent implements OnInit {
 
     });
   }
-  
-  opencDialogCredito(data: any ): void {
+
+  opencDialogCredito(data: any): void {
     const dialogRef = this.dialog.open(CreditosModalComponent, {
       width: '80%',
       height: '80%',
@@ -173,14 +177,14 @@ export class ClientesComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.traeUsuarios();
       if (result) {
-   
+
         console.log('The dialog was closed');
       }
     });
   }
 
-  opencDialogRetiro( data: any): void {
-    const dialogRef = this.dialog.open(RetirosModalComponent , {
+  opencDialogRetiro(data: any): void {
+    const dialogRef = this.dialog.open(RetirosModalComponent, {
       width: '80%',
       height: '80%',
       // height: '700px'
@@ -198,9 +202,9 @@ export class ClientesComponent implements OnInit {
     });
   }
 
-  
-  opencDialogCliente(data: any ): void {
-    const dialogRef = this.dialog.open(ClienteModalComponent , {
+
+  opencDialogCliente(data: any): void {
+    const dialogRef = this.dialog.open(ClienteModalComponent, {
       width: '550px',
       height: '550px',
       // height: '700px'
@@ -212,16 +216,16 @@ export class ClientesComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.traeUsuarios();
       if (result) {
-        
-      
+
+
         console.log('The dialog was closed');
       }
     });
   }
 
-    
-  opencDialogAbiertas( data: any): void {
-    const dialogRef = this.dialog.open(AbiertasModalComponent , {
+
+  opencDialogAbiertas(data: any): void {
+    const dialogRef = this.dialog.open(AbiertasModalComponent, {
       width: '80%',
       height: '80%',
       // height: '700px'
@@ -239,8 +243,8 @@ export class ClientesComponent implements OnInit {
     });
   }
 
-  opencDialogCerradas( data: any): void {
-    const dialogRef = this.dialog.open(CerradasModalComponent , {
+  opencDialogCerradas(data: any): void {
+    const dialogRef = this.dialog.open(CerradasModalComponent, {
       width: '80%',
       height: '80%',
       // height: '700px'
@@ -257,24 +261,24 @@ export class ClientesComponent implements OnInit {
     });
   }
 
-  opencDialogNuevoCliente( ): void {
-    const dialogRef = this.dialog.open(ClienteGuardarModalComponent , {
+  opencDialogNuevoCliente(): void {
+    const dialogRef = this.dialog.open(ClienteGuardarModalComponent, {
       width: '550px',
       height: '550px',
       // height: '700px'
- 
+
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       this.traeUsuarios();
-      if (result) { 
+      if (result) {
         console.log('The dialog was closed');
       }
     });
   }
   openApalancamiento(data: any): void {
     const dialogRef = this.dialog.open(ApalancamientoModalComponent, {
-  
+
       data: { data: data.idUsuario, usuario: data.nombre },
 
     });
@@ -284,8 +288,48 @@ export class ClientesComponent implements OnInit {
 
     });
   }
- 
-  
 
+
+  // Método para aplicar el filtro de búsqueda
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.datasource.filter = filterValue.trim().toLowerCase();  // Aplicar filtro en minúsculas y eliminar espacios en blanco
+
+    // Para evitar que el filtro se aplique solo en las filas visibles (pagination):
+    if (this.datasource.paginator) {
+      this.datasource.paginator.firstPage();
+    }
+  }
+
+
+  elimininar(element: any): void {
+    Swal.fire({
+      title: "Esta seguro que desea eliminar este usuario?" + element.nombre,
+
+      showCancelButton: true,
+      confirmButtonText: "Eliminar",
+      icon: "warning",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+    }).then((result) => {
+
+
+      this.vlienteService.eliminar(element.idUsuario).subscribe({
+        next: (respuesta: any) => {
+          // console.log('Respuesta completa: ', respuesta);
+          // Accediendo a la lista de areas de atención dentro de la respuesta
+          if (respuesta.estatus === 'OK') {
+            this.traeUsuarios();
+          } else {
+
+          }
+        },
+        error: (error: Error) => {
+          console.error(error);
+        },
+      });
+    });
+
+  }
 }
 

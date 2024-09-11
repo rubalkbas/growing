@@ -87,6 +87,7 @@ export class AuthSignInComponent implements OnInit
             localStorage.setItem('user', JSON.stringify(respuesta.dto.usuario));
             localStorage.setItem('idUserWrog',  respuesta.dto.usuario.id);
             localStorage.setItem('rol',  respuesta.dto.usuario.idRol.nombreRol);
+            localStorage.setItem('token', respuesta.dto.jwt.token);
             if (respuesta.dto.usuario.verificacion === false) {
                 
                 this._router.navigate(['/first-pass']);
@@ -130,4 +131,9 @@ export class AuthSignInComponent implements OnInit
     });
 }
 
+isAuthenticated(): boolean {
+    const token = localStorage.getItem('token');
+    // Verificar si el token existe
+    return !!token;
+  }
 }

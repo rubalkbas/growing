@@ -8,14 +8,26 @@
                 <div class="container p-6">
                     <div class="flex justify-between items-center mb-6">
                         <div class="text-2xl font-medium tracking-tight leading-6">Activos</div>
+          
+
+                        <button mat-fab extended class="custom-fab-button-blue" (click)="traeUsuarios()">
+                            <mat-icon class="mr-2">restart_alt</mat-icon> Actualizar Tabla
+                        </button>
+                        
                         <button mat-raised-button color="primary" class="flex items-center" (click)="opencDialogNuevoCliente()">
                             <mat-icon class="mr-2">person_add</mat-icon> AGREGAR CLIENTE
                         </button>
+                    
                     </div>
 
-
+                    <mat-form-field class="w-full">
+                        <mat-label>Buscar en la tabla</mat-label>
+                        <input matInput (input)="applyFilter($event)" placeholder="Buscar...">
+                    </mat-form-field>
 
                     <div class="overflow-auto mat-elevation-z8">
+
+                        
                         <table mat-table [dataSource]="datasource" class="w-full">
                             <ng-container matColumnDef="noCliente">
                                 <th mat-header-cell *matHeaderCellDef>N° Cliente</th>
@@ -96,11 +108,11 @@
                                             </button>
                                         </div>
                                         <div class="example-button-container  ">
-                                            <button mat-fab extended class="custom-fab-button" (click)="openApalancamiento(element)">
-                                              <mat-icon>attach_money</mat-icon>
-                                              Apalancamiento
+                                            <button mat-fab extended class="custom-fab-button-red" (click)="elimininar(element)">
+                                                <mat-icon>account_circle</mat-icon>
+                                                Eliminar
                                             </button>
-                                          </div>
+                                        </div>
                                          
                                     </div>
                                 </td>
