@@ -59,7 +59,7 @@
  
 
     <div class="form-group" style="text-align: center; margin-top: 15px;">
-      <button mat-raised-button color="primary" (click)="onSubmit()" class="custom-button">
+      <button mat-raised-button color="primary" (click)="onSubmit()" class="custom-button" [disabled]="boton" >
         <mat-icon class="icon-dollar">attach_money</mat-icon>
         <span class="button-text" style="margin-bottom: 5px;">Vender</span>
       </button>

@@ -70,6 +70,10 @@ export class ComprarModalComponent implements OnInit {
 
     textVariacion = '0.00'; // replace with your actual value
     showAlert = false;
+
+    boton = false;
+
+    
     constructor(
         public dialogRef: MatDialogRef<ComprarModalComponent>,
         private fb: FormBuilder,
@@ -120,6 +124,8 @@ export class ComprarModalComponent implements OnInit {
 
 
     generaApuesta():void{
+
+        this.boton = true;
                 
         this.apuesta.bloqueCompra = 'DIVISA';
         this.apuesta.compra = this.data.data.instrumento;
@@ -134,30 +140,39 @@ export class ComprarModalComponent implements OnInit {
         this.apuesta.fechaCreacion = "2024-08-18T16:28:03.032Z";
         this.apuesta.gananciaPerdida = 0;
 
+        if(this.apuesta.montoApuesta === 0){
 
+            this.alertService.success('Posición Incompleta!','No se ha indicado cuantas unidades.')
+            this.boton = false;
 
-        this.clienteService.crearApuesta(this.apuesta).subscribe({
-            next: (respuesta: any) => {
-           
-              console.log('Respuesta completa: ', respuesta);
-              // Accediendo a la lista de areas de atención dentro de la respuesta
-             
-              if (respuesta.estatus === 'OK') {
+        }else{
 
-                this.alertService.success('Posición Generada!','La Posición a sido registrada correctamente.')
-                this.dialogRef.close();
+            this.clienteService.crearApuesta(this.apuesta).subscribe({
+                next: (respuesta: any) => {
+               
+                  console.log('Respuesta completa: ', respuesta);
+                  // Accediendo a la lista de areas de atención dentro de la respuesta
+                 
+                  if (respuesta.estatus === 'OK') {
+    
+                    this.alertService.success('Posición Generada!','La Posición a sido registrada correctamente.')
+                    this.dialogRef.close();
+    
+                  } else if (respuesta.estatus === 'FALTA'){
+    
+                    this.alertService.success('Posición No Generada!','No tienes el suficiente margen requerido.')
+                    this.dialogRef.close();                
+    
+                  }
+                },
+                error: (error: Error) => {
+                  console.error(error);
+                },
+              });
+		
+		}
 
-              } else if (respuesta.estatus === 'FALTA'){
-
-                this.alertService.success('Posición No Generada!','No tienes el suficiente margen requerido.')
-                this.dialogRef.close();                
-
-              }
-            },
-            error: (error: Error) => {
-              console.error(error);
-            },
-          });
+       
 
 
 
