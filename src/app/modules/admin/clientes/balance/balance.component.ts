@@ -67,7 +67,7 @@ interface ViewValue {
 })
  
 export class BalanceModalComponent implements OnInit {
-    displayedColumns: string[] = ['monto', 'fecha' ];
+    displayedColumns: string[] = ['monto', 'fecha', 'motivo' ];
     rolForm: FormGroup;
     permisos = [];
     newRol: any;
@@ -88,6 +88,7 @@ export class BalanceModalComponent implements OnInit {
     datasource = new MatTableDataSource<any>();
     idUser: string;
     monto: any = 0;
+    motivo: any ;
     constructor(
         public dialogRef: MatDialogRef<BalanceModalComponent>,
         private fb: FormBuilder,
@@ -173,7 +174,7 @@ export class BalanceModalComponent implements OnInit {
             "fechaCreacion": "2024-08-12T05:15:57.772Z",
             "idDinero": 0,
             "idUsuario": this.data.data,
-            "tipo": "string"
+            "tipo": this.motivo
           }
 
           this.clienteService.postDinero(request).subscribe({
