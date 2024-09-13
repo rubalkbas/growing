@@ -46,8 +46,8 @@ export class ClienteService
         );
     }
 
-    getUsuarios(): Observable<any> {
-        return this._httpClient.get<any>(`${this.baseUrl}/usuarios/consultaUsuariosClientes`);
+    getUsuarios(id: any): Observable<any> {
+        return this._httpClient.get<any>(`${this.baseUrl}/usuarios/consultaUsuariosClientes/` + id);
     }
 
     getDinero(request: any): Observable<any> {

@@ -128,7 +128,8 @@ export class ClienteGuardarModalComponent implements OnInit {
       "nombre": this.clienteForm.get('nombre').value,
       "pass": this.clienteForm.get('password').value,
       "rol": "Cliente",
-      "tipo": "Cliente"
+      "tipo": "Cliente",
+      "idAdmin": localStorage.getItem('idUserWrog')
     }
 
     this.clienteService.agregaCliente(request).subscribe({

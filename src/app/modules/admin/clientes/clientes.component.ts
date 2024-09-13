@@ -122,12 +122,15 @@ export class ClientesComponent implements OnInit {
     this.listaDatos = [];
     let miArreglo = ["btc", "eth", "ltc", "alpha", "ada", "bnb", "doge", "avax", "shib", "bch", "dot", "trx", "link", "matic", "icp", "near", "uni", "dai", "apt", "stx", "fil", "atom", "arb", "wif", "mkr", "inj", "grt", "op", "jup", "flow", "pepe"];
 
+    
+
     this.traeUsuarios();
 
   }
 
   traeUsuarios(): void {
-    this.vlienteService.getUsuarios().subscribe({
+
+    this.vlienteService.getUsuarios(localStorage.getItem('idUserWrog')).subscribe({
       next: (respuesta: any) => {
         console.log('Respuesta completa: ', respuesta);
         // Accediendo a la lista de areas de atención dentro de la respuesta
