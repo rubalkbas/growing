@@ -19,6 +19,11 @@
           <td mat-cell *matCellDef="let element">{{element.fechaCreacion | date:'short' }}</td>
         </ng-container>
 
+        <ng-container matColumnDef="motivo">
+          <th mat-header-cell *matHeaderCellDef>Motivo</th>
+          <td mat-cell *matCellDef="let element">{{element.tipo }}</td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
@@ -38,6 +43,13 @@
       <mat-form-field class="w-full">
         <mat-label>Monto</mat-label>
         <input id="correo" matInput [(ngModel)]="this.monto" [ngModelOptions]="{standalone: true}">
+
+      </mat-form-field>
+
+      <!-- Email field -->
+      <mat-form-field class="w-full">
+        <mat-label>Monto</mat-label>
+        <input id="correo" matInput [(ngModel)]="this.motivo" [ngModelOptions]="{standalone: true}">
 
       </mat-form-field>
 
