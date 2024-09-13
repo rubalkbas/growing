@@ -265,7 +265,7 @@ Swal.fire({
     this.datasource.data.forEach(item2 => {
       // Encuentra el índice del idUsuario en margenes
       const index = margenes.findIndex(item => {
-        console.log('Revisando item en margenes:', item);
+       // console.log('Revisando item en margenes:', item);
         if (item.idUsuario) {
           return item.idUsuario.toString() === item2.idApuestaCliente.toString();
         }
