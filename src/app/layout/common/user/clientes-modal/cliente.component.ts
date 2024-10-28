@@ -126,7 +126,7 @@ onSubmit() {
       "correo": this.userForm.get('correo').value,
       "estatus": 1, 
       "nombre": this.userForm.get('nombre').value,
-      "idUsuario": 8,
+      "idUsuario": this.data.data.data.idUsuario,
       "pass": this.userForm.get('contrasena').value
     
     }
