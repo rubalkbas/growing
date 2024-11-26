@@ -20,7 +20,8 @@ import { ComprarModalComponent } from './comprar-modal/comprar.component';
 import { TradingViewWidgetService } from '../tradingViewWidget/trading-view-widget.service';
 import { WebSocketFondoService } from '@ittiva/services/websoctektFondos.service';
 import { ClienteService } from '../clientes/clientes.service';
-import { VenderModalComponent } from '../criptomonedas/vender-modal/vender.component'; 
+import { VenderModalComponent } from './vender-modal/vender.component';
+
 
 export class CustomPaginatorIntl extends MatPaginatorIntl {
   itemsPerPageLabel = 'Elementos por página';

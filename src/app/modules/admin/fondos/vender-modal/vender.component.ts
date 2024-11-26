@@ -99,7 +99,8 @@ export class VenderModalComponent implements OnInit {
         const monto = this.getMonto(); // Obtiene el monto de tu data
         const unidades = this.formCliente.get('porcentaje')?.value || 0;
 
-        const margenRequerido = monto * unidades;
+       // const margenRequerido = monto * unidades;
+        const margenRequerido =  (monto / 10) * unidades;
 
         // Establece el valor del margen requerido en el formulario
         this.formCliente.get('valorA')?.setValue(margenRequerido);
