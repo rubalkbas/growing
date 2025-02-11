@@ -129,7 +129,7 @@ export class FondosComponent implements OnInit {
 
       // Suscribirse al Subject para escuchar los cambios
       const subscription = this.socketSubjects[symbol].subscribe(data => {
-        this.handleSocketData(symbol, data, parseFloat(data.l) ,parseFloat(data.c));  // Manejar los datos recibidos
+        this.handleSocketData(symbol, data, parseFloat(data.c) ,parseFloat(data.w));  // Manejar los datos recibidos
       });
 
       // Guardar la suscripción para poder cancelarla en ngOnDestroy

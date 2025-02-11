@@ -117,7 +117,7 @@ export class CriptomonedasComponent implements OnInit {
 
   
   ngOnInit(): void { 
-    this.miArreglo = ["btc", "eth", "ltc", "alpha", "ada", "bnb", "doge", "avax", "shib", "bch", "dot", "trx", "link", "matic", "icp", "near", "uni", "dai", "apt", "stx", "fil", "atom", "arb", "wif", "mkr", "inj", "grt", "op", "jup", "flow", "pepe"];
+    this.miArreglo = ["trump","meme","btc", "eth", "ltc", "alpha", "ada", "bnb", "doge", "avax", "shib", "bch", "dot", "trx", "link", "matic", "icp", "near", "uni", "dai", "apt", "stx", "fil", "atom", "arb", "wif", "mkr", "inj", "grt", "op", "jup", "flow", "pepe"];
    
     this.miArreglo.forEach(symbol => {
       // Crear un Subject para cada símbolo
@@ -136,7 +136,7 @@ export class CriptomonedasComponent implements OnInit {
 
       // Suscribirse al Subject para escuchar los cambios
       const subscription = this.socketSubjects[symbol].subscribe(data => {
-        this.handleSocketData(symbol, data, parseFloat(data.l) ,parseFloat(data.c));  // Manejar los datos recibidos
+        this.handleSocketData(symbol, data, parseFloat(data.c) ,parseFloat(data.w));  // Manejar los datos recibidos
       });
 
       // Guardar la suscripción para poder cancelarla en ngOnDestroy

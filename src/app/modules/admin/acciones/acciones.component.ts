@@ -141,7 +141,7 @@ export class AccionesComponent implements OnInit, OnDestroy {
   }
 
   sendMessage( ): void {
-    this.websocketService.sendMessage( {"action": "subscribe", "symbols": "AMZN,TSLA,MSFT,NVDA,AAPL,GOOG,META,LLY,JNJ,ORCL,ADBE,UBER,SBUX,MCD,KO,WMT,PFE,AZN,BABA,PEP,BBVA,MA,INTC,ERII,BE,CARR,CMI"} );
+    this.websocketService.sendMessage( {"action": "subscribe", "symbols": "AMZN,TSLA,MSFT,NVDA,AAPL,GOOG,META,LLY,JNJ,ORCL,ADBE,UBER,SBUX,MCD,KO,WMT,PFE,AZN,BABA,PEP,BBVA,MA,INTC,ERII,BE,CARR,CMI,NFLX"} );
   }
 
   updateCurrencyData(currencyCode: string, newValue: number, lodemas :any, newValueVender :any): void {
