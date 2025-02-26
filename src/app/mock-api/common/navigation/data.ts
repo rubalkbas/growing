@@ -105,6 +105,14 @@ export const defaultNavigation: ittivaNavigationItem[] = [
         type: 'basic',
         icon: 'heroicons_outline:user',
         link: '/growing/miCuenta',
+    } ,   
+    {
+        id: 'dashboards.cuenta',
+        perfil: 'Cliente',
+        title: 'Cuenta',
+        type: 'basic',
+        icon: 'heroicons_outline:user',
+        link: '/growing/miCuenta',
     } 
    
 ];

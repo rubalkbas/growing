@@ -17,27 +17,34 @@ export class AuthUtils
      * @param token
      * @param offsetSeconds
      */
-    static isTokenExpired(token: string, offsetSeconds?: number): boolean
-    {
-        // Return if there is no token
-        if ( !token || token === '' )
-        {
+    static isTokenExpired(token: string): boolean {
+        // Retorna true si no hay token
+        if (!token || token === '') {
             return true;
         }
-
-        // Get the expiration date
-        const date = this._getTokenExpirationDate(token);
-
-        offsetSeconds = offsetSeconds || 0;
-
-        if ( date === null )
-        {
+    
+        // Obtén la fecha de expiración del token (en UTC)
+        const expirationDate = this._getTokenExpirationDate(token);
+    
+        console.log('Fecha de expiración del token:', expirationDate);
+    
+        if (expirationDate === null) {
             return true;
         }
-
-        // Check if the token is expired
-        return !(date.valueOf() > new Date().valueOf() + offsetSeconds * 1000);
+    
+        // Obtener la hora actual en la zona horaria de México (UTC-6 o UTC-5 en horario de verano)
+        const ahoraMexico = new Date(
+            new Intl.DateTimeFormat("es-MX", {
+                timeZone: "America/Mexico_City"
+            }).format()
+        ).getTime();
+    
+        console.log('Hora actual en México:', new Date(ahoraMexico));
+    
+        // Comparar la fecha de expiración del token con la hora de México
+        return expirationDate.getTime() <= ahoraMexico;
     }
+    
 
     // -----------------------------------------------------------------------------------------------------
     // @ Private methods

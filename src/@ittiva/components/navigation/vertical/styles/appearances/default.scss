@@ -120,6 +120,21 @@ ittiva-vertical-navigation {
         }
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     /* Wrapper */
     .ittiva-vertical-navigation-wrapper {
         position: absolute;
@@ -134,37 +149,67 @@ ittiva-vertical-navigation {
         z-index: 10;
         background: #ffffff;
         color: #0c0b55;
-        box-shadow: inset -1px 0 0  (#059e12);
-
+        box-shadow: inset -1px 0 0 #03f5ed;
+    
         /* Header */
         .ittiva-vertical-navigation-header {
-
+            /* Estilos del header */
         }
-
+    
         /* Content */
         .ittiva-vertical-navigation-content {
             flex: 1 1 auto;
             overflow-x: hidden;
             overflow-y: auto;
             overscroll-behavior: contain;
-
+    
             /* Divider */
             > ittiva-vertical-navigation-divider-item {
                 margin: 24px 0;
             }
-
+    
             /* Group */
             > ittiva-vertical-navigation-group-item {
                 margin-top: 24px;
             }
+    
+            /* Efecto de línea animada */
+            position: relative;
+            overflow: hidden;
+    
+            &::before {
+                content: '';
+                position: absolute;
+                top: -100%;
+                right: 0;
+                width: 2px;
+                height: 100%;
+                background: linear-gradient(
+                    to bottom,
+                    transparent,
+                    #0485ee,
+                    transparent
+                );
+                animation: moveLine 3s linear infinite;
+                filter: blur(2px);
+            }
         }
-
+    
         /* Footer */
         .ittiva-vertical-navigation-footer {
-
+            /* Estilos del footer */
         }
     }
-
+    
+    /* Animación para mover la línea */
+    @keyframes moveLine {
+        0% {
+            top: -100%;
+        }
+        100% {
+            top: 100%;
+        }
+    }
     /* Aside wrapper */
     .ittiva-vertical-navigation-aside-wrapper {
         position: absolute;

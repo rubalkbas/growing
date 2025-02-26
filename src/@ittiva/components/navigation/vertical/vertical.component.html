@@ -31,14 +31,14 @@
                         [activeItemId]="activeAsideItemId"
                         [autoCollapse]="autoCollapse"
                         [skipChildren]="true"
-                        (click)="toggleAside(item)"></ittiva-vertical-navigation-aside-item>
+                        (click)="toggleAside(item)"> aside</ittiva-vertical-navigation-aside-item>
                 </ng-container>
 
                 <!-- Basic -->
                 <ng-container *ngIf="item.type === 'basic' && item.perfil === rol">
                     <ittiva-vertical-navigation-basic-item
                         [item]="item"
-                        [name]="name"></ittiva-vertical-navigation-basic-item>
+                        [name]="name">basico</ittiva-vertical-navigation-basic-item>
                 </ng-container>
 
                 <!-- Collapsable -->
@@ -46,7 +46,7 @@
                     <ittiva-vertical-navigation-collapsable-item
                         [item]="item"
                         [name]="name"
-                        [autoCollapse]="autoCollapse"> </ittiva-vertical-navigation-collapsable-item>
+                        [autoCollapse]="autoCollapse">colap </ittiva-vertical-navigation-collapsable-item>
                 </ng-container>
 
                 <!-- Divider -->

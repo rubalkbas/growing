@@ -38,35 +38,24 @@ export const appRoutes: Route[] = [
     // Auth routes for authenticated users
     {
         path: '',
-        canActivate: [AuthGuard, PermissionGuard, FirstPassGuard],
-        canActivateChild: [AuthGuard, PermissionGuard, FirstPassGuard],
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
         component: LayoutComponent,
         data: {
             layout: 'empty'
         },
         children: [
             {path: 'sign-out', loadChildren: () => import('app/modules/auth/sign-out/sign-out.routes')},
-            {path: 'unlock-session', loadChildren: () => import('app/modules/auth/unlock-session/unlock-session.routes')}
+            //{path: 'unlock-session', loadChildren: () => import('app/modules/auth/unlock-session/unlock-session.routes')}
         ]
     },
 
-    // Landing routes
-    {
-        path: '',
-        component: LayoutComponent,
-        data: {
-            layout: 'empty'
-        },
-        children: [
-            {path: 'home', loadChildren: () => import('app/modules/landing/home/home.routes')},
-        ]
-    },
-
+ 
     // Admin routes
     {
         path: '',
         canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard, PermissionGuard, FirstPassGuard],
+        canActivateChild: [AuthGuard],
         data: {
             permission: 'administrador'
         },
@@ -84,7 +73,7 @@ export const appRoutes: Route[] = [
     {
         path: '',
         canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard, PermissionGuard, FirstPassGuard],
+        canActivateChild: [AuthGuard],
         component: LayoutComponent,
         data: {
             permission: 'usuarios'

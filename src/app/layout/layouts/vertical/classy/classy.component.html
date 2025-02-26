@@ -53,10 +53,14 @@
     <div
         class="relative flex flex-0 items-center w-full h-16 px-4 md:px-6 z-49 shadow dark:shadow-none dark:border-b bg-card dark:bg-transparent print:hidden">
         <!-- Navigation toggle button -->
+         
         <button mat-icon-button (click)="toggleNavigation('mainNavigation')">
             <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
         </button>
         <!-- Components -->
+          <!-- Currency Ticker -->
+          <app-currency-ticker class="flex-1 mx-4"></app-currency-ticker>
+        
         <div class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
             <!--     <languages></languages> -->
             <ittiva-fullscreen class="hidden md:block"></ittiva-fullscreen>

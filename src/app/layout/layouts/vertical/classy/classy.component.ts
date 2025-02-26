@@ -21,13 +21,14 @@ import { UserComponent } from 'app/layout/common/user/user.component';
 import { MenuMargenComponent } from 'app/modules/admin/menu-margen/menu-margen.component';
 import { TradingViewWidgetComponent } from 'app/modules/admin/tradingViewWidget/trading-view-widget.component';
 import { Subject, takeUntil } from 'rxjs';
+import { CurrencyTickerComponent } from './currency-ticker/currency-ticker.component';
 
 @Component({
     selector     : 'classy-layout',
     templateUrl  : './classy.component.html',
     encapsulation: ViewEncapsulation.None,
     standalone   : true,
-    imports      : [TradingViewWidgetComponent,ittivaLoadingBarComponent, MenuMargenComponent, ittivaVerticalNavigationComponent, NotificationsComponent, UserComponent, NgIf, MatIconModule, MatButtonModule, LanguagesComponent, ittivaFullscreenComponent, SearchComponent, ShortcutsComponent, MessagesComponent, RouterOutlet, QuickChatComponent],
+    imports      : [TradingViewWidgetComponent,ittivaLoadingBarComponent, MenuMargenComponent, ittivaVerticalNavigationComponent, NotificationsComponent, UserComponent, NgIf, MatIconModule, MatButtonModule, LanguagesComponent, ittivaFullscreenComponent, SearchComponent, ShortcutsComponent, MessagesComponent, RouterOutlet, QuickChatComponent,CurrencyTickerComponent],
 })
 export class ClassyLayoutComponent implements OnInit, OnDestroy
 {

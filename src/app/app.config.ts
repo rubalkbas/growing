@@ -25,8 +25,7 @@ export const appConfig: ApplicationConfig = {
             // Puedes configurar la estrategia de registro
             registrationStrategy: 'registerWhenStable:30000',
           }),
-        provideHttpClient(),
-        { provide: LocationStrategy, useClass: HashLocationStrategy },
+        provideHttpClient(), 
         provideRouter(appRoutes,
             withPreloading(PreloadAllModules),
             withInMemoryScrolling({scrollPositionRestoration: 'enabled'}),

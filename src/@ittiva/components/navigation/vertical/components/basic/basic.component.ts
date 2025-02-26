@@ -12,6 +12,7 @@ import { Subject, takeUntil } from 'rxjs';
 @Component({
     selector       : 'ittiva-vertical-navigation-basic-item',
     templateUrl    : './basic.component.html',
+    styleUrls: ['./basic.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone     : true,
     imports        : [NgClass, NgIf, RouterLink, RouterLinkActive, MatTooltipModule, NgTemplateOutlet, MatIconModule],
@@ -45,6 +46,43 @@ export class ittivaVerticalNavigationBasicItemComponent implements OnInit, OnDes
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
 
+     // Variable para rastrear el elemento con hover
+  hoveredElement: HTMLElement | null = null;
+
+  // Función para manejar el hover
+  handleHover(event: MouseEvent, action: 'enter' | 'leave'): void {
+    const target = event.currentTarget as HTMLElement;
+
+    if (action === 'enter') {
+      // Elimina la clase del elemento anterior (si existe)
+      if (this.hoveredElement) {
+        this.hoveredElement.classList.remove('animate-flash');
+      }
+
+      // Asigna el nuevo elemento con hover
+      this.hoveredElement = target;
+
+      // Agrega la clase al nuevo elemento
+      target.classList.add('animate-flash');
+    } else if (action === 'leave') {
+      // Elimina la clase cuando el mouse sale del elemento
+      target.classList.remove('animate-flash');
+      this.hoveredElement = null;
+    }
+  }
+  
+    restartAnimation(event: MouseEvent): void {
+        const target = event.currentTarget as HTMLElement;
+    
+        // Elimina la clase para reiniciar la animación
+        target.classList.remove('animate-flash');
+    
+        // Fuerza un reflow para reiniciar la animación
+        void target.offsetWidth;
+    
+        // Vuelve a agregar la clase
+        target.classList.add('animate-flash');
+      }
     /**
      * On init
      */

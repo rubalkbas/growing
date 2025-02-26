@@ -222,11 +222,14 @@ Swal.fire({
 }).then((result) => {
   /* Read more about isConfirmed, isDenied below */
   if (result.isConfirmed) {
-    request.gananciaPerdida = this.currencies2[request.idApuestaCliente].montoGanPer;
+    if(request.bloqueCompra == 'CRIPTO' || request.bloqueCompra == 'FONDOS' ){
+      request.gananciaPerdida = this.currencies2[request.idApuestaCliente].montoGanPer;
       this.clienteService.cerrarApuestaWs(request.idApuestaCliente).subscribe({
       next: (respuesta: any) => {
       }
     });
+    }
+
 
     this.clienteService.cerrarApuesta(request).subscribe({
       next: (respuesta: any) => {
