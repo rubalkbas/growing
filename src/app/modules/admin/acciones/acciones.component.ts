@@ -227,7 +227,7 @@ export class AccionesComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(ComprarModalComponent, {
       width: '80%',
       height: '80%',
-        data: { data: data, usuario: this.dinero.nombre, dinero:this.dinero.totalDinero},
+        data: { data: data, usuario: this.dinero.nombre, dinero:this.dinero.margenLibre * .85 },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -240,7 +240,7 @@ openDialogVender(data:any): void {
   const dialogRef = this.dialog.open(VenderModalComponent, {
     width: '80%',
     height: '80%',
-      data: { data: data, usuario: this.dinero.nombre, dinero:this.dinero.totalDinero},
+      data: { data: data, usuario: this.dinero.nombre, dinero:this.dinero.margenLibre * .85 },
   });
 
   dialogRef.afterClosed().subscribe((result) => {
