@@ -20,7 +20,7 @@ import { TradingViewWidgetComponent } from '../tradingViewWidget/trading-view-wi
 import { TradingViewWidgetService } from '../tradingViewWidget/trading-view-widget.service';
 import { WebSocketCriptoService } from '@ittiva/services/websoctektCryptos.service';
 import { ClienteService } from '../clientes/clientes.service';
-import { VenderModalComponent } from './vender-modal/vender.component';
+import { VenderModalComponent } from './vender-modal/vender.component'; 
 
 export class CustomPaginatorIntl extends MatPaginatorIntl {
   itemsPerPageLabel = 'Elementos por página';

@@ -111,7 +111,7 @@ export class DivisasComponent implements OnInit, OnDestroy {
     this.listaDatos = [];
     let miArreglo = ["btc", "eth","ltc","alpha","ada","bnb","doge","avax","shib","bch","dot","trx","link","matic","icp","near","uni","dai","apt","stx","fil","atom","arb","wif","mkr","inj","grt","op","jup","flow","pepe"];
  
-    this.websocketService.connect('wss://ws.eodhistoricaldata.com/ws/forex?api_token=667d8404377b62.46044727');
+    this.websocketService.connect('wss://ws.eodhistoricaldata.com/ws/forex?api_token=68a29aba317474.03559652');
     this.subscription = this.websocketService.onMessage().subscribe(
       message => this.handleMessage(message)
       

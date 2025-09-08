@@ -91,7 +91,7 @@ export class AccionesComponent implements OnInit, OnDestroy {
   ngOnInit(): void { 
     this.messages = [];
     this.listaDatos = [];
-    this.websocketService.connect('wss://ws.eodhistoricaldata.com/ws/us-quote?api_token=667d8404377b62.46044727');
+    this.websocketService.connect('wss://ws.eodhistoricaldata.com/ws/us?api_token=68a29aba317474.03559652');
     this.subscription = this.websocketService.onMessage().subscribe(
       message => this.handleMessage(message)
       
